@@ -23,12 +23,8 @@ export default defineComponent({
         };
     },
     mounted() {
-        console.log('mediaResources:', mediaResources);
-        // 获取并打印 bannerRef
-        console.log('bannerRef:', this.$refs.bannerRef);
-
         // 渲染所有元素
-        mediaResources.forEach((item, index) => {
+        mediaResources.forEach((item: any) => {
             const layer = document.createElement('div');
             layer.className = 'layer';
             (this.$refs.bannerRef as HTMLElement).appendChild(layer);

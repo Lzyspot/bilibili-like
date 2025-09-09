@@ -1,7 +1,7 @@
 /**
- * 主页banner动画
- * https://gitee.com/u1iz/bilibili-banner
- */
+* 主页banner动画
+* https://gitee.com/u1iz/bilibili-banner
+*/
 
 <template>
     <div id="wrapper" ref="wrapper">
@@ -23,8 +23,9 @@
 </template>
 
 <script setup>
-
 import { ref, onMounted, reactive } from 'vue'
+
+import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20240617.js'
 
 const config = reactive({
     // 展示帧率
@@ -52,7 +53,6 @@ const info = ref({
     }
 })
 
-
 // 设置画布大小
 // 依据：b站主页缩放至50%时，Banner显示的最大值
 const canvasSize = {
@@ -67,7 +67,6 @@ const banner = ref(null)
 
 
 onMounted(() => {
-
     // 缓存画布，双缓冲解决高频刷新时的画面闪烁问题
     const tempCanvas = document.createElement('canvas')
 
@@ -83,30 +82,29 @@ onMounted(() => {
     ctx.fillRect(0, 0, canvasSize.w, canvasSize.h);
 
     // 视频
-    const bubble1 = videoNode('./src/528d9376-f0fd-4445-9840-13e7559d6056.webm', {
+    const bubble1 = videoNode(mediaResources.webm['528d9376-f0fd-4445-9840-13e7559d6056.webm'], {
         playbackRate: 1.5
     })
-    const bubble2 = videoNode('./src/528d9376-f0fd-4445-9840-13e7559d6056.webm')
+    const bubble2 = videoNode(mediaResources.webm['528d9376-f0fd-4445-9840-13e7559d6056.webm'])
 
-    const bubble3 = videoNode('./src/1671f963-c10d-4558-af99-e20a26c5a1f8.webm', {
+    const bubble3 = videoNode(mediaResources.webm['1671f963-c10d-4558-af99-e20a26c5a1f8.webm'], {
         playbackRate: 1.5
     })
 
     // 获取图片数据
-    fetch('./src/base.json')
-        .then(res => res.text())
-        .then(data => renderBanner(JSON.parse(data), config.loadInterval))
-
-
+    // fetch('./src/base.json')
+    //     .then(res => res.text())
+    //     .then(data => renderBanner(JSON.parse(data), config.loadInterval))
+    
     const imageList = []
-
-
     let mouseOriginX = null, mouseOffsetX = 0
+    let startTime, endTime, intervalFPS_startTime = Date.now(), intervalFPS_set = []
+    renderBanner(mediaResources.webp, config.loadInterval)
+
+
     const calcOffset = (weight = 0) => {
         return mouseOffsetX * config.offsetSpeed * weight
     }
-
-    let startTime, endTime, intervalFPS_startTime = Date.now(), intervalFPS_set = []
 
     function renderBanner(imgSet, duration = null) {
         startTime = performance.now()
@@ -291,7 +289,6 @@ onMounted(() => {
                             imageList[index].width * scaleFactor * config.canvasScale,
                             imageList[index].height * scaleFactor * config.canvasScale)
 
-
                         ctx.drawImage(tempCanvas, 0, 0)
 
                         endTime = performance.now()
@@ -308,17 +305,15 @@ onMounted(() => {
             setTimeout(() => renderBanner(), 1000 / config.canvasFPS + (duration * imageList.length))
         } else {
             imageList.forEach((img, i) => {
-                switch (img.id) {
-                    case 'cd68251cde11936871237ca94360acb451bf7ed2.png@1c.webp':
-                        tempCtx.globalAlpha = 0.5
-                        break;
-
-                    default:
-                        tempCtx.globalAlpha = 1
-                        break;
-                }
-
-                // 复原动画
+                    switch (img.id) {
+                        case 'cd68251cde11936871237ca94360acb451bf7ed2.png@1c.webp':
+                            tempCtx.globalAlpha = 0.5
+                            break;
+                        default:
+                            tempCtx.globalAlpha = 1
+                            break;
+                    }
+// 复原动画
                 let left = calcOffset(img.offsetWeight), top = calcOffset(img.offsetTopWeight ?? 0), scale = calcOffset(img.scaleWeight)
 
                 if (img.latest && mouseOriginX != Number(mouseOriginX)) {
@@ -381,7 +376,6 @@ onMounted(() => {
             })
         }
     }
-
 
     window.addEventListener('mousemove', _ => {
         // 判断鼠标进入判定区域
