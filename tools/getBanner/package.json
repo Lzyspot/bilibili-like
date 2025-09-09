@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@types/cheerio": "^1.0.0",
+    "cheerio": "^1.1.2",
+    "puppeteer": "^24.19.0"
+  },
+  "scripts": {
+    "start": "ts-node get.ts"
+  }
+}
