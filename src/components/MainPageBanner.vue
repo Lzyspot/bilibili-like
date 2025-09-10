@@ -1,7 +1,3 @@
-/**
-* 主页banner动画
-*/
-
 <template>
     <div data-v-mainPageBanner>
         <div class="animated-banner" ref="bannerRef"></div>
