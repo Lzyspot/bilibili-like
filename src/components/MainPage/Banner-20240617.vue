@@ -6,6 +6,7 @@
 <template>
     <div id="wrapper" ref="wrapper">
         <canvas id="banner" ref="banner"></canvas>
+        <div class="taper-line"></div>
     </div>
 
     <!-- <div id="fps_display" v-if="config.fpsDisplayInterval">
@@ -22,10 +23,10 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
 
-import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20240617.js'
+import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20240617'
 
 const config = reactive({
     // 展示帧率
@@ -61,9 +62,9 @@ const canvasSize = {
 }
 
 // 容器
-const wrapper = ref(null)
+const wrapper = ref<any>(null)
 // 画布
-const banner = ref(null)
+const banner = ref<any>(null)
 
 
 onMounted(() => {
@@ -95,10 +96,10 @@ onMounted(() => {
     // fetch('./src/base.json')
     //     .then(res => res.text())
     //     .then(data => renderBanner(JSON.parse(data), config.loadInterval))
-    
-    const imageList = []
-    let mouseOriginX = null, mouseOffsetX = 0
-    let startTime, endTime, intervalFPS_startTime = Date.now(), intervalFPS_set = []
+
+    const imageList: any[] = []
+    let mouseOriginX: number | null = null, mouseOffsetX = 0
+    let startTime: number, endTime: number, intervalFPS_startTime = Date.now(), intervalFPS_set: number[] = []
     renderBanner(mediaResources.webp, config.loadInterval)
 
 
@@ -106,9 +107,9 @@ onMounted(() => {
         return mouseOffsetX * config.offsetSpeed * weight
     }
 
-    function renderBanner(imgSet, duration = null) {
+    function renderBanner(imgSet?: any, duration: number | null = null) {
         startTime = performance.now()
-
+        if (!tempCtx) return
         tempCtx.fillStyle = '#7bc6fc'
         tempCtx.fillRect(0, 0, canvasSize.w, canvasSize.h)
 
@@ -270,7 +271,7 @@ onMounted(() => {
                         break;
                 }
 
-                const loadImg = index => {
+                const loadImg = (index: number) => {
                     // 区域间隔加载
                     setTimeout(() => {
                         switch (imageList[index].id) {
@@ -293,7 +294,7 @@ onMounted(() => {
 
                         endTime = performance.now()
                         info.value.FPS.current = (1000 / (endTime - startTime))
-                    }, duration * i)
+                    }, (duration as number) * i)
                 }
 
                 _init()
@@ -302,22 +303,22 @@ onMounted(() => {
             }
 
 
-            setTimeout(() => renderBanner(), 1000 / config.canvasFPS + (duration * imageList.length))
+            setTimeout(() => renderBanner(undefined, undefined), 1000 / config.canvasFPS + ((duration as number) * imageList.length))
         } else {
             imageList.forEach((img, i) => {
-                    switch (img.id) {
-                        case 'cd68251cde11936871237ca94360acb451bf7ed2.png@1c.webp':
-                            tempCtx.globalAlpha = 0.5
-                            break;
-                        default:
-                            tempCtx.globalAlpha = 1
-                            break;
-                    }
-// 复原动画
+                switch (img.id) {
+                    case 'cd68251cde11936871237ca94360acb451bf7ed2.png@1c.webp':
+                        tempCtx.globalAlpha = 0.5
+                        break;
+                    default:
+                        tempCtx.globalAlpha = 1
+                        break;
+                }
+                // 复原动画
                 let left = calcOffset(img.offsetWeight), top = calcOffset(img.offsetTopWeight ?? 0), scale = calcOffset(img.scaleWeight)
 
                 if (img.latest && mouseOriginX != Number(mouseOriginX)) {
-                    const trans = val => {
+                    const trans = (val: number) => {
                         const recovery = val * config.restoreSpeed
                         // 根据帧率变化的偏移补偿
                         return recovery + (recovery * (config.canvasFPS - info.value.FPS.average) * 0.001)
@@ -370,14 +371,14 @@ onMounted(() => {
                         } else {
                             intervalFPS_set.push(info.value.FPS.current)
                         }
-                        renderBanner()
+                        renderBanner(undefined, null)
                     }, 1000 / config.canvasFPS)
                 }
             })
         }
     }
 
-    window.addEventListener('mousemove', _ => {
+    window.addEventListener('mousemove', (_: MouseEvent) => {
         // 判断鼠标进入判定区域
         if (banner.value && _.pageY >= banner.value.offsetTop && _.pageY <= banner.value.offsetTop + banner.value.height) {
             // 获取原始点
@@ -390,7 +391,7 @@ onMounted(() => {
             mouseOffsetX = (mouseOffsetX + _.pageX - mouseOriginX) / 2
 
             // 鼠标移出浏览器时，动画归位
-            window.addEventListener('mouseout', e => {
+            window.addEventListener('mouseout', () => {
                 mouseOriginX = null, mouseOffsetX = 0
             })
 
@@ -413,8 +414,9 @@ onMounted(() => {
 
         if (gw < canvasSize.w) {
             config.canvasScale = gw / canvasSize.w
-            tempCanvas.imageSmoothingQuality = 'high'
-            tempCanvas.lineWidth = 1
+            if (!tempCtx) return
+            tempCtx.imageSmoothingQuality = 'high'
+            tempCtx.lineWidth = 1
             if (config.canvasScale < 0.3) {
                 config.canvasScale = 0.565
             } else if (config.canvasScale < 0.6) {
@@ -447,15 +449,15 @@ onMounted(() => {
     }
 })
 
-function videoNode(vidSrc, options = {}) {
-    const video = document.createElement('video')
+function videoNode(vidSrc: string, options: any = {}) {
+    const video: any = document.createElement('video')
     document.body.append(video)
 
     video.src = vidSrc
     video.muted = true
     video.loop = true
     video.autoplay = true
-    video.style.opacity = 0
+    video.style.opacity = '0'
     video.style.position = 'absolute'
 
     for (let k in options) {
@@ -522,5 +524,16 @@ canvas {
     width: 50%;
     min-width: 20rem;
     background: #00000011;
+}
+
+.taper-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(rgba(0, 0, 0, .4), transparent);
+    pointer-events: none;
 }
 </style>

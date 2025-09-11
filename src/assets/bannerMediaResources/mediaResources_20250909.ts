@@ -254,7 +254,7 @@ const mediaResources = [
     }
 ]
 
-mediaResources.forEach(item => {
+mediaResources.forEach((item: any) => {
     if (!item.originStyle && item.type === 'IMG') {
         item.originStyle = {
             height: '196.49px',

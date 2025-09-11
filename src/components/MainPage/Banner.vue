@@ -6,11 +6,10 @@
 </template>
 
 <script lang="ts">
-import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20250909.js';
+import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20250909';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    name: 'MainPageBanner',
     data() {
         return {
             initialMouseX: 0, // 记录鼠标初始位置
