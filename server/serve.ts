@@ -93,6 +93,16 @@ app.get("/api/search/suggest", (req: Request, res: Response) => {
     });
 });
 
+app.get("/api/search/default", (req: Request, res: Response) => {
+  fetch(
+    "https://api.bilibili.com/x/web-interface/wbi/search/default"
+  )
+    .then(data => data.json())
+    .then(data => {
+      res.send(data);
+    })
+});
+
 // post
 app.post("/api/get_bilibili_top_feed", (req: Request, res: Response) => {
   const { data } = req.body;

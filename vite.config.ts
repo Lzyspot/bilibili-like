@@ -14,10 +14,19 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: '@container-width: 90%;'
+      }
+    }
+  },
   // 添加构建配置
   build: {
     // 禁用缓存确保构建最新代码
-    emptyOutDir: true
+    emptyOutDir: true,
+    // 设置导出文件夹为 dist/html
+    outDir: 'dist/html'
   },
   server: {
     // 配置服务启动时是否运行

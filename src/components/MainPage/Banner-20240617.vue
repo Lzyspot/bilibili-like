@@ -5,6 +5,7 @@
 
 <template>
     <div id="wrapper" ref="wrapper">
+        <HeaderNav></HeaderNav>
         <canvas id="banner" ref="banner"></canvas>
         <div class="taper-line"></div>
     </div>
@@ -27,6 +28,8 @@
 import { ref, onMounted, reactive } from 'vue'
 
 import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20240617'
+
+import HeaderNav from './HeaderNav.vue'
 
 const config = reactive({
     // 展示帧率
@@ -389,24 +392,20 @@ onMounted(() => {
 
             // 偏移量
             mouseOffsetX = (mouseOffsetX + _.pageX - mouseOriginX) / 2
-
-            // 鼠标移出浏览器时，动画归位
-            window.addEventListener('mouseout', () => {
-                mouseOriginX = null, mouseOffsetX = 0
-            })
-
         } else {
             mouseOriginX = null, mouseOffsetX = 0
         }
 
     })
 
+    wrapper.value.addEventListener('mouseleave', () => {
+        mouseOriginX = null, mouseOffsetX = 0
+    })
 
     winResize()
     window.addEventListener('resize', () => {
         winResize()
     })
-
 
     // 页面大小变更时触发
     function winResize() {

@@ -7,5 +7,18 @@
 <script setup lang="ts">
 </script>
 
-<style scoped>
+<style lang="less">
+* {
+  margin: 0;
+  padding: 0;
+}
+
+img,
+svg {
+  vertical-align: middle;
+}
+
+li {
+  list-style-type: none;
+}
 </style>

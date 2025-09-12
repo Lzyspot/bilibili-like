@@ -22,9 +22,9 @@ const routes: Array<RouteRecordRaw> = [
 // 创建路由器实例并配置路由
 const router = createRouter({
   // 使用HTML5 History模式
-  // history: createWebHistory(),
+  history: createWebHistory(),
   // Hash模式
-  history: createWebHashHistory(),
+  // history: createWebHashHistory(),
   routes
 })
 

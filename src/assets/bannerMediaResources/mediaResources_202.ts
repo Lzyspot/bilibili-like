@@ -1,0 +1,3 @@
+const mediaResources = []
+
+export { mediaResources }
