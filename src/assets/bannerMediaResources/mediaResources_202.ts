@@ -1,3 +1,0 @@
-const mediaResources = []
-
-export { mediaResources }

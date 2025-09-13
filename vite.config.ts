@@ -26,7 +26,9 @@ export default defineConfig({
     // 禁用缓存确保构建最新代码
     emptyOutDir: true,
     // 设置导出文件夹为 dist/html
-    outDir: 'dist/html'
+    outDir: 'dist/html',
+    // 配置代码分割
+    chunkSizeWarningLimit: 1024,
   },
   server: {
     // 配置服务启动时是否运行

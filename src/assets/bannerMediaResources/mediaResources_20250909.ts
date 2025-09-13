@@ -321,7 +321,7 @@ mediaResources.forEach((item: any) => {
   }
 
   if (!item.style.transform) {
-    item.style.transform = 'translate(0)'
+    item.style.transform = ''
   }
 
   if (!item.offsetRate) {

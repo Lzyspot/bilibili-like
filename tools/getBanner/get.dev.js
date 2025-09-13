@@ -5,6 +5,7 @@
  * 再次触发 Ctrl + Q
  * 将现在所有的.layer下媒体元素的transform 与之前的相比较
  * 计算出 translate rotate scale 三种值 (旧 - 新) / 鼠标横向移动距离
+ * Ctrl + X 废弃当前脚本
  * 
  * { src, type, base64, style: { width, height, transform} }
  */
@@ -25,6 +26,9 @@
 
     let lastMousePosition = { x: 0, y: 0 }
 
+    // 用于判断该脚本是否已被废弃
+    let isDeprecated = false;
+
     // 监听鼠标移动，实时记录位置
     document.addEventListener('mousemove', e => {
         lastMousePosition = { x: e.clientX, y: e.clientY };
@@ -32,6 +36,9 @@
 
     // 监听键盘事件
     document.addEventListener('keydown', event => {
+        if (isDeprecated) {
+            return;
+        }
         // 检查是否按下Ctrl+Q
         if (event.ctrlKey && event.key === 'q') {
             event.preventDefault(); // 阻止默认行为
@@ -48,31 +55,48 @@
 
             isExecuting = !isExecuting;
         }
+        // 如果按下Ctrl + X，则isDeprecated = true
+        if (event.ctrlKey && event.key === 'x') {
+            event.preventDefault(); // 阻止默认行为
+            isDeprecated = true;
+
+            createNotification('已禁用', 3000);
+            
+        }
     })
 
     function getMediaSrcList() {
-        document.querySelectorAll('.animated-banner>.layer').forEach((elem, i) => {
-            const label = elem.querySelector('img,video')
+        // document.querySelectorAll('.animated-banner>.layer ').forEach((elem, index) => {
+        document.querySelectorAll('.layer').forEach((elem, index) => {
+            const label = elem.querySelector('img,video')            
+
+            let { src, style, height, width } = label
+
+            const mediaId = `${src}_${index}`
+
+            width = parseFloat(width ?? style.width)
+            height = parseFloat(height ?? style.height)
+
             if (!isExecuting) {
-                srcSet[label.src] = {
+                srcSet[mediaId] = {
                     src: label.src,
-                    index: i,
+                    index,
                     type: label.tagName,
                     base64: '',
                     style: {
-                        width: label.style.width,
-                        height: label.style.height,
+                        width: width + 'px',
+                        height: height + 'px',
                         // 需要提取 translate()
-                        transform: label.style.transform,
-                        opacity: label.style.opacity,
-                        filter: label.style.filter,
-                        zIndex: i
+                        transform: style.transform,
+                        opacity: style.opacity,
+                        filter: style.filter,
+                        zIndex: index
                     },
                     mousePos: lastMousePosition
                 }
             } else {
-                const originTransform = srcSet[label.src].style.transform;
-                const transform = label.style.transform;
+                const originTransform = srcSet[mediaId].style.transform;
+                const transform = style.transform;
 
                 const originTranslate = getTranslateValues(originTransform)
                 const translate = getTranslateValues(transform)
@@ -80,33 +104,33 @@
                 const originScale = getScaleValues(originTransform)
                 const scale = getScaleValues(transform)
 
-                const originBlur = getBlurValue(srcSet[label.src].style.filter)
-                const blur = getBlurValue(label.style.filter)
+                const originBlur = getBlurValue(srcSet[mediaId].style.filter)
+                const blur = getBlurValue(style.filter)
 
-                const originOpacity = srcSet[label.src].style.opacity;
-                const opacity = label.style.opacity;
+                const originOpacity = srcSet[mediaId].style.opacity;
+                const opacity = style.opacity;
 
 
                 const originRotate = getRotateValues(originTransform)
                 const rotate = getRotateValues(transform)
 
                 const mouseMovement = {
-                    x: lastMousePosition.x - srcSet[label.src].mousePos.x,
-                    y: lastMousePosition.y - srcSet[label.src].mousePos.y
+                    x: lastMousePosition.x - srcSet[mediaId].mousePos.x,
+                    y: lastMousePosition.y - srcSet[mediaId].mousePos.y
                 }
 
-                srcSet[label.src].nStyle = {
-                    width: label.style.width,
-                    height: label.style.height,
-                    transform: label.style.transform,
-                    filter: label.style.filter,
+                srcSet[mediaId].nStyle = {
+                    width: width + 'px',
+                    height: height + 'px',
+                    transform: style.transform,
+                    filter: style.filter,
 
-                    opacity: label.style.opacity
+                    opacity: style.opacity
                 }
 
-                srcSet[label.src].nMousePos = lastMousePosition
+                srcSet[mediaId].nMousePos = lastMousePosition
 
-                srcSet[label.src].offsetRate = {
+                srcSet[mediaId].offsetRate = {
                     // translate
                     x: (translate.x - originTranslate.x) / mouseMovement.x,
                     y: (translate.y - originTranslate.y) / mouseMovement.x,
@@ -125,13 +149,13 @@
                     opacity: (originOpacity - opacity) / mouseMovement.x,
                 }
 
-                srcSet[label.src].init = {
+                srcSet[mediaId].init = ensureNumericValues({
                     translate: originTranslate,
                     scale: originScale,
                     rotate: originRotate,
                     blur: originBlur,
                     opacity: originOpacity
-                }
+                })
             }
         })
 
@@ -149,15 +173,15 @@
     function getMediaBase64() {
         // 单独获取logo
         try {
-            srcList.push({ src: document.querySelector('.head-logo img').src, type: 'LOGO', base64: '' })
+            const logo = document.querySelector('.head-logo img')?.src ?? document.querySelector('.logo-img').src
+            srcList.push({ src: logo, type: 'LOGO', base64: '' })
         } catch (error) {
             console.error(error)
         }
 
-        // 转换媒体资源
         console.log('开始转换媒体资源...')
         convertMediaToBase64(srcList).then(result => {
-            console.log(result)
+            console.log('转换成功:', result)
         }).catch(error => {
             console.error('转换失败:', error)
         })
@@ -176,7 +200,7 @@
             console.log('转换中...');
             try {
 
-                if (item.type === 'VIDEO' && item.src.startsWith('blob:')) {
+                if (item.type === 'VIDEO' || item.src.startsWith('blob:')) {
                     // 处理Blob视频（根据文件扩展名确定格式）
                     const mimeType = getMimeTypeFromUrl(item.src, 'video/webm');
                     const base64 = `data:${mimeType};base64,` + await blobVideoToBase64(item.src);
@@ -436,5 +460,35 @@
         }
 
         currentAnimation = requestAnimationFrame(fadeAnimation);
+    }
+
+    function ensureNumericValues(obj) {
+        // 如果是 null 或非对象，尝试转为数字
+        if (obj === null || typeof obj !== 'object') {
+            return Number(obj);
+        }
+
+        // 如果是数组，遍历每一项
+        if (Array.isArray(obj)) {
+            return obj.map(ensureNumericValues);
+        }
+
+        // 如果是对象，遍历其属性
+        const result = {};
+        for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const value = obj[key];
+
+            if (typeof value === 'object' && value !== null) {
+                // 递归处理嵌套对象
+                result[key] = ensureNumericValues(value);
+            } else {
+                // 将值转换为数字
+                result[key] = Number(value);
+            }
+            }
+        }
+
+        return result;
     }
 })()

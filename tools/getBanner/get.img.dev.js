@@ -1,9 +1,6 @@
 (() => {
     const srcList = []
 
-    getMediaSrcList()
-    getMediaBase64()
-
     // 针对图片动画
     // let timeout = 0, interval = 100;
     // let timer = setInterval(() => {
@@ -28,6 +25,12 @@
         let banner_legacy = getBackgroundImageUrl(document.querySelector('#banner_link')?.style?.backgroundImage)
         let logo_legacy = getBackgroundImageUrl(document.querySelector('.head-logo')?.style?.backgroundImage)
 
+        let banner_sp2 = getBackgroundImageUrl(document.querySelector('.header')?.style?.backgroundImage)
+
+        let logo_2016 = getBackgroundImageUrl(document.querySelector('.logo')?.style?.backgroundImage)
+
+        let banner_2014 = getBackgroundImageUrl(document.querySelector('.header')?.style?.backgroundImage)
+
         if (banner_old) {
             srcList.push({ src: banner_old, type: 'IMG', base64: '' })
         } else if (banner_older) {
@@ -37,10 +40,14 @@
         } else if (banner_legacy) {
             srcList.push({ src: banner_legacy, type: 'IMG', base64: '' })
             srcList.push({ src: logo_legacy, type: 'LOGO', base64: '' })
+        } else if (banner_sp2) {
+            srcList.push({ src: banner_sp2, type: 'IMG', base64: '' })
         }
 
         if (logo_old) {
             srcList.push({ src: logo_old, type: 'LOGO', base64: '' })
+        } else if (logo_2016) {
+            srcList.push({ src: logo_2016, type: 'LOGO', base64: '' })
         }
 
 
@@ -209,4 +216,15 @@
         const match = bgImage.match(/url\(\s*['"]?(.*?)['"]?\s*\)/i);
         return match ? match[1] : null;
     }
+
+    // 手动获取背景图片和logo的url
+    const url = {
+        banner: '',
+        logo: ''
+    }
+    if (url.banner.length) srcList.push({ src: url.banner, type: 'IMG', base64: '' })
+    if (url.logo.length) srcList.push({ src: url.logo, type: 'LOGO', base64: '' })
+        
+    getMediaSrcList()
+    getMediaBase64()
 })()

@@ -9,6 +9,13 @@
     }
   ],
   "compilerOptions": {
+    "baseUrl": ".", 
+    "paths": { 
+      "@/*": ["src/*"], 
+      "@/assets": ["src/assets"],
+      "@/components": ["src/components"]
+    }, 
+    "experimentalDecorators": true,
     "noImplicitAny": true
   },
   "include": ["src/**/*", "src/shims-vue.d.ts"]

@@ -8,60 +8,129 @@
 
 <script lang="ts">
 // 视差滚动
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20230601';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20230801';
+import { mediaResources as banner_20230601 } from '../../assets/bannerMediaResources/mediaResources_20230601';
+import { mediaResources as banner_20230801 } from '../../assets/bannerMediaResources/mediaResources_20230801';
 
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20250909';
+import { mediaResources as banner_20250909 } from '../../assets/bannerMediaResources/mediaResources_20250909';
 
 // 区分距离
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20230405';
+import { mediaResources as banner_20230405 } from '../../assets/bannerMediaResources/mediaResources_20230405';
 
 // 区分左右
 /* 未完成 */
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20201130';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20210301';
+import { mediaResources as banner_20201130 } from '../../assets/bannerMediaResources/mediaResources_20201130';
+
+// 需要canvas
+import { mediaResources as banner_20210301 } from '../../assets/bannerMediaResources/mediaResources_20210301';
+import { mediaResources as banner_20210401 } from '../../assets/bannerMediaResources/mediaResources_20210401';
 
 // 普通滚动
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20210511';
+import { mediaResources as banner_20210511 } from '../../assets/bannerMediaResources/mediaResources_20210511';
 
 // 图片
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_legacy';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20190601';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20190520';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20191029';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20190924';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20200201';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20200401';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20200607';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20220201';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20220301';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20220720';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20210304';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20210816';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20210623';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20230101';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20230603';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20230703';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20230903';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20231003';
-import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20231104';
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20210401';
+import { mediaResources as banner_2014 } from '../../assets/bannerMediaResources/mediaResources_2014';
+import { mediaResources as banner_2016 } from '../../assets/bannerMediaResources/mediaResources_2016';
+import { mediaResources as banner_legacy } from '../../assets/bannerMediaResources/mediaResources_legacy';
+import { mediaResources as banner_20190601 } from '../../assets/bannerMediaResources/mediaResources_20190601';
+import { mediaResources as banner_20190520 } from '../../assets/bannerMediaResources/mediaResources_20190520';
+import { mediaResources as banner_20191029 } from '../../assets/bannerMediaResources/mediaResources_20191029';
+import { mediaResources as banner_20190924 } from '../../assets/bannerMediaResources/mediaResources_20190924';
+import { mediaResources as banner_20200201 } from '../../assets/bannerMediaResources/mediaResources_20200201';
+import { mediaResources as banner_20200401 } from '../../assets/bannerMediaResources/mediaResources_20200401';
+import { mediaResources as banner_20200607 } from '../../assets/bannerMediaResources/mediaResources_20200607';
+import { mediaResources as banner_20210623 } from '../../assets/bannerMediaResources/mediaResources_20210623';
+import { mediaResources as banner_20210816 } from '../../assets/bannerMediaResources/mediaResources_20210816';
 
-// 国庆
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20221030';
+import { mediaResources as banner_20220201 } from '../../assets/bannerMediaResources/mediaResources_20220201';
+import { mediaResources as banner_20220301 } from '../../assets/bannerMediaResources/mediaResources_20220301';
+import { mediaResources as banner_20220303 } from '../../assets/bannerMediaResources/mediaResources_20220303';
+import { mediaResources as banner_20220401 } from '../../assets/bannerMediaResources/mediaResources_20220401';
+import { mediaResources as banner_20220602 } from '../../assets/bannerMediaResources/mediaResources_20220602';
+import { mediaResources as banner_20220720 } from '../../assets/bannerMediaResources/mediaResources_20220720';
+
+import { mediaResources as banner_20230101 } from '../../assets/bannerMediaResources/mediaResources_20230101';
+import { mediaResources as banner_20230703 } from '../../assets/bannerMediaResources/mediaResources_20230703';
+import { mediaResources as banner_20230903 } from '../../assets/bannerMediaResources/mediaResources_20230903';
+import { mediaResources as banner_20231002 } from '../../assets/bannerMediaResources/mediaResources_20231002';
+
+import { mediaResources as banner_20231003 } from '../../assets/bannerMediaResources/mediaResources_20231003';
+import { mediaResources as banner_20231104 } from '../../assets/bannerMediaResources/mediaResources_20231104';
+
+// 红色
+import { mediaResources as banner_20221030 } from '../../assets/bannerMediaResources/mediaResources_20221030';
+import { mediaResources as banner_20210304 } from '../../assets/bannerMediaResources/mediaResources_20210304';
 
 // 视频
-// import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20220501';
+import { mediaResources as banner_20220501 } from '../../assets/bannerMediaResources/mediaResources_20220501';
 
 
 import { defineComponent } from 'vue';
-import HeaderNav from '@/components/MainPage/HeaderNav.vue'
+import HeaderNav from '../../components/MainPage/HeaderNav.vue'
 
 interface LayerData {
     elem: HTMLElement,
     init: any,
     offsetRate: any
 }
+
+// 随机选择banner
+const mediaResourcesList = [
+    /* 篝火 */
+    // banner_20230601,
+    /* 海底世界 */
+    // banner_20230801,
+    /* 流星海边 */
+    // banner_20250909,
+    /* 树叶风车 */
+    // banner_20230405,
+    /* 微观世界 */
+    // banner_20201130,
+    /* 冬 */
+    // banner_20210301,
+    /* 春 */
+    // banner_20210401,
+    /* 荧光河道 */
+    // banner_20231002,
+
+    // 视频
+    /* 四叶草 */
+    // banner_20220501,
+    // 
+    // banner_20210511,
+
+    /* 图片 */
+    banner_2014,
+    // banner_2016,
+    // banner_legacy,
+    // banner_20190601,
+    /* 520 */
+    // banner_20190520,
+    // banner_20191029,
+    // banner_20200201,
+    // banner_20200401,
+    // banner_20200607,
+    // banner_20210816,
+    // banner_20220201,
+    // banner_20220301,
+    // banner_20220401,
+    // banner_20220602,
+    // banner_20220720,
+    // banner_20230101,
+
+    // banner_20230703,
+
+    // banner_20230903,
+
+    // banner_20231003,
+
+    // banner_20231104,
+
+    // banner_20210623,
+    // banner_20190924,
+    // banner_20221030,
+    // banner_20220303,
+    // banner_20210304
+]
 
 export default defineComponent({
     components: {
@@ -72,10 +141,11 @@ export default defineComponent({
             HeaderNav: HeaderNav,
             initialMouseX: 0, // 记录鼠标初始位置
             isMouseIn: false, // 标记鼠标是否在banner内
-            layers: [] as LayerData[] // 存储所有layer元素
+            layers: [] as LayerData[], // 存储所有layer元素
         };
     },
-    mounted() {
+    async mounted() {
+        const mediaResources = mediaResourcesList[Math.floor(Math.random() * mediaResourcesList.length)]
 
         // 渲染所有元素
         const banner = this.$refs.bannerRef as HTMLElement
@@ -100,34 +170,9 @@ export default defineComponent({
                 "opacity": 1
             }
 
-            const style = {
-                "transform": "translate(0, 0) rotate(0deg) scale(1)",
-                "opacity": "1",
-                "filter": "blur(0)"
-            }
+            if (!item.init) item.item = init
 
-            // 初始化item.init
-            for (const key in item.init) {
-                if (Object.prototype.hasOwnProperty.call(item.init, key)) {
-                    const k = key as keyof typeof init; // 类型断言
-                    if (k in init) {
-                        // @ts-ignore 或进一步细化类型处理
-                        if (typeof init[k] == 'object') {
-                            init[k].x = item.init[k].x
-                            init[k].y = item.init[k].y
-                        } else {
-                            init[k] = item.init[k];
-                        }
-                    }
-                }
-            }
-
-            if (!item.style) item.style = style
-
-
-            item.init = init;
-
-            item.blob = this.base64ToBlobUrl(item.base64)
+            if (item.base64) item.blob = this.base64ToBlobUrl(item.base64)
 
             switch (item.type) {
                 case 'IMG':
@@ -145,6 +190,16 @@ export default defineComponent({
                     el.muted = true;
                     layer.appendChild(el);
                     break;
+                case "CANVAS":
+                    el = document.createElement('canvas');
+                    el.width = screen.width;
+                    this.$nextTick(() => {
+                        el.height = banner.clientHeight;
+                    })
+                    banner.appendChild(el)
+                    layer.remove()
+
+                    break
                 case 'LOGO':
                     let logo = document.createElement('img');
                     logo.className = 'head-logo';
@@ -169,12 +224,12 @@ export default defineComponent({
                 }
 
                 // 方法调用
-                item.fn && item.fn(el)
+                item.fn && item.fn(el, banner)
 
                 // 保存layer引用
                 this.layers.push({
                     elem: el,
-                    init,
+                    init: item.init,
                     offsetRate: item.offsetRate
                 })
 
@@ -209,24 +264,24 @@ export default defineComponent({
                 const offsetRate = layerData.offsetRate;
 
                 if (el && offsetRate) {
-                    // el.style.transform = `translate(${offsetX * offsetRate.x + init.translate.x}px, ${offsetX * offsetRate.y + init.translate.y}px)`;
-
-                    el.style.translate = `${offsetX * offsetRate.x}px ${offsetX * offsetRate.y}px`;
-                    el.style.scale = `${offsetX * offsetRate.scaleX + init.scale.x} ${offsetX * offsetRate.scaleY + init.scale.y}`;
                     if (offsetRate.rotate) {
                         // el.style.rotate = `${offsetX * offsetRate.rotate}deg`;
-                        el.style.transform = `translate(${offsetRate.x ? offsetX * offsetRate.x + (init.translate.x ?? (init.translate?.x ?? 0)) : 0}px, 
-                    ${offsetRate.y ? offsetX * offsetRate.y + (init.translate.y ?? 0) : (init.translate?.y ?? 0)}px) 
-                    rotate(${(init.rotate && offsetRate.rotate) ? (offsetX * offsetRate.rotate + init.rotate) : 0}deg) 
-                    scale(${(init.scale.x && offsetRate.scaleX) ? offsetX * offsetRate.scaleX + init.scale.x : 1}, 
-                    ${(init.scale.y && offsetRate.scaleY) ? offsetX * offsetRate.scaleY + init.scale.y : 1})`;
+                        el.style.transform = `translate(${offsetX * offsetRate.x + init.translate.x}px, 
+                    ${offsetX * offsetRate.y + init.translate.y}px) 
+                    rotate(${offsetX * offsetRate.rotate + init.rotate}deg) 
+                    scale(${offsetX * offsetRate.scaleX + init.scale.x}, 
+                    ${offsetX * offsetRate.scaleY + init.scale.y})`;
+                    } else {
+                        el.style.translate = `${offsetX * offsetRate.x}px ${offsetX * offsetRate.y}px`;
+                        el.style.scale = `${offsetX * offsetRate.scaleX + init.scale.x} ${offsetX * offsetRate.scaleY + init.scale.y}`;
                     }
+
 
                     // if (offsetRate.blur)
                     if (offsetRate.blur) el.style.filter = `blur(${offsetX * offsetRate.blur + init.blur}px)`
-                    if (offsetRate.opacity) el.style.opacity = `${offsetX * offsetRate.opacity + init.opacity}`;
 
 
+                    if (offsetRate.opacity) el.style.opacity = `${offsetX * offsetRate.opacity + init.opacity}`
                 }
             })
         });
@@ -239,7 +294,7 @@ export default defineComponent({
             this.layers.forEach((layerData: LayerData, index: number) => {
                 const el = layerData.elem;
 
-                if (el && mediaResources[index].offsetRate) {
+                if (el && mediaResources[index]?.offsetRate) {
                     // 复位时间
                     const restoreTime = 360;
 
@@ -247,7 +302,7 @@ export default defineComponent({
                     el.style.transition = `all ${restoreTime}ms ease-out`;
 
                     // 应用默认样式
-                    if (mediaResources[index].style) {
+                    if (mediaResources[index]?.style) {
                         for (let k in mediaResources[index].style) {
                             el.style[k as any] = mediaResources[index].style[k];
                         }
@@ -293,7 +348,7 @@ export default defineComponent({
     },
     beforeUnmount() {
         // 组件销毁前释放所有blob URL
-        this.layers.forEach((el: HTMLElement) => {
+        this.layers.forEach((el: any) => {
             if (el instanceof HTMLMediaElement || el instanceof HTMLImageElement) {
                 const src = el.src;
                 if (src.startsWith('blob:')) {
@@ -307,6 +362,8 @@ export default defineComponent({
 
 <style lang="less">
 div[data-v-mainPageBanner] {
+    -webkit-user-drag: none;
+
     .animated-banner {
         position: relative;
         width: 100%;
@@ -332,6 +389,13 @@ div[data-v-mainPageBanner] {
             video {
                 object-fit: cover;
             }
+        }
+
+        canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 100;
         }
     }
 
