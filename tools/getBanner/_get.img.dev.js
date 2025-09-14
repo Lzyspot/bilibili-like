@@ -32,19 +32,15 @@
                 console.log(srcList);
             }
         })
+
+        getMediaBase64(el)
     }
 
-    function getMediaBase64() {
+    function getMediaBase64(el) {
         // 单独获取logo
         try {
-            const logo = document.querySelector('.head-logo img')?.src
-            if (logo) srcList.push({ src: logo, type: 'LOGO', base64: '' })
-
-            const _logo = document.querySelector('.logo img')?.src
+            const _logo = el.querySelector('.logo img')?.src
             if (_logo) srcList.push({ src: _logo, type: 'LOGO', base64: '' })
-
-            const title = document.querySelector('.head-title')?.innerText
-            if (title) srcList.push({ title, type: 'TITLE'})
         } catch (error) {
             console.error(error)
         }
@@ -179,16 +175,6 @@
             });
     }
 
-    function getBackgroundImageUrl(bgImage) {
-        if (!bgImage || bgImage === 'none') {
-            return null;
-        }
-
-        // 匹配 url("...") 或 url('...') 或 url(...)
-        const match = bgImage.match(/url\(\s*['"]?(.*?)['"]?\s*\)/i);
-        return match ? match[1] : null;
-    }
-
     // 手动获取背景图片和logo的url
     const url = {
         banner: '',
@@ -198,5 +184,4 @@
     if (url.logo.length) srcList.push({ src: url.logo, type: 'LOGO', base64: '' })
         
     getMediaSrcList()
-    getMediaBase64()
 })()

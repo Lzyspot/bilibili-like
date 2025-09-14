@@ -1,3 +1,5 @@
+import { h } from "vue";
+
 const meidaSet = {
     banner0106: [
         {
@@ -180,10 +182,19 @@ for (let i = 0; i < mediaResources.length; i++) {
     const media = mediaResources[i];
     if (media.type === "IMG") {
         media.style = {
-            height: "100%"
+            width: "100%",
+            height: "100%",
+            objectFit: "cover"
         }
     }
 }
 
+mediaResources.push({
+    // type: "TITLE",
+    fn: (el: any, banner: any) => {
+        banner.style.height = '100%'
+        banner.parentNode.style.height = '168px'
+    }
+})
 
 export { mediaResources }

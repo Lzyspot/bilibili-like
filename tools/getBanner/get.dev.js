@@ -67,8 +67,8 @@
     })
 
     function getMediaSrcList() {
-        // document.querySelectorAll('.animated-banner>.layer ').forEach((elem, index) => {
-        document.querySelectorAll('.layer').forEach((elem, index) => {
+        document.querySelectorAll('.animated-banner>.layer ').forEach((elem, index) => {
+        // document.querySelectorAll('.layer').forEach((elem, index) => {
             const label = elem.querySelector('img,video')            
 
             let { src, style, height, width } = label
@@ -194,7 +194,10 @@
         for (const item of mediaArray) {
             console.log('转换中...');
             try {
-
+                if (isDeprecated) {
+                    throw new Error("脚本废弃");
+                       
+                }
                 if (item.type === 'VIDEO' || item.src.startsWith('blob:')) {
                     // 处理Blob视频（根据文件扩展名确定格式）
                     const mimeType = getMimeTypeFromUrl(item.src, 'video/webm');
