@@ -15,45 +15,8 @@
     //     }
     // }, interval)
 
-    function getMediaSrcList() {
-        let banner_old = document.querySelector('.banner-img source')?.srcset
-        let banner_older = getBackgroundImageUrl(document.querySelector('.bili-banner')?.style?.backgroundImage)
-
-        let banner_sp = getBackgroundImageUrl(document.querySelector('.bili-header__banner')?.style?.backgroundImage)
-        let logo_old = document.querySelector('.inner-logo img')?.src
-
-        let banner_legacy = getBackgroundImageUrl(document.querySelector('#banner_link')?.style?.backgroundImage)
-        let logo_legacy = getBackgroundImageUrl(document.querySelector('.head-logo')?.style?.backgroundImage)
-
-        let banner_sp2 = getBackgroundImageUrl(document.querySelector('.header')?.style?.backgroundImage)
-
-        let logo_2016 = getBackgroundImageUrl(document.querySelector('.logo')?.style?.backgroundImage)
-
-        let banner_2014 = getBackgroundImageUrl(document.querySelector('.header')?.style?.backgroundImage)
-
-        if (banner_old) {
-            srcList.push({ src: banner_old, type: 'IMG', base64: '' })
-        } else if (banner_older) {
-            srcList.push({ src: banner_older, type: 'IMG', base64: '' })
-        } else if (banner_sp) {
-            srcList.push({ src: banner_sp, type: 'IMG', base64: '' })
-        } else if (banner_legacy) {
-            srcList.push({ src: banner_legacy, type: 'IMG', base64: '' })
-            srcList.push({ src: logo_legacy, type: 'LOGO', base64: '' })
-        } else if (banner_sp2) {
-            srcList.push({ src: banner_sp2, type: 'IMG', base64: '' })
-        }
-
-        if (logo_old) {
-            srcList.push({ src: logo_old, type: 'LOGO', base64: '' })
-        } else if (logo_2016) {
-            srcList.push({ src: logo_2016, type: 'LOGO', base64: '' })
-        }
-
-        const _logo = document.querySelector('.logo img')?.src
-        if (_logo) srcList.push({ src: _logo, type: 'LOGO', base64: '' })
-
-        document.querySelectorAll('.layer').forEach(elem => {
+    function getMediaSrcList(el) {
+        el.querySelectorAll('.layer').forEach(elem => {
             const label = elem.querySelector('img,video')
 
             let fileExist = false
@@ -76,6 +39,9 @@
         try {
             const logo = document.querySelector('.head-logo img')?.src
             if (logo) srcList.push({ src: logo, type: 'LOGO', base64: '' })
+
+            const _logo = document.querySelector('.logo img')?.src
+            if (_logo) srcList.push({ src: _logo, type: 'LOGO', base64: '' })
 
             const title = document.querySelector('.head-title')?.innerText
             if (title) srcList.push({ title, type: 'TITLE'})

@@ -71,12 +71,15 @@
         document.querySelectorAll('.layer').forEach((elem, index) => {
             const label = elem.querySelector('img,video')            
 
-            let { src, style, height, width } = label
+            let { src, height, width } = label
+            const { style } = label.parentNode 
 
             const mediaId = `${src}_${index}`
 
-            width = parseFloat(width ?? style.style.width)
-            height = parseFloat(height ?? style.style.height)
+            width = parseFloat(label.style.width)
+            height = parseFloat(label.style.height)
+
+            const transform = parseTransformMatrix(style.transform)
 
             if (!isExecuting) {
                 srcSet[mediaId] = {
@@ -88,33 +91,33 @@
                         width: width + 'px',
                         height: height + 'px',
                         // 需要提取 translate()
-                        transform: style.transform,
+                        transform: `translate(${transform.translate.x}px, ${transform.translate.y}px) rotate(${transform.rotate.z}deg) scale(${transform.scale.x}, ${transform.scale.y})`,
                         opacity: style.opacity,
-                        filter: style.filter,
+                        // filter: style.filter,
                         zIndex: index
-                    }
+                    },
+                    matrix: style.transform
                 }
 
                 lastMousePositon_beforeMove = lastMousePosition
             } else {
-                const originTransform = srcSet[mediaId].style.transform;
-                const transform = style.transform;
+                const originTransform = parseTransformMatrix(srcSet[mediaId].matrix)
 
-                const originTranslate = getTranslateValues(originTransform)
-                const translate = getTranslateValues(transform)
+                const originTranslate = originTransform.translate
+                const translate = transform.translate
 
-                const originScale = getScaleValues(originTransform)
-                const scale = getScaleValues(transform)
+                const originScale = originTransform.scale
+                const scale = transform.scale
 
-                const originBlur = getBlurValue(srcSet[mediaId].style.filter)
-                const blur = getBlurValue(style.filter)
+                // const originBlur = getBlurValue(srcSet[mediaId].style.filter)
+                // const blur = getBlurValue(style.filter)
 
                 const originOpacity = srcSet[mediaId].style.opacity;
                 const opacity = style.opacity;
 
 
-                const originRotate = getRotateValues(originTransform)
-                const rotate = getRotateValues(transform)
+                const originRotate = originTransform.rotate.z
+                const rotate = transform.rotate.z
 
                 const mouseMovement = {
                     x: lastMousePosition.x - lastMousePositon_beforeMove.x,
@@ -134,7 +137,7 @@
                     rotate: (originRotate - rotate) / mouseMovement.x,
 
                     // blur
-                    blur: (originBlur - blur) / mouseMovement.x,
+                    // blur: (originBlur - blur) / mouseMovement.x,
 
                     // opacity
                     opacity: (originOpacity - opacity) / mouseMovement.x,
@@ -144,7 +147,7 @@
                     translate: originTranslate,
                     scale: originScale,
                     rotate: originRotate,
-                    blur: originBlur,
+                    // blur: originBlur,
                     opacity: originOpacity
                 })
             }
@@ -485,5 +488,98 @@
         }
 
         return result;
+    }
+
+    /**
+     * 将 transform matrix 转换为 translate/rotate/scale 参数
+     * @param {string|Array} matrix - matrix 字符串或数值数组
+     * @param {boolean} [toDegrees=true] - 是否将角度转换为度数
+     * @returns {Object} 包含 translate, rotate, scale 的对象
+     */
+    function parseTransformMatrix(matrix, toDegrees = true) {
+    let values;
+
+    // 处理字符串输入（如 getComputedStyle 返回的 "matrix(1, 0, 0, 1, 100, 50)"）
+    if (typeof matrix === 'string') {
+        const match = matrix.match(/matrix3?d?\s*\(([^)]+)\)/i);
+        if (!match) throw new Error('Invalid matrix format');
+        values = match[1].split(',').map(Number);
+    }
+
+    // 处理数组输入（如 [1, 0, 0, 1, 100, 50]）
+    else if (Array.isArray(matrix)) {
+        values = matrix;
+    }
+
+    else {
+        throw new Error('Invalid input type: must be string or array');
+    }
+
+    // 判断是 2D 还是 3D 矩阵
+    const is3D = values.length === 16;
+
+    // 初始化结果对象
+    const result = {
+        translate: { x: 0, y: 0, z: 0 },
+        rotate: { x: 0, y: 0, z: 0 },
+        scale: { x: 1, y: 1, z: 1 }
+    };
+
+    // 处理 3D 矩阵
+    if (is3D) {
+        const [
+        m11, m12, m13, m14,
+        m21, m22, m23, m24,
+        m31, m32, m33, m34,
+        tx,  ty,  tz,  t44
+        ] = values;
+
+        // 提取 translate
+        result.translate.x = tx;
+        result.translate.y = ty;
+        result.translate.z = tz;
+
+        // 提取 scale
+        result.scale.x = Math.sqrt(m11 * m11 + m12 * m12 + m13 * m13);
+        result.scale.y = Math.sqrt(m21 * m21 + m22 * m22 + m23 * m23);
+        result.scale.z = Math.sqrt(m31 * m31 + m32 * m32 + m33 * m33);
+
+        // 提取旋转（欧拉角近似）
+        result.rotate.x = Math.asin(-m32);
+        result.rotate.y = Math.atan2(m31, m33);
+        result.rotate.z = Math.atan2(m21, m11);
+
+        if (toDegrees) {
+        result.rotate.x = rad2deg(result.rotate.x);
+        result.rotate.y = rad2deg(result.rotate.y);
+        result.rotate.z = rad2deg(result.rotate.z);
+        }
+    }
+
+    // 处理 2D 矩阵
+    else {
+        const [a, b, c, d, tx, ty] = values;
+
+        // 提取 translate
+        result.translate.x = tx;
+        result.translate.y = ty;
+
+        // 提取 scale
+        result.scale.x = Math.sqrt(a * a + b * b);
+        result.scale.y = Math.sqrt(c * c + d * d);
+
+        // 提取旋转
+        result.rotate.z = Math.atan2(b, a);
+        if (toDegrees) {
+        result.rotate.z = rad2deg(result.rotate.z);
+        }
+    }
+
+    return result;
+    }
+
+    // 辅助函数：弧度转角度
+    function rad2deg(radians) {
+    return radians * (180 / Math.PI);
     }
 })()

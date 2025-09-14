@@ -8,9 +8,25 @@
 
 <script lang="ts">
 // 视差滚动
+import defaultLogo from '../../assets/bannerMediaResources/logo'
+
+//#region 
+import { mediaResources as banner_20220723 } from '../../assets/bannerMediaResources/mediaResources_20220723';
 import { mediaResources as banner_20230601 } from '../../assets/bannerMediaResources/mediaResources_20230601';
 import { mediaResources as banner_20230801 } from '../../assets/bannerMediaResources/mediaResources_20230801';
+import { mediaResources as banner_20230912 } from '../../assets/bannerMediaResources/mediaResources_20230912';
+import { mediaResources as banner_20231107 } from '../../assets/bannerMediaResources/mediaResources_20231107';
+import { mediaResources as banner_20231201 } from '../../assets/bannerMediaResources/mediaResources_20231201';
+import { mediaResources as banner_20231212 } from '../../assets/bannerMediaResources/mediaResources_20231212';
 
+import { mediaResources as banner_20240204 } from '../../assets/bannerMediaResources/mediaResources_20240204';
+import { mediaResources as banner_20240606 } from '../../assets/bannerMediaResources/mediaResources_20240606';
+import { mediaResources as banner_20240610 } from '../../assets/bannerMediaResources/mediaResources_20240610';
+import { mediaResources as banner_20241210 } from '../../assets/bannerMediaResources/mediaResources_20241210';
+
+import { mediaResources as banner_20250101 } from '../../assets/bannerMediaResources/mediaResources_20250101';
+import { mediaResources as banner_20250501 } from '../../assets/bannerMediaResources/mediaResources_20250501';
+import { mediaResources as banner_20250801 } from '../../assets/bannerMediaResources/mediaResources_20250801';
 import { mediaResources as banner_20250909 } from '../../assets/bannerMediaResources/mediaResources_20250909';
 
 // 区分距离
@@ -25,20 +41,25 @@ import { mediaResources as banner_20210301 } from '../../assets/bannerMediaResou
 import { mediaResources as banner_20210401 } from '../../assets/bannerMediaResources/mediaResources_20210401';
 
 // 普通滚动
-import { mediaResources as banner_20210511 } from '../../assets/bannerMediaResources/mediaResources_20210511';
 
 // 图片
 import { mediaResources as banner_2014 } from '../../assets/bannerMediaResources/mediaResources_2014';
+import { mediaResources as banner_2015 } from '../../assets/bannerMediaResources/mediaResources_2015';
 import { mediaResources as banner_2016 } from '../../assets/bannerMediaResources/mediaResources_2016';
 import { mediaResources as banner_legacy } from '../../assets/bannerMediaResources/mediaResources_legacy';
 import { mediaResources as banner_20190601 } from '../../assets/bannerMediaResources/mediaResources_20190601';
 import { mediaResources as banner_20190520 } from '../../assets/bannerMediaResources/mediaResources_20190520';
 import { mediaResources as banner_20191029 } from '../../assets/bannerMediaResources/mediaResources_20191029';
+import { mediaResources as banner_20190620 } from '../../assets/bannerMediaResources/mediaResources_20190620';
+import { mediaResources as banner_20190621 } from '../../assets/bannerMediaResources/mediaResources_20190621';
 import { mediaResources as banner_20190924 } from '../../assets/bannerMediaResources/mediaResources_20190924';
 import { mediaResources as banner_20200201 } from '../../assets/bannerMediaResources/mediaResources_20200201';
 import { mediaResources as banner_20200401 } from '../../assets/bannerMediaResources/mediaResources_20200401';
 import { mediaResources as banner_20200607 } from '../../assets/bannerMediaResources/mediaResources_20200607';
+import { mediaResources as banner_20200817 } from '../../assets/bannerMediaResources/mediaResources_20200817';
+
 import { mediaResources as banner_20210623 } from '../../assets/bannerMediaResources/mediaResources_20210623';
+import { mediaResources as banner_20210806 } from '../../assets/bannerMediaResources/mediaResources_20210806';
 import { mediaResources as banner_20210816 } from '../../assets/bannerMediaResources/mediaResources_20210816';
 
 import { mediaResources as banner_20220201 } from '../../assets/bannerMediaResources/mediaResources_20220201';
@@ -47,14 +68,15 @@ import { mediaResources as banner_20220303 } from '../../assets/bannerMediaResou
 import { mediaResources as banner_20220401 } from '../../assets/bannerMediaResources/mediaResources_20220401';
 import { mediaResources as banner_20220602 } from '../../assets/bannerMediaResources/mediaResources_20220602';
 import { mediaResources as banner_20220720 } from '../../assets/bannerMediaResources/mediaResources_20220720';
+import { mediaResources as banner_20220816 } from '../../assets/bannerMediaResources/mediaResources_20220816';
+import { mediaResources as banner_20221221 } from '../../assets/bannerMediaResources/mediaResources_20221221';
 
 import { mediaResources as banner_20230101 } from '../../assets/bannerMediaResources/mediaResources_20230101';
+import { mediaResources as banner_20230315 } from '../../assets/bannerMediaResources/mediaResources_20230315';
+import { mediaResources as banner_20230620 } from '../../assets/bannerMediaResources/mediaResources_20230620';
 import { mediaResources as banner_20230703 } from '../../assets/bannerMediaResources/mediaResources_20230703';
-import { mediaResources as banner_20230903 } from '../../assets/bannerMediaResources/mediaResources_20230903';
 import { mediaResources as banner_20231002 } from '../../assets/bannerMediaResources/mediaResources_20231002';
 
-import { mediaResources as banner_20231003 } from '../../assets/bannerMediaResources/mediaResources_20231003';
-import { mediaResources as banner_20231104 } from '../../assets/bannerMediaResources/mediaResources_20231104';
 
 // 红色
 import { mediaResources as banner_20221030 } from '../../assets/bannerMediaResources/mediaResources_20221030';
@@ -62,7 +84,9 @@ import { mediaResources as banner_20210304 } from '../../assets/bannerMediaResou
 
 // 视频
 import { mediaResources as banner_20220501 } from '../../assets/bannerMediaResources/mediaResources_20220501';
+import { mediaResources as banner_黄绿合战 } from '../../assets/bannerMediaResources/mediaResources_黄绿合战';
 
+//#endregion
 
 import { defineComponent } from 'vue';
 import HeaderNav from '../../components/MainPage/HeaderNav.vue'
@@ -75,14 +99,35 @@ interface LayerData {
 
 // 随机选择banner
 const mediaResourcesList = [
+    // banner_20220723,
     /* 篝火 */
     // banner_20230601,
     /* 海底世界 */
     // banner_20230801,
+    /* 鳄鱼 */
+    // banner_20230912,
+    // 黄昏森林
+    // banner_20231107,
+    // banner_20231201,
+    // banner_20231212,
+    /* 包饺砸 */
+    // banner_20240204,
+    /* 百花齐放 */
+    // banner_20240606,
+    /* 海中大厅 */
+    // banner_20240610,
+    /* 魔法扫帚 */
+    // banner_20241210,
     /* 流星海边 */
     // banner_20250909,
+    /* 城外草原 */
+    // banner_20250501,
+    /* 雪山滑雪 */
+    // banner_20250101,
+    /* 洪涝 */
+    // banner_20250801,
     /* 树叶风车 */
-    // banner_20230405,
+    banner_20230405,
     /* 微观世界 */
     // banner_20201130,
     /* 冬 */
@@ -96,40 +141,47 @@ const mediaResourcesList = [
     /* 四叶草 */
     // banner_20220501,
     // 
-    // banner_20210511,
+
+    // banner_20210806,
 
     /* 图片 */
-    banner_2014,
+    // banner_2014,
+    // banner_2015,
     // banner_2016,
     // banner_legacy,
     // banner_20190601,
     /* 520 */
     // banner_20190520,
     // banner_20191029,
+    // banner_20190620,
+    // banner_20190621,
     // banner_20200201,
     // banner_20200401,
     // banner_20200607,
-    // banner_20210816,
+    // banner_20200817,
     // banner_20220201,
     // banner_20220301,
     // banner_20220401,
     // banner_20220602,
+    // banner_20220816,
+    // banner_20221221,
     // banner_20220720,
     // banner_20230101,
+    // banner_20230315,
+    // banner_20230620,
 
     // banner_20230703,
 
-    // banner_20230903,
 
-    // banner_20231003,
 
-    // banner_20231104,
+
 
     // banner_20210623,
     // banner_20190924,
     // banner_20221030,
     // banner_20220303,
-    // banner_20210304
+    // banner_20210304,
+    // banner_黄绿合战
 ]
 
 export default defineComponent({
@@ -142,10 +194,28 @@ export default defineComponent({
             initialMouseX: 0, // 记录鼠标初始位置
             isMouseIn: false, // 标记鼠标是否在banner内
             layers: [] as LayerData[], // 存储所有layer元素
+            bannerTitle: null as HTMLElement | null,
         };
     },
     async mounted() {
         const mediaResources = mediaResourcesList[Math.floor(Math.random() * mediaResourcesList.length)]
+
+        // 判断是否有logo
+        let includeLogo = false
+        try {
+            for (const [index, item] of mediaResources.entries()) {
+                if (item.type == 'LOGO') {
+                    includeLogo = true
+                    throw new Error('')
+                }
+            }
+        } catch (err) {
+            if (err == '') console.error(err)
+        } finally {
+            if (!includeLogo) mediaResources[mediaResources.length] = defaultLogo
+        }
+
+
 
         // 渲染所有元素
         const banner = this.$refs.bannerRef as HTMLElement
@@ -172,7 +242,11 @@ export default defineComponent({
 
             if (!item.init) item.item = init
 
-            if (item.base64) item.blob = this.base64ToBlobUrl(item.base64)
+            if (item.base64) {
+                item.blob = this.base64ToBlobUrl(item.base64)
+            } else {
+                item.blob = item.src
+            }
 
             switch (item.type) {
                 case 'IMG':
@@ -190,7 +264,7 @@ export default defineComponent({
                     el.muted = true;
                     layer.appendChild(el);
                     break;
-                case "CANVAS":
+                case 'CANVAS':
                     el = document.createElement('canvas');
                     el.width = screen.width;
                     this.$nextTick(() => {
@@ -201,14 +275,24 @@ export default defineComponent({
 
                     break
                 case 'LOGO':
-                    let logo = document.createElement('img');
-                    logo.className = 'head-logo';
+                    el = document.createElement('img');
+                    el.className = 'head-logo';
                     // 将base64转为blob链接
-                    logo.src = item.blob
-                    banner.appendChild(logo);
+                    el.src = item.blob
+                    banner.appendChild(el);
 
                     layer.remove()
                     break;
+                case 'TITLE':
+                    el = document.createElement('span')
+                    el.className = 'head-title'
+                    el.innerText = item.title
+
+                    this.bannerTitle = el
+
+                    banner.appendChild(el)
+                    layer.remove()
+                    break
 
                 default:
                     break;
@@ -220,6 +304,8 @@ export default defineComponent({
                 if (item.style) {
                     for (let k in item.style) {
                         el.style[k] = item.style[k]
+                        console.log(el);
+                        
                     }
                 }
 
@@ -243,7 +329,10 @@ export default defineComponent({
         wrapper.addEventListener('mouseenter', (e) => {
             this.initialMouseX = e.clientX;
             this.isMouseIn = true;
-        });
+
+            if (this.bannerTitle) this.bannerTitle.style.opacity = '1'
+
+        })
 
         // 鼠标移动时计算偏移量并应用到每个layer元素
         wrapper.addEventListener('mousemove', e => {
@@ -284,7 +373,7 @@ export default defineComponent({
                     if (offsetRate.opacity) el.style.opacity = `${offsetX * offsetRate.opacity + init.opacity}`
                 }
             })
-        });
+        })
 
         // 鼠标离开时缓慢复位
         wrapper.addEventListener('mouseleave', () => {
@@ -294,6 +383,7 @@ export default defineComponent({
             this.layers.forEach((layerData: LayerData, index: number) => {
                 const el = layerData.elem;
 
+                // @ts-ignore
                 if (el && mediaResources[index]?.offsetRate) {
                     // 复位时间
                     const restoreTime = 360;
@@ -302,8 +392,11 @@ export default defineComponent({
                     el.style.transition = `all ${restoreTime}ms ease-out`;
 
                     // 应用默认样式
+                    // @ts-ignore
                     if (mediaResources[index]?.style) {
+                        // @ts-ignore
                         for (let k in mediaResources[index].style) {
+                            // @ts-ignore
                             el.style[k as any] = mediaResources[index].style[k];
                         }
                     }
@@ -317,8 +410,10 @@ export default defineComponent({
                         el.style.transition = '';
                     }, restoreTime);
                 }
-            });
-        });
+            })
+
+            if (this.bannerTitle) this.bannerTitle.style.opacity = '0'
+        })
     },
     methods: {
         // 添加base64转blob链接的方法
@@ -406,6 +501,22 @@ div[data-v-mainPageBanner] {
         width: 220px;
         height: 50%;
         min-height: 60px;
+        z-index: 100;
+    }
+
+    .head-title {
+        position: absolute;
+        bottom: 25px;
+        left: 380px;
+        line-height: 20px;
+        background-color: rgba(0, 0, 0, 0.68);
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        max-width: 350px;
+        opacity: 0;
+        padding: 6px 10px;
+        border-radius: 4px;
+        transition: 0.2s;
         z-index: 100;
     }
 
