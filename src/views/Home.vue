@@ -1,7 +1,10 @@
 <template>
+  <div id="bili-container" ref="biliContainer">
+
+  </div>
   <div class="bili-header">
     <!-- <component :is="currentBanner" class="bili-header__banner"></component> -->
-     <Banner></Banner>
+    <Banner></Banner>
     <HeaderChannel class="bili-header__channel"></HeaderChannel>
 
     <!-- <div @click="$router.push('404')">1111111111111111</div>
@@ -17,26 +20,14 @@ import HeaderChannel from '@/components/MainPage/HeaderChannel.vue'
 import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout.vue'
 
 import Banner from '@/components/MainPage/Banner.vue'
-import Banner_20240617 from '@/components/MainPage/Banner-20240617.vue'
 
-// 随机选择banner组件
-const currentBanner = ref<any>(null)
-// Math.random() > 0.5 ? currentBanner.value = Banner : currentBanner.value = Banner_20240617
+import { base64ToBlobUrl, getScaleCompensation } from '@/components/utils'
 
-// 随机加载banner，有明显延迟
-/* onMounted(async () => {
-  const bannerComponents = [
-    () => import('@/components/MainPage/Banner.vue'),
-    () => import('@/components/MainPage/banner_20240617.vue')
-  ]
+const biliContainer = ref<HTMLElement | null>(null)
 
-  const randomIndex = Math.floor(Math.random() * bannerComponents.length)
-  // const bannerModule = await bannerComponents[randomIndex]()
-  // currentBanner.value = bannerModule.default
-  bannerComponents[randomIndex]().then(bannerModule => {
-    currentBanner.value = bannerModule.default
-  })
-}) */
+onMounted(() => {
+})
+
 </script>
 
 <style scoped>

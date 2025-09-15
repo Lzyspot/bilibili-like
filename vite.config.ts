@@ -17,7 +17,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        additionalData: '@container-width: 90%;'
+        additionalData: '@container-width: 90%;@bg1: #fff;@bg2: #f1f2f3;@bg3: #00a1d6;@bg4: #00AEEC;'
       }
     }
   },
@@ -29,6 +29,10 @@ export default defineConfig({
     outDir: 'dist/html',
     // 配置代码分割
     chunkSizeWarningLimit: 1024,
+
+    rollupOptions: { 
+      inlineDynamicImports: false,
+    }
   },
   server: {
     // 配置服务启动时是否运行

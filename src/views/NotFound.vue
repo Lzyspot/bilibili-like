@@ -1,52 +1,104 @@
 <template>
-  <div class="not-found">
-    <div class="content">
-      <h1>404</h1>
-      <p>页面未找到</p>
-      <router-link to="/">返回首页</router-link>
+  <div class="error-container">
+    <div class="error-panel">
+      <img :src="verySorry" alt="">
+      <div class="rollback-btn-container">
+        <button class="btn rollback-btn" @click="goToReferrer">返回上一级</button>
+      </div>
+    </div>
+    <div class="error-manga">
+      <img :src="errManga" alt="">
+      <button class="btn change-img-btn" @click="setErrManga(mangaList)">换一张</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+const verySorry = ref<string>('')
+const errManga = ref<string>('')
+const mangaList = ref<string[]>([])
+
+const mangaPath = 'src/error-manga/'
+
+onMounted(async () => {
+  verySorry.value = mangaPath + 'verySorry.png'
+  fetch(mangaPath + 'error-manga.json')
+    .then(res => res.json())
+    .then(data => {
+      verySorry.value = mangaPath + data.verySorry
+
+      mangaList.value = data.errorManga
+      setErrManga(data.errorManga)
+    })
+})
+
+// function rollback() {
+//   history.back()
+// }
+
+function goToReferrer() {
+  const referrer = document.referrer;
+  if (referrer) {
+    window.location.href = referrer;
+  } else {
+    // 如果没有来源，可以跳转到默认页面
+    window.location.href = '/';
+  }
+}
+
+
+function setErrManga(mangaList: string[]) {
+  errManga.value = mangaPath + mangaList[Math.floor(Math.random() * mangaList.length)]
+}
+
 </script>
 
 <style scoped lang="less">
-.not-found {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5;
+.btn {
+  text-align: center;
+  background: @bg3;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: 0.2s;
+  cursor: pointer;
+}
 
-  .content {
+.error-container {
+  width: 980px;
+  margin: 30px auto 30px;
+  background: @bg1;
+  border-radius: 10px;
+
+  .rollback-btn-container {
     text-align: center;
+    margin-top: 40px;
+    margin-bottom: 80px;
+  }
 
-    h1 {
-      font-size: 72px;
-      color: #ff6699;
-      margin-bottom: 20px;
-    }
+  .rollback-btn {
+    line-height: 40px;
+    padding: 0 20px;
+  }
+}
 
-    p {
-      font-size: 24px;
-      color: #666;
-      margin-bottom: 30px;
-    }
+.error-manga {
+  padding: 30px;
+  text-align: center;
 
-    a {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #00a1d6;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background-color 0.3s;
+  img {
+    max-width: 800px;
+  }
 
-      &:hover {
-        background-color: #008ccd;
-      }
-    }
+  .change-img-btn {
+    display: block;
+    width: 150px;
+    background: @bg4;
+    line-height: 48px;
+    padding: 0 20px;
+    margin: 30px auto 0;
   }
 }
 </style>

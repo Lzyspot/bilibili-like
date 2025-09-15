@@ -7,201 +7,170 @@
 </template>
 
 <script lang="ts">
-import { base64ToBlobUrl } from '@/components/utils'
-
-
+import { base64ToBlobUrl, getScaleCompensation } from '@/components/utils'
 
 //#region 
 // 视差滚动
 import defaultLogo from '../../assets/bannerMediaResources/logo'
-const mediaSet: any = {
-    banner_20220723: () => import('../../assets/bannerMediaResources/mediaResources_20220723'),
-    banner_20230601: () => import('../../assets/bannerMediaResources/mediaResources_20230601'),
-    banner_20230801: () => import('../../assets/bannerMediaResources/mediaResources_20230801'),
-    banner_20230912: () => import('../../assets/bannerMediaResources/mediaResources_20230912'),
-    banner_20231107: () => import('../../assets/bannerMediaResources/mediaResources_20231107'),
-    banner_20231201: () => import('../../assets/bannerMediaResources/mediaResources_20231201'),
-    banner_20231212: () => import('../../assets/bannerMediaResources/mediaResources_20231212'),
-    banner_20240204: () => import('../../assets/bannerMediaResources/mediaResources_20240204'),
-    banner_20240606: () => import('../../assets/bannerMediaResources/mediaResources_20240606'),
-    banner_20240610: () => import('../../assets/bannerMediaResources/mediaResources_20240610'),
-    banner_20241210: () => import('../../assets/bannerMediaResources/mediaResources_20241210'),
-    banner_20250101: () => import('../../assets/bannerMediaResources/mediaResources_20250101'),
-    banner_20250501: () => import('../../assets/bannerMediaResources/mediaResources_20250501'),
-    banner_20250801: () => import('../../assets/bannerMediaResources/mediaResources_20250801'),
-    banner_20250909: () => import('../../assets/bannerMediaResources/mediaResources_20250909'),
-    banner_20230405: () => import('../../assets/bannerMediaResources/mediaResources_20230405'),
-    banner_20201130: () => import('../../assets/bannerMediaResources/mediaResources_20201130'),
-    banner_20210301: () => import('../../assets/bannerMediaResources/mediaResources_20210301'),
-    banner_20210401: () => import('../../assets/bannerMediaResources/mediaResources_20210401'),
-    banner_20210906: () => import('../../assets/bannerMediaResources/mediaResources_20210906'),
-    banner_2014: () => import('../../assets/bannerMediaResources/mediaResources_2014'),
-    banner_2015: () => import('../../assets/bannerMediaResources/mediaResources_2015'),
-    banner_2016: () => import('../../assets/bannerMediaResources/mediaResources_2016'),
-    banner_legacy: () => import('../../assets/bannerMediaResources/mediaResources_legacy'),
-    banner_20190601: () => import('../../assets/bannerMediaResources/mediaResources_20190601'),
-    banner_20190520: () => import('../../assets/bannerMediaResources/mediaResources_20190520'),
-    banner_20191029: () => import('../../assets/bannerMediaResources/mediaResources_20191029'),
-    banner_20190620: () => import('../../assets/bannerMediaResources/mediaResources_20190620'),
-    banner_20190621: () => import('../../assets/bannerMediaResources/mediaResources_20190621'),
-    banner_20190924: () => import('../../assets/bannerMediaResources/mediaResources_20190924'),
-    banner_20191213: () => import('../../assets/bannerMediaResources/mediaResources_20191213'),
-    banner_20200124: () => import('../../assets/bannerMediaResources/mediaResources_20200124'),
-    banner_20200201: () => import('../../assets/bannerMediaResources/mediaResources_20200201'),
-    banner_20200401: () => import('../../assets/bannerMediaResources/mediaResources_20200401'),
-    banner_20200421: () => import('../../assets/bannerMediaResources/mediaResources_20200421'),
-    banner_20200605: () => import('../../assets/bannerMediaResources/mediaResources_20200605'),
-    banner_20200607: () => import('../../assets/bannerMediaResources/mediaResources_20200607'),
-    banner_20200710: () => import('../../assets/bannerMediaResources/mediaResources_20200710'),
-    banner_20200817: () => import('../../assets/bannerMediaResources/mediaResources_20200817'),
-    banner_20201005: () => import('../../assets/bannerMediaResources/mediaResources_20201005'),
-    banner_20210212: () => import('../../assets/bannerMediaResources/mediaResources_20210212'),
-    banner_20210626: () => import('../../assets/bannerMediaResources/mediaResources_20210626'),
-    banner_20210623: () => import('../../assets/bannerMediaResources/mediaResources_20210623'),
-    banner_20210722: () => import('../../assets/bannerMediaResources/mediaResources_20210722'),
-    banner_20210806: () => import('../../assets/bannerMediaResources/mediaResources_20210806'),
-    banner_20211113: () => import('../../assets/bannerMediaResources/mediaResources_20211113'),
-    banner_20220106: () => import('../../assets/bannerMediaResources/mediaResources_20220106'),
-    banner_20220201: () => import('../../assets/bannerMediaResources/mediaResources_20220201'),
-    banner_20220301: () => import('../../assets/bannerMediaResources/mediaResources_20220301'),
-    banner_20220303: () => import('../../assets/bannerMediaResources/mediaResources_20220303'),
-    banner_20220401: () => import('../../assets/bannerMediaResources/mediaResources_20220401'),
-    banner_20220602: () => import('../../assets/bannerMediaResources/mediaResources_20220602'),
-    banner_20220614: () => import('../../assets/bannerMediaResources/mediaResources_20220614'),
-    banner_20220720: () => import('../../assets/bannerMediaResources/mediaResources_20220720'),
-    banner_20220816: () => import('../../assets/bannerMediaResources/mediaResources_20220816'),
-    banner_20220927: () => import('../../assets/bannerMediaResources/mediaResources_20220927'),
-    banner_20221221: () => import('../../assets/bannerMediaResources/mediaResources_20221221'),
-    banner_20230101: () => import('../../assets/bannerMediaResources/mediaResources_20230101'),
-    banner_20230315: () => import('../../assets/bannerMediaResources/mediaResources_20230315'),
-    banner_20230620: () => import('../../assets/bannerMediaResources/mediaResources_20230620'),
-    banner_20230622: () => import('../../assets/bannerMediaResources/mediaResources_20230622'),
-    banner_20230703: () => import('../../assets/bannerMediaResources/mediaResources_20230703'),
-    banner_20231002: () => import('../../assets/bannerMediaResources/mediaResources_20231002'),
-    banner_20221030: () => import('../../assets/bannerMediaResources/mediaResources_20221030'),
-    banner_20210304: () => import('../../assets/bannerMediaResources/mediaResources_20210304'),
-    banner_20220501: () => import('../../assets/bannerMediaResources/mediaResources_20220501'),
+const mediaImportSet: any = {
+    // 视差滚动
+    banner_20201130: () => import('../../assets/bannerMediaResources/mediaResources_20201130'), // 微观世界 双向
+
+    banner_20210301: () => import('../../assets/bannerMediaResources/mediaResources_20210301'), // 【未完成】雪中小屋 长画幅 canvas
+    banner_20210401: () => import('../../assets/bannerMediaResources/mediaResources_20210401'), // 【未完成】落花郊游 长画幅 canvas
+
+    banner_20230405: () => import('../../assets/bannerMediaResources/mediaResources_20230405'), // 树叶风车 双向 *2
+    banner_20230601: () => import('../../assets/bannerMediaResources/mediaResources_20230601'), // 篝火
+    banner_20230703: () => import('../../assets/bannerMediaResources/mediaResources_20230703'), // 洞窟表演
+    banner_20230801: () => import('../../assets/bannerMediaResources/mediaResources_20230801'), // 海底世界
+    banner_20230912: () => import('../../assets/bannerMediaResources/mediaResources_20230912'), // 鳄鱼 双向
+    banner_20231002: () => import('../../assets/bannerMediaResources/mediaResources_20231002'), // 荧光河道
+    banner_20231107: () => import('../../assets/bannerMediaResources/mediaResources_20231107'), // 黄昏收获
+    banner_20231201: () => import('../../assets/bannerMediaResources/mediaResources_20231201'), // 追叶33
+    banner_20231212: () => import('../../assets/bannerMediaResources/mediaResources_20231212'), // 冰湖雪人
+
+    banner_20240204: () => import('../../assets/bannerMediaResources/mediaResources_20240204'), // 包饺砸
+    banner_20240606: () => import('../../assets/bannerMediaResources/mediaResources_20240606'), // 百花齐放
+    banner_20240610: () => import('../../assets/bannerMediaResources/mediaResources_20240610'), // 海中大厅
+    banner_20241210: () => import('../../assets/bannerMediaResources/mediaResources_20241210'), // 魔法扫帚
+
+    banner_20250101: () => import('../../assets/bannerMediaResources/mediaResources_20250101'), // 雪山滑雪
+    banner_20250501: () => import('../../assets/bannerMediaResources/mediaResources_20250501'), // 城外草原
+    banner_20250801: () => import('../../assets/bannerMediaResources/mediaResources_20250801'), // 洪涝购物
+    banner_20250909: () => import('../../assets/bannerMediaResources/mediaResources_20250909'), // 流星海滩
+
+    // 特殊
+    banner_20220723: () => import('../../assets/bannerMediaResources/mediaResources_20220723'), // 【未完成】唯一强交互
+
+    // 视频
+    banner_20210806: () => import('../../assets/bannerMediaResources/mediaResources_20210806'), // 窗边的2233 区分时间（目前随机） *6
+    banner_20210906: () => import('../../assets/bannerMediaResources/mediaResources_20210906'), // 秋日蛋糕 区分时间 *2
+    banner_20220106: () => import('../../assets/bannerMediaResources/mediaResources_20220106'), // 极地钓鱼 区分时间 *3
+    banner_20220501: () => import('../../assets/bannerMediaResources/mediaResources_20220501'), // 【有彩蛋】四叶草上的2233
+    banner_20220816: () => import('../../assets/bannerMediaResources/mediaResources_20220816'), // 2233十周年
+
+    banner_2014: () => import('../../assets/bannerMediaResources/mediaResources_2014'), // 2014合集
+    banner_2015: () => import('../../assets/bannerMediaResources/mediaResources_2015'), // 2015合集
+    banner_2016: () => import('../../assets/bannerMediaResources/mediaResources_2016'), // 2016合集
+    banner_legacy: () => import('../../assets/bannerMediaResources/mediaResources_legacy'), // 早期默认
+    banner_20190601: () => import('../../assets/bannerMediaResources/mediaResources_20190601'), // 夏日高铁站
+    banner_20190520: () => import('../../assets/bannerMediaResources/mediaResources_20190520'), // 520特供
+    banner_20191029: () => import('../../assets/bannerMediaResources/mediaResources_20191029'), // 南瓜热气球
+    banner_20190620: () => import('../../assets/bannerMediaResources/mediaResources_20190620'), // 哔哩哔哩十周年
+    banner_20200124: () => import('../../assets/bannerMediaResources/mediaResources_20200124'), // 拜年祭
+    banner_20200201: () => import('../../assets/bannerMediaResources/mediaResources_20200201'), // 极地2233
+    banner_20200401: () => import('../../assets/bannerMediaResources/mediaResources_20200401'), // 搬运花朵
+    banner_20200607: () => import('../../assets/bannerMediaResources/mediaResources_20200607'), // 荷塘泳池
+    banner_20200817: () => import('../../assets/bannerMediaResources/mediaResources_20200817'), // 2233生日
+    banner_20220927: () => import('../../assets/bannerMediaResources/mediaResources_20220927'), // 枫叶林收音
+    banner_20230101: () => import('../../assets/bannerMediaResources/mediaResources_20230101'), // 趴桌睡觉
+    banner_20230620: () => import('../../assets/bannerMediaResources/mediaResources_20230620'), // 篝火静态版本
+
+    banner_20190621: () => import('../../assets/bannerMediaResources/mediaResources_20190621'), // 十周年活动
+    banner_20200421: () => import('../../assets/bannerMediaResources/mediaResources_20200421'), // 读书日
+    banner_20200605: () => import('../../assets/bannerMediaResources/mediaResources_20200605'), // 知识区
+    banner_20200710: () => import('../../assets/bannerMediaResources/mediaResources_20200710'), // 高考加油
+    banner_20210212: () => import('../../assets/bannerMediaResources/mediaResources_20210212'), // 拜年祭
+    banner_20210722: () => import('../../assets/bannerMediaResources/mediaResources_20210722'), // 河南加油
+    banner_20221221: () => import('../../assets/bannerMediaResources/mediaResources_20221221'), // 足球派对，一起亁杯
+    banner_20211113: () => import('../../assets/bannerMediaResources/mediaResources_20211113'), // 年度弹幕
+    banner_20220201: () => import('../../assets/bannerMediaResources/mediaResources_20220201'), // 放飞许愿灯
+    banner_20220401: () => import('../../assets/bannerMediaResources/mediaResources_20220401'), // 哔哩日报
+    banner_20220602: () => import('../../assets/bannerMediaResources/mediaResources_20220602'), // 碧蓝
+    banner_20220614: () => import('../../assets/bannerMediaResources/mediaResources_20220614'), // 毕业季
+    banner_20220720: () => import('../../assets/bannerMediaResources/mediaResources_20220720'), // 抵制网暴
+    banner_20230315: () => import('../../assets/bannerMediaResources/mediaResources_20230315'), // 环境整治海报
+    banner_20230622: () => import('../../assets/bannerMediaResources/mediaResources_20230622'), // 周年庆
+    banner_20190924: () => import('../../assets/bannerMediaResources/mediaResources_20190924'), // 新中国成立70周年
+    banner_20191213: () => import('../../assets/bannerMediaResources/mediaResources_20191213'), // 国家公祭日
+    banner_20201005: () => import('../../assets/bannerMediaResources/mediaResources_20201005'), // 国庆
+    banner_20210304: () => import('../../assets/bannerMediaResources/mediaResources_20210304'), // 十三届全国人大
+    banner_20210623: () => import('../../assets/bannerMediaResources/mediaResources_20210623'), // 中国中产党成立100周年
+    banner_20220303: () => import('../../assets/bannerMediaResources/mediaResources_20220303'), // 国庆
+    banner_20221030: () => import('../../assets/bannerMediaResources/mediaResources_20221030'), // 国庆
     banner_黄绿合战: () => import('../../assets/bannerMediaResources/mediaResources_黄绿合战'),
+}
+
+const mediaSet: any = {
+    interactive: [
+        // mediaImportSet.banner_20201130,
+        mediaImportSet.banner_20210301,
+        mediaImportSet.banner_20210401,
+        mediaImportSet.banner_20230405,
+        mediaImportSet.banner_20230601,
+        mediaImportSet.banner_20230703,
+        mediaImportSet.banner_20230801,
+        mediaImportSet.banner_20230912,
+        mediaImportSet.banner_20231002,
+        mediaImportSet.banner_20231107,
+        mediaImportSet.banner_20231201,
+        mediaImportSet.banner_20231212,
+        mediaImportSet.banner_20240204,
+        mediaImportSet.banner_20240606,
+        mediaImportSet.banner_20240610,
+        mediaImportSet.banner_20241210,
+        mediaImportSet.banner_20250101,
+        mediaImportSet.banner_20250501,
+        mediaImportSet.banner_20250801,
+        mediaImportSet.banner_20250909,
+        /* mediaImportSet.banner_20220723 */
+    ],
+    animation: [
+        mediaImportSet.banner_20210806,
+        mediaImportSet.banner_20210906,
+        mediaImportSet.banner_20220106,
+        mediaImportSet.banner_20220501,
+        mediaImportSet.banner_20220816
+    ],
+    image: [
+        mediaImportSet.banner_2014,
+        mediaImportSet.banner_2015,
+        mediaImportSet.banner_2016,
+        mediaImportSet.banner_legacy,
+        mediaImportSet.banner_20190601,
+        mediaImportSet.banner_20190520,
+        mediaImportSet.banner_20191029,
+        mediaImportSet.banner_20190620,
+        mediaImportSet.banner_20200124,
+        mediaImportSet.banner_20200201,
+        mediaImportSet.banner_20200401,
+        mediaImportSet.banner_20200607,
+        mediaImportSet.banner_20200817,
+        mediaImportSet.banner_20220927,
+        mediaImportSet.banner_20230101,
+        mediaImportSet.banner_20230620,
+    ],
+    promotion: [
+        mediaImportSet.banner_20190621,
+        mediaImportSet.banner_20200421,
+        mediaImportSet.banner_20200605,
+        mediaImportSet.banner_20200710,
+        mediaImportSet.banner_20210212,
+        mediaImportSet.banner_20210722,
+        mediaImportSet.banner_20221221,
+        mediaImportSet.banner_20211113,
+        mediaImportSet.banner_20220201,
+        mediaImportSet.banner_20220401,
+        mediaImportSet.banner_20220602,
+        mediaImportSet.banner_20220614,
+        mediaImportSet.banner_20220720,
+        mediaImportSet.banner_20230315,
+        mediaImportSet.banner_20230622,
+        mediaImportSet.banner_20190924,
+        mediaImportSet.banner_20191213,
+        mediaImportSet.banner_20201005,
+        mediaImportSet.banner_20210304,
+        mediaImportSet.banner_20210623,
+        mediaImportSet.banner_20220303,
+        mediaImportSet.banner_20221030,
+        mediaImportSet.banner_黄绿合战,
+    ]
 }
 
 //#endregion
 
 import { defineComponent } from 'vue';
 import HeaderNav from '../../components/MainPage/HeaderNav.vue'
-
-interface LayerData {
-    elem: HTMLElement,
-    rowData: any
-}
-
-// 随机选择banner
-// const mediaResourcesList = [
-//     banner_20220723,
-//     /* 篝火 */
-//     banner_20230601,
-//     /* 海底世界 */
-//     banner_20230801,
-//     /* 鳄鱼 */
-//     banner_20230912,
-//     // 黄昏森林
-//     banner_20231107,
-//     /* 追落叶的33 */
-//     banner_20231201,
-//     /* 雪地 */
-//     banner_20231212,
-//     /* 包饺砸 */
-//     banner_20240204,
-//     /* 百花齐放 */
-//     banner_20240606,
-//     /* 海中大厅 */
-//     banner_20240610,
-//     /* 魔法扫帚 */
-//     banner_20241210,
-//     /* 流星海边 */
-//     banner_20250909,
-//     /* 城外草原 */
-//     banner_20250501,
-//     /* 雪山滑雪 */
-//     banner_20250101,
-//     /* 洪涝 */
-//     banner_20250801,
-//     /* 树叶风车 *2 */
-//     banner_20230405,
-//     /* 微观世界 */
-//     banner_20201130,
-//     /* 落雪冬 */
-//     banner_20210301,
-//     /* 落花春 */
-//     banner_20210401,
-//     /* 洞窟表演 */
-//     banner_20230703,
-//     /* 荧光河道 */
-//     banner_20231002,
-
-//     // 视频
-//     /* 四叶草 */
-//     banner_20220501,
-
-//     /* 根据系统时间提供对应的资源 */
-//     /* 北极钓鱼 *3 */
-//     banner_20220106,
-//     /* 窗边的2233 *6 */
-//     banner_20210806,
-//     /* 秋天蛋糕 *2 */
-//     banner_20210906,
-
-//     /* 图片 */
-//     banner_2014,
-//     banner_2015,
-//     banner_2016,
-//     banner_legacy,
-//     banner_20190601,
-//     /* 520 */
-//     banner_20190520,
-//     banner_20191029,
-//     banner_20190620,
-//     banner_20190621,
-//     banner_20200124,
-//     banner_20200201,
-//     banner_20200401,
-//     banner_20200421,
-//     banner_20200605,
-//     banner_20200607,
-//     banner_20200710,
-//     banner_20200817,
-//     banner_20201005,
-//     banner_20220201,
-//     banner_20220301,
-//     banner_20220401,
-//     banner_20220602,
-//     banner_20220614,
-//     banner_20220816,
-//     banner_20220927,
-//     banner_20221221,
-//     banner_20220720,
-//     banner_20230101,
-//     banner_20230315,
-//     banner_20230620,
-//     banner_20230622,
-
-//     banner_20211113,
-
-
-//     /* 拜年祭 */
-//     banner_20210212,
-
-//     // 公祭日
-//     banner_20191213,
-
-//     banner_20210626,
-//     banner_20210623,
-//     banner_20210722,
-//     banner_20190924,
-//     banner_20221030,
-//     banner_20220303,
-//     banner_20210304,
-//     banner_黄绿合战
-// ]
 
 export default defineComponent({
     components: {
@@ -212,202 +181,223 @@ export default defineComponent({
             HeaderNav: HeaderNav,
             initialMouseX: 0, // 记录鼠标初始位置
             isMouseIn: false, // 标记鼠标是否在banner内
-            layers: [] as LayerData[], // 存储所有layer元素
+            layers: [] as HTMLElement[], // 存储所有layer元素
             bannerTitle: null as HTMLElement | null,
+            mediaResources: [] as any[],
+            compensationScale: 1 // 缩放补偿
         };
     },
     async mounted() {
-        // const mediaResources = mediaResourcesList[Math.floor(Math.random() * mediaResourcesList.length)]
-        // const mediaResources = banner_2015
-        // const { mediaResources } = await import('../../assets/bannerMediaResources/mediaResources_黄绿合战')
-
-        // const { mediaResources } = await mediaSet.banner_20200817()
-        
-        const { mediaResources } = await mediaSet[Object.keys(mediaSet)[Math.floor(Math.random() * Object.keys(mediaSet).length)]]()
-
-
-        // 判断是否有logo
-        let includeLogo = false
-        try {
-            for (const [index, item] of mediaResources.entries()) {
-                if (item.type == 'LOGO') {
-                    includeLogo = true
-                    throw new Error('')
-                }
-            }
-        } catch (err) {
-            if (err == '') console.error(err)
-        } finally {
-            if (!includeLogo) mediaResources[mediaResources.length] = defaultLogo
-        }
-
+        // banner类型
+        // ?bannerAutoSwitch=interactive | animation | image | promotion
+        const params = new URLSearchParams(location.search)
+        let bannerType: any = params.get('bannerType')
+        bannerType = mediaSet[bannerType] ? bannerType : 'interactive'
+        let { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
 
         // 渲染所有元素
         const banner = this.$refs.bannerRef as HTMLElement
-        mediaResources.forEach((item: any) => {
-            const layer = document.createElement('div');
-            layer.className = 'layer';
-            banner.appendChild(layer);
+        this.layers = this.initBanner(mediaResources, banner)
 
-            let el: any;
+        // 自动切换Banner
+        // ?bannerAutoSwitch=true
+        // ?bannerAutoSwitchInterval=5000
+        let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval'))
+        if (params.get('bannerAutoSwitch') || bannerSwitchInterval) {
+            // 至少5s切换一次
+            bannerSwitchInterval = bannerSwitchInterval >= 5000 ? bannerSwitchInterval : 5000
 
-            const init = {
-                "translate": {
-                    "x": 0,
-                    "y": 0
-                },
-                "scale": {
-                    "x": 1,
-                    "y": 1
-                },
-                "rotate": 0,
-                "blur": 0,
-                "opacity": 1
-            }
-
-            if (!item.init) item.item = init
-
-            if (item.base64) {
-                item.blob = base64ToBlobUrl(item.base64)
-            } else {
-                item.blob = item.src
-            }
-
-            if (!item.abs) item.abs = []
-
-
-
-            switch (item.type) {
-                case 'IMG':
-                    el = document.createElement('img');
-                    // 将base64转为blob链接
-                    el.src = item.blob
-                    layer.appendChild(el);
-                    break;
-                case 'VIDEO':
-                    el = document.createElement('video');
-                    // 将base64转为blob链接
-                    el.src = item.blob
-                    el.autoplay = true;
-                    el.loop = true;
-                    el.muted = true;
-                    layer.appendChild(el);
-                    break;
-                case 'CANVAS':
-                    el = document.createElement('canvas');
-                    el.width = screen.width;
-                    this.$nextTick(() => {
-                        el.height = banner.clientHeight;
-                    })
-                    banner.appendChild(el)
-                    layer.remove()
-
-                    break
-                case 'LOGO':
-                    el = document.createElement('img');
-                    el.className = 'head-logo';
-                    // 将base64转为blob链接
-                    el.src = item.blob
-                    banner.appendChild(el);
-
-                    layer.remove()
-                    break;
-                case 'TITLE':
-                    el = document.createElement('span')
-                    el.className = 'head-title'
-                    el.innerText = item.title
-
-                    this.bannerTitle = el
-
-                    banner.appendChild(el)
-                    layer.remove()
-                    break
-
-                default:
-                    break;
-            }
-
-            if (el) {
-                // 应用默认样式
-                if (item.style) {
-                    for (let k in item.style) {
-                        el.style[k] = item.style[k]
-                    }
-                }
-
-                // 保存layer引用
-                this.layers.push({
-                    elem: el,
-                    rowData: item
-                })
-            }
-
-
-            // 方法调用
-            item.fn && item.fn(el, banner)
-        })
+            setInterval(async () => {
+                const { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
+                this.layers = this.initBanner(mediaResources, banner)
+            }, bannerSwitchInterval)
+        }
 
         // 视差移动
         const wrapper = this.$refs.wrapperRef as HTMLElement;
 
+        this.applyScaleCompensation()
+        window.addEventListener('resize', () => {
+            this.applyScaleCompensation()
+        })
+
         // 鼠标进入时记录初始位置
-        wrapper.addEventListener('mouseenter', (e) => {
+        wrapper.addEventListener('mouseenter', (e: MouseEvent) => {
+            this.handleBannerEnter(e)
+        })
+
+        // 鼠标移动时计算偏移量并应用到每个layer元素
+        wrapper.addEventListener('mousemove', (e: MouseEvent) => {
+            this.handleBannerMove(e)
+        })
+
+        // 鼠标离开时缓慢复位
+        wrapper.addEventListener('mouseleave', (e: MouseEvent) => {
+            this.handleBannerLeave()
+        })
+    },
+    methods: {
+        initBanner(mediaResources: any, banner: any): HTMLElement[] {
+            // 清空banner内所有的元素
+            banner.innerHTML = ''
+            this.mediaResources = mediaResources
+
+            // 判断是否有logo
+            let includeLogo = false
+            const layers: HTMLElement[] = []
+            try {
+                for (const [index, item] of mediaResources.entries()) {
+                    if (item.type == 'LOGO') {
+                        includeLogo = true
+                        throw new Error('')
+                    }
+                }
+            } catch (err) {
+                if (err == '') console.error(err)
+            } finally {
+                if (!includeLogo) mediaResources[mediaResources.length] = defaultLogo
+            }
+
+            mediaResources.forEach((item: any) => {
+                const layer = document.createElement('div');
+                layer.className = 'layer';
+                banner.appendChild(layer);
+
+                let el: any;
+
+                const init = {
+                    "translate": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "scale": {
+                        "x": 1,
+                        "y": 1
+                    },
+                    "rotate": 0,
+                    "blur": 0,
+                    "opacity": 1
+                }
+
+                if (!item.init) item.item = init
+
+                if (item.base64) {
+                    item.blob = base64ToBlobUrl(item.base64)
+                } else {
+                    item.blob = item.src
+                }
+
+                if (!item.abs) item.abs = []
+
+                switch (item.type) {
+                    case 'IMG':
+                        el = document.createElement('img');
+                        // 将base64转为blob链接
+                        el.src = item.blob
+                        layer.appendChild(el);
+                        break;
+                    case 'VIDEO':
+                        el = document.createElement('video');
+                        // 将base64转为blob链接
+                        el.src = item.blob
+                        el.autoplay = true;
+                        el.loop = true;
+                        el.muted = true;
+                        // 禁用画中画
+                        el.disablePictureInPicture = true;
+                        layer.appendChild(el);
+                        break;
+                    case 'CANVAS':
+                        el = document.createElement('canvas');
+                        el.width = screen.width;
+                        this.$nextTick(() => {
+                            el.height = banner.clientHeight;
+                        })
+                        banner.appendChild(el)
+                        layer.remove()
+
+                        break
+                    case 'LOGO':
+                        el = document.createElement('img');
+                        el.className = 'head-logo';
+                        // 将base64转为blob链接
+                        el.src = item.blob
+                        banner.appendChild(el);
+
+                        layer.remove()
+                        break;
+                    case 'TITLE':
+                        el = document.createElement('span')
+                        el.className = 'head-title'
+                        el.innerText = item.title
+
+                        this.bannerTitle = el
+
+                        banner.appendChild(el)
+                        layer.remove()
+                        break
+
+                    default:
+                        break;
+                }
+
+                if (el) {
+                    // 应用默认样式
+                    if (item.style) {
+                        for (let k in item.style) {
+                            el.style[k] = item.style[k]
+                        }
+                    }
+
+                    // 保存layer引用
+                    layers.push(el)
+                }
+
+
+                // 方法调用
+                item.fn && item.fn(el, banner)
+            })
+
+            return layers
+        },
+        handleBannerEnter(e: MouseEvent) {
             this.initialMouseX = e.clientX;
             this.isMouseIn = true;
 
             if (this.bannerTitle) this.bannerTitle.style.opacity = '1'
-
-        })
-
-        // 鼠标移动时计算偏移量并应用到每个layer元素
-        wrapper.addEventListener('mousemove', e => {
+        },
+        handleBannerMove(e: MouseEvent) {
             if (!this.isMouseIn) return;
 
             // 计算鼠标相对初始位置的偏移量
             const offsetX = e.clientX - this.initialMouseX;
 
             // 为每个layer应用不同的视差效果
-            this.layers.forEach((layerData: LayerData, index?: number) => {
-                // const parallaxFactor = (index + 1) * 0.1; // 每层不同的视差系数
-                // const translateX = offsetX * parallaxFactor;
-                // if (el) el.style.transform = `translateX(${translateX * Number(rx)}px)`;
-
-
-                const el = layerData.elem as HTMLElement;
-                const { init, offsetRate, abs } = layerData.rowData
+            this.layers.forEach((el: HTMLElement, index: number) => {
+                const { init, offsetRate, abs } = this.mediaResources[index]
 
                 if (el && offsetRate) {
-                    if (offsetRate.rotate) {
-                        el.style.rotate = `${offsetX * offsetRate.rotate}deg`;
-                        el.style.transform = `translate(${offsetX * offsetRate.x + init.translate.x}px, 
-                        ${offsetX * offsetRate.y + init.translate.y}px) 
-                        rotate(${offsetX * offsetRate.rotate + init.rotate}deg) 
-                        scale(${offsetX * offsetRate.scaleX + init.scale.x}, 
-                        ${offsetX * offsetRate.scaleY + init.scale.y})`;
+                    el.style.transform = `translate(${offsetX * offsetRate.x + init.translate.x}px, 
+                    ${offsetX * offsetRate.y + init.translate.y}px) 
+                    rotate(${offsetX * offsetRate.rotate + init.rotate}deg) 
+                    scale(${offsetX * offsetRate.scaleX + init.scale.x}, 
+                    ${offsetX * offsetRate.scaleY + init.scale.y})`
 
-                    } else {
-                        el.style.translate = `${offsetX * offsetRate.x}px ${offsetX * offsetRate.y}px`;
-                        el.style.scale = `${offsetX * offsetRate.scaleX + init.scale.x} ${offsetX * offsetRate.scaleY + init.scale.y}`;
-                    }
-
-                    // if (offsetRate.blur)
                     if (offsetRate.blur) el.style.filter = `blur(${(abs.includes('b') ? Math.abs(offsetX) : offsetX) * offsetRate.blur + init.blur}px)`
 
                     if (offsetRate.opacity) el.style.opacity = `${(abs.includes('o') ? Math.abs(offsetX) : offsetX) * offsetRate.opacity + init.opacity}`
                 }
             })
-        })
-
-        // 鼠标离开时缓慢复位
-        wrapper.addEventListener('mouseleave', () => {
+        },
+        handleBannerLeave() {
             this.isMouseIn = false;
 
             // 为每个layer中的元素添加缓慢复位动画
-            this.layers.forEach((layerData: LayerData, index: number) => {
-                const el = layerData.elem;
+            this.layers.forEach((el: HTMLElement, index: number) => {
+                const { style, offsetRate } = this.mediaResources[index]
 
                 // @ts-ignore
-                if (el && mediaResources[index]?.offsetRate) {
+                if (el && offsetRate) {
                     // 复位时间
                     const restoreTime = 360;
 
@@ -416,17 +406,13 @@ export default defineComponent({
 
                     // 应用默认样式
                     // @ts-ignore
-                    if (mediaResources[index]?.style) {
+                    if (style) {
                         // @ts-ignore
-                        for (let k in mediaResources[index].style) {
+                        for (let k in style) {
                             // @ts-ignore
-                            el.style[k as any] = mediaResources[index].style[k];
+                            el.style[k as any] = style[k];
                         }
                     }
-
-                    el.style.translate = 'none'
-                    el.style.scale = 'none'
-                    el.style.rotate = 'none'
 
                     // 过渡结束后清除过渡样式
                     setTimeout(() => {
@@ -436,9 +422,20 @@ export default defineComponent({
             })
 
             if (this.bannerTitle) this.bannerTitle.style.opacity = '0'
-        })
-    },
-    methods: {
+        },
+        applyScaleCompensation() {
+            getScaleCompensation((scale: number) => {
+                const wrapper= this.$refs.wrapperRef as HTMLElement
+                const banner= this.$refs.bannerRef as HTMLElement
+
+                wrapper.querySelectorAll('img, video').forEach((el: any) => {
+                    el.style.scale = scale
+                })
+
+                wrapper.style.height = 180 * scale + 'px'
+                banner.style.height = 180 * scale + 'px'
+            })
+        }
     },
     beforeUnmount() {
         // 组件销毁前释放所有blob URL
@@ -456,6 +453,7 @@ export default defineComponent({
 
 <style lang="less">
 div[data-v-mainPageBanner] {
+    position: relative;
     -webkit-user-drag: none;
     user-select: none;
 
@@ -498,8 +496,8 @@ div[data-v-mainPageBanner] {
         position: absolute;
         left: calc(50% - @container-width/2);
         bottom: 10px;
-        width: 220px;
-        height: 50%;
+        width: 180px;
+        // height: 50%;
         min-height: 60px;
         z-index: 100;
     }

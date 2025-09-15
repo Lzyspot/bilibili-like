@@ -11,6 +11,7 @@
 * {
   margin: 0;
   padding: 0;
+  outline: none;
 }
 
 img,
@@ -20,5 +21,20 @@ svg {
 
 li {
   list-style-type: none;
+}
+
+button {
+  border: none;
+}
+
+body {
+  background: @bg2;
+}
+
+#app {
+  max-width: 2560px;
+  min-height: 100vh;
+  margin: 0 auto;
+  // background: @bg1;
 }
 </style>

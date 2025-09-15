@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import mainIcons from '@/assets/icons/main';
 </script>
 

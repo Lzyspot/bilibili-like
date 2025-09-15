@@ -1,3 +1,5 @@
+const speed = 0.0006
+// 0.0005164475421052631
 const mediaResources = [
     {
         "src": "http://localhost:8088/static_02/4e7edb416c34eccc40f34d2b297524652685a9bb.png",
@@ -163,8 +165,9 @@ const mediaResources = [
             "scaleY": 0,
             "rotate": 0,
             "blur": 0,
-            "opacity": -0.0005164472105263157
+            "opacity": -speed
         },
+        abs: ['o'],
         "init": {
             "translate": {
                 "x": -139.065,
@@ -199,8 +202,9 @@ const mediaResources = [
             "scaleY": 0,
             "rotate": 0,
             "blur": 0,
-            "opacity": 0.0005164475421052631
+            "opacity": speed
         },
+        abs: ['o'],
         "init": {
             "translate": {
                 "x": -139.065,

@@ -18,5 +18,5 @@
     "experimentalDecorators": true,
     "noImplicitAny": true
   },
-  "include": ["src/**/*", "src/shims-vue.d.ts"]
+  "include": ["src/**/*", "src/shims-vue.d.ts", "public/src"]
 }

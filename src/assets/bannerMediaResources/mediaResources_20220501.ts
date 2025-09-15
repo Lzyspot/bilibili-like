@@ -6,12 +6,6 @@ const mediaResources = [
       transform: "translate(0, -18.0813px)",
       objectFit: "cover"
     },
-    init: {
-      translate: {
-        x: 0,
-        y: -18.0813
-      }
-    },
     fn: (el: any) => {
       el.style.width = screen.width + "px";
     },

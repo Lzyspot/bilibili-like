@@ -21,5 +21,23 @@ function base64ToBlobUrl(base64Data: string): string {
     return base64Data;
   }
 }
+function getScaleCompensation(callback?: Function): number {
+  const dpr = window.devicePixelRatio || 1;
 
-export { base64ToBlobUrl };
+  let compensationScale = 1 / dpr;
+  if (dpr <= 0.67) {
+    compensationScale = 1 / 0.67;
+  } else if (dpr > 1.1) {
+    compensationScale = 1;
+
+    if (dpr >= 1.5) {
+      compensationScale = 1 / dpr * 1.5;
+    }
+  }
+
+  callback && callback(compensationScale)
+
+  return compensationScale;
+}
+
+export { base64ToBlobUrl, getScaleCompensation };
