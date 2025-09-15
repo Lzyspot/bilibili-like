@@ -425,8 +425,8 @@ export default defineComponent({
         },
         applyScaleCompensation() {
             getScaleCompensation((scale: number) => {
-                const wrapper= this.$refs.wrapperRef as HTMLElement
-                const banner= this.$refs.bannerRef as HTMLElement
+                const wrapper = this.$refs.wrapperRef as HTMLElement
+                const banner = this.$refs.bannerRef as HTMLElement
 
                 wrapper.querySelectorAll('img, video').forEach((el: any) => {
                     el.style.scale = scale
@@ -454,8 +454,6 @@ export default defineComponent({
 <style lang="less">
 div[data-v-mainPageBanner] {
     position: relative;
-    -webkit-user-drag: none;
-    user-select: none;
 
     .animated-banner {
         position: relative;
@@ -464,6 +462,8 @@ div[data-v-mainPageBanner] {
         /* 根据需要调整高度 */
         overflow: hidden;
         background: #000;
+        -webkit-user-drag: none;
+        user-select: none;
 
         .layer {
             display: flex;

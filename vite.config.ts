@@ -17,7 +17,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        additionalData: '@container-width: 90%;@bg1: #fff;@bg2: #f1f2f3;@bg3: #00a1d6;@bg4: #00AEEC;'
+        additionalData: '@container-width: 90%;@bg1: #fff;@bg2: #f1f2f3;@bg3: #00a1d6;@bg4: #00AEEC;@bg5: #fb7299ff;'
       }
     }
   },

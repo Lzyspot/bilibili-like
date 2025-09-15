@@ -12,6 +12,12 @@
   margin: 0;
   padding: 0;
   outline: none;
+  box-sizing: border-box;
+}
+
+*::selection {
+  background: #8bc7e5;
+  color: #fff;
 }
 
 img,
@@ -23,7 +29,8 @@ li {
   list-style-type: none;
 }
 
-button {
+button,
+input {
   border: none;
 }
 

@@ -14,28 +14,33 @@
                         <span>首页</span>
                     </router-link>
                 </li>
-                <li>
-                    <router-link to="/404" class="banner-nav-item">番剧</router-link>
-                </li>
-                <li>
-                    <router-link to="/404" class="banner-nav-item">直播</router-link>
-                </li>
-                <li>
-                    <router-link to="/404" class="banner-nav-item">游戏中心</router-link>
-                </li>
-                <li>
-                    <router-link to="/404" class="banner-nav-item">会员购</router-link>
-                </li>
-                <li>
-                    <router-link to="/404" class="banner-nav-item">漫画</router-link>
-                </li>
-                <li>
-                    <router-link to="/404" class="banner-nav-item">赛事</router-link>
+                <li class="popover-wrap" v-for="value in leftNav">
+                    <router-link to="/404" class="banner-nav-item">{{ value }}</router-link>
                 </li>
             </ul>
         </div>
-        <div class="banner-nav-right">
-            <router-link to="/404" class="banner-nav-user"></router-link>
+        <div class="search-box">
+            <form action="">
+                <input type="text">
+                <div class="search-btn">
+                    <button></button>
+                </div>
+            </form>
+        </div>
+        <div class="nav-user-center">
+            <ul class="banner-nav-list">
+                <li class="mini-avatar">
+                    <a :href="userSpace">
+                        <img :src="userAvatar" alt="">
+                    </a>
+                </li>
+                <li class="popover-wrap" v-for="value in rightNav">
+                    <router-link to="/404" class="banner-nav-item">{{ value }}</router-link>
+                </li>
+                <li>
+                    <router-link to="/404" class="upload-btn">投稿</router-link>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="taper-line"></div>
@@ -44,39 +49,134 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import mainIcons from '@/assets/icons/main';
+
+const leftNav = ref<string[]>(['番剧', '直播', '游戏中心', '会员购', '漫画', '赛事'])
+const rightNav = ref<string[]>(['大会员', '消息', '动态', '收藏', '历史', '创作中心'])
+
+
+const userSpace = ref<string>('')
+const userAvatar = ref<string>('./src/default_avatar.webp')
+
 </script>
 
 <style scoped lang="less">
 .banner-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: absolute;
     top: 0;
     left: 0;
-    padding: 0 24px;
+    width: 100%;
+    line-height: 36px;
+    padding: 10px 24px;
     z-index: 100;
 }
 
-.banner-nav-left {
+.banner-nav-left {}
+
+.nav-user-center {
     .banner-nav-list {
+        >li {
+            margin-right: 10px;
+        }
+    }
+}
+
+.banner-nav-list {
+    display: flex;
+    align-items: center;
+
+    >li {
+        margin-right: 20px;
+    }
+
+    .banner-nav-item {
+        color: #fff;
+        // line-height: 64px;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .banner-logo {
+        margin-right: 6px;
+    }
+
+    .entry-title {
         display: flex;
         align-items: center;
+    }
 
-        .banner-nav-item {
-            color: #fff;
-            line-height: 64px;
-            color: #fff;
+    .popover-wrap:hover {
+        animation: bounce-up 300ms;
+    }
+}
+
+.upload-btn {
+    height: 36px;
+    width: 100px;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    background: @bg5;
+    color: #fff;
+    border-radius: 2px;
+}
+
+.mini-avatar {
+    img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+
+    }
+}
+
+.search-box {
+    position: relative;
+    width: 500px;
+    margin: 0 10px;
+    transition: width .3s;
+
+    form {
+        background: #fff;
+        padding: 0px 38px 0px 16px;
+
+        input {
+            width: 100%;
+            height: 34px;
+            background-color: transparent;
+            box-shadow: none;
+            // color: #999999;
+            color: #000;
             font-size: 14px;
-            cursor: pointer;
-            margin-right: 20px;
+            line-height: 34px;
+            transition: 0.2s;
         }
 
-        .banner-logo {
-            margin-right: 6px;
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 48px;
+            background: #e7e7e7;
         }
+    }
+}
 
-        .entry-title {
-            display: flex;
-            align-items: center;
-        }
+@keyframes bounce-up {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+
+    100% {
+        transform: translateY(0);
     }
 }
 </style>
