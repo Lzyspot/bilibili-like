@@ -21,8 +21,16 @@ function base64ToBlobUrl(base64Data: string): string {
     return base64Data;
   }
 }
+
+function getZoomLevel() {
+  let deviceXDPI = window.outerWidth * 96 / document.documentElement.clientWidth;
+  let zoomLevel = deviceXDPI / 96; // 96 DPI is considered the default DPI in browsers
+
+  return zoomLevel;
+}
 function getScaleCompensation(callback?: Function): number {
-  const dpr = window.devicePixelRatio || 1;
+  // const dpr = window.devicePixelRatio || 1;
+  const dpr = getZoomLevel() || 1;
 
   let compensationScale = 1 / dpr;
   if (dpr <= 0.67) {
@@ -35,7 +43,7 @@ function getScaleCompensation(callback?: Function): number {
     }
   }
 
-  callback && callback(compensationScale)
+  callback && callback(compensationScale);
 
   return compensationScale;
 }

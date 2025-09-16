@@ -464,7 +464,7 @@ div[data-v-mainPageBanner] {
         background: #000;
         -webkit-user-drag: none;
         user-select: none;
-        z-index: -1;
+        z-index: 0;
 
         .layer {
             display: flex;

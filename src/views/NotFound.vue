@@ -20,7 +20,7 @@ const verySorry = ref<string>('')
 const errManga = ref<string>('')
 const mangaList = ref<string[]>([])
 
-const mangaPath = 'src/error-manga/'
+const mangaPath = '/src/error-manga/'
 
 onMounted(async () => {
   verySorry.value = mangaPath + 'verySorry.png'

@@ -27,6 +27,15 @@
   color: #fff;
 }
 
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #000;
+}
+
 img,
 svg {
   vertical-align: middle;

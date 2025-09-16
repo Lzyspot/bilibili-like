@@ -36,7 +36,10 @@
                     <router-link to="/404" class="banner-nav-item">{{ value }}</router-link>
                 </li>
                 <li>
-                    <router-link to="/404" class="upload-btn">投稿</router-link>
+                    <router-link to="/404" class="upload-btn">
+                        <span v-html="mainIcons.upload"></span>
+                        <span>投稿</span>
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -131,14 +134,20 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
 }
 
 .upload-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 36px;
     width: 100px;
-    display: block;
-    text-align: center;
+    // display: block;
     font-size: 14px;
-    background: @bg5;
     color: #fff;
-    border-radius: 2px;
+    background: @bg5;
+    border-radius: 8px;
+
+    span {
+        margin-right: 5px;
+    }
 }
 
 .mini-avatar {
