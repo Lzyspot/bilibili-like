@@ -2,15 +2,19 @@
     <div data-v-headerChannel>
         <div class="channel-container left-channel-container">
             <router-link to="/404" class="bili-header__channel-link" target="_blank">
-                <div class="icon-bg icon-bg__dynamic" v-html="headerIcons.dynamic"></div>
+                <div class="bilifont icon-bg icon-bg__home"></div>
+                <span class="icon-title">首页</span>
+            </router-link>
+            <router-link to="/404" class="bili-header__channel-link" target="_blank">
+                <div class="bilifont icon-bg icon-bg__dynamic"></div>
                 <span class="icon-title">动态</span>
             </router-link>
             <router-link to="/404" class="bili-header__channel-link" target="_blank">
-                <div class="icon-bg icon-bg__popular" v-html="headerIcons.popular"></div>
-                <span class="icon-title">热门</span>
+                <div class="bilifont icon-bg icon-bg__ranking"></div>
+                <span class="icon-title">排行榜</span>
             </router-link>
             <router-link to="/404" class="bili-header__channel-link" target="_blank">
-                <div class="icon-bg icon-bg__channer" v-html="headerIcons.channel"></div>
+                <div class="bilifont icon-bg icon-bg__channer"></div>
                 <span class="icon-title">频道</span>
             </router-link>
         </div>
@@ -57,32 +61,65 @@ div[data-v-headerChannel] {
     }
 
     .icon-bg {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
 
-        width: 48px;
-        height: 48px;
-        margin-bottom: 6px;
+        // width: 48px;
+        // height: 48px;
+        // margin-bottom: 6px;
 
+        // border-radius: 50%;
+        position: relative;
+        width: 36px;
+        height: 36px;
+        background: #ff5c7c;
         border-radius: 50%;
+        text-align: center;
+        margin: 0 auto 4px;
 
         svg {
             width: 25px;
             height: 25px;
         }
+
+        &::before {
+            line-height: 36px;
+            font-size: 28px;
+            color: #fff;
+        }
+    }
+
+    .icon-bg__home {
+        background: #ff5c7c;
+
+        &::before {
+            content: '\E738';
+        }
     }
 
     .icon-bg__dynamic {
-        background: #ff9212;
+        background: #fcba2a;
+
+        &::before {
+            content: '\E732';
+        }
     }
 
-    .icon-bg__popular {
-        background: #f07775;
+    .icon-bg__ranking {
+        background: #00a1d6;
+
+        &::before {
+            content: '\E739';
+        }
     }
 
     .icon-bg__channer {
         background: #59ca73;
+
+        &::before {
+            content: '\E760';
+        }
     }
 
     .icon-title {

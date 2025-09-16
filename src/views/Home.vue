@@ -31,8 +31,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.bili-header {
+  max-width: 2560px;
+  min-width: 720px;
+  margin: 0 auto;
+}
+
 .bili-header__channel {
   width: 90%;
   margin: 0 auto;
+
+
 }
 </style>

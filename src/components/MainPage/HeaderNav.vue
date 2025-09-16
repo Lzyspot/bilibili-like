@@ -3,15 +3,8 @@
         <div class="banner-nav-left">
             <ul class="banner-nav-list">
                 <li>
-                    <router-link to="/404" class="banner-nav-item entry-title">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="banner-logo">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M3.73252 2.67094C3.33229 2.28484 3.33229 1.64373 3.73252 1.25764C4.11291 0.890684 4.71552 0.890684 5.09591 1.25764L7.21723 3.30403C7.27749 3.36218 7.32869 3.4261 7.37081 3.49407H10.5789C10.6211 3.4261 10.6723 3.36218 10.7325 3.30403L12.8538 1.25764C13.2342 0.890684 13.8368 0.890684 14.2172 1.25764C14.6175 1.64373 14.6175 2.28484 14.2172 2.67094L13.364 3.49407H14C16.2091 3.49407 18 5.28493 18 7.49407V12.9996C18 15.2087 16.2091 16.9996 14 16.9996H4C1.79086 16.9996 0 15.2087 0 12.9996V7.49406C0 5.28492 1.79086 3.49407 4 3.49407H4.58579L3.73252 2.67094ZM4 5.42343C2.89543 5.42343 2 6.31886 2 7.42343V13.0702C2 14.1748 2.89543 15.0702 4 15.0702H14C15.1046 15.0702 16 14.1748 16 13.0702V7.42343C16 6.31886 15.1046 5.42343 14 5.42343H4ZM5 9.31747C5 8.76519 5.44772 8.31747 6 8.31747C6.55228 8.31747 7 8.76519 7 9.31747V10.2115C7 10.7638 6.55228 11.2115 6 11.2115C5.44772 11.2115 5 10.7638 5 10.2115V9.31747ZM12 8.31747C11.4477 8.31747 11 8.76519 11 9.31747V10.2115C11 10.7638 11.4477 11.2115 12 11.2115C12.5523 11.2115 13 10.7638 13 10.2115V9.31747C13 8.76519 12.5523 8.31747 12 8.31747Z"
-                                fill="currentColor">
-                            </path>
-                        </svg>
-                        <span>首页</span>
+                    <router-link to="/404" class="banner-nav-item entry-title bilifont">
+                        <span>主站</span>
                     </router-link>
                 </li>
                 <li class="popover-wrap" v-for="value in leftNav">
@@ -20,15 +13,20 @@
             </ul>
         </div>
         <div class="search-box">
-            <form action="">
-                <input type="text">
+            <form action="/search" target="_blank">
+                <input type="text" name="keyword">
                 <div class="search-btn">
-                    <button></button>
+                    <button type="submit" v-html="mainIcons.search"></button>
                 </div>
             </form>
         </div>
         <div class="nav-user-center">
             <ul class="banner-nav-list">
+                <li>
+                    <router-link to="/search" target="_blank" class="banner-nav-item">
+                        <button class="search-icon" v-html="mainIcons.search"></button>
+                    </router-link>
+                </li>
                 <li class="mini-avatar">
                     <a :href="userSpace">
                         <img :src="userAvatar" alt="">
@@ -44,15 +42,18 @@
         </div>
     </div>
     <div class="taper-line"></div>
+
+    <div class="bilifont">
+
+    </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import mainIcons from '@/assets/icons/main';
 
-const leftNav = ref<string[]>(['番剧', '直播', '游戏中心', '会员购', '漫画', '赛事'])
+const leftNav = ref<string[]>(['番剧', '游戏中心', '直播', '会员购', '漫画', '赛事'])
 const rightNav = ref<string[]>(['大会员', '消息', '动态', '收藏', '历史', '创作中心'])
-
 
 const userSpace = ref<string>('')
 const userAvatar = ref<string>('./src/default_avatar.webp')
@@ -70,10 +71,13 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
     width: 100%;
     line-height: 36px;
     padding: 10px 24px;
-    z-index: 100;
+    z-index: 1;
 }
 
-.banner-nav-left {}
+.banner-nav-left,
+.nav-user-center {
+    flex-shrink: 0;
+}
 
 .nav-user-center {
     .banner-nav-list {
@@ -81,6 +85,12 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
             margin-right: 10px;
         }
     }
+
+}
+
+.search-icon {
+    display: none;
+    opacity: 0;
 }
 
 .banner-nav-list {
@@ -88,14 +98,14 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
     align-items: center;
 
     >li {
-        margin-right: 20px;
+        margin-right: 12px;
+        font-size: 14px;
     }
 
     .banner-nav-item {
         color: #fff;
         // line-height: 64px;
         color: #fff;
-        font-size: 14px;
         cursor: pointer;
     }
 
@@ -106,6 +116,13 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
     .entry-title {
         display: flex;
         align-items: center;
+
+        &::before {
+            position: relative;
+            content: '\E72B';
+            font-size: 18px;
+            margin-right: 6px;
+        }
     }
 
     .popover-wrap:hover {
@@ -140,7 +157,10 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
     transition: width .3s;
 
     form {
+        display: flex;
+        align-items: center;
         background: #fff;
+        border-radius: 6px;
         padding: 0px 38px 0px 16px;
 
         input {
@@ -152,6 +172,7 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
             color: #000;
             font-size: 14px;
             line-height: 34px;
+            opacity: 1;
             transition: 0.2s;
         }
 
@@ -159,9 +180,33 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
             position: absolute;
             right: 0;
             top: 0;
-            height: 100%;
+            height: 34px;
             width: 48px;
             background: #e7e7e7;
+            border-radius: 0 6px 6px 0;
+            overflow: hidden;
+
+            button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            svg {
+                background: transparent;
+            }
+
+            &:hover {
+                * {
+                    fill: @bg4;
+                }
+
+                svg {
+                    background: @bg5;
+                }
+            }
         }
     }
 }
@@ -177,6 +222,34 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
 
     100% {
         transform: translateY(0);
+    }
+}
+
+@media (max-width: 1000px) {
+    .search-box {
+        // position: relative;
+        width: 0;
+
+        form {
+            background: transparent;
+
+            input,
+            .search-btn {
+                display: none;
+            }
+        }
+    }
+
+    .search-icon {
+        // position: absolute;
+        // left: 0;
+        background: transparent;
+        display: inline-block;
+        opacity: 1;
+
+        * {
+            fill: #fff;
+        }
     }
 }
 </style>
