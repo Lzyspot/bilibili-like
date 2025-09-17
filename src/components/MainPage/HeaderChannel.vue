@@ -44,31 +44,31 @@ interface ChannelItem {
     name: string,
     icon?: string,
     desc?: ChannelItem[],
-    link?: string
+    link: string
 }
 
 const leftChannelItems: ChannelItem[] = [
     { name: '番剧', desc: [{ name: '新番时间表', link: '/anime/timeline' }, { name: '新番索引', link: '/anime/index' }], link: '/anime' },
+    { name: '电影', link: '/movie' },
     { name: '国创', link: '/guochuang' },
+    { name: '电视剧', link: '/tv' },
     { name: '综艺', link: '/variety' },
+    { name: '纪录片', link: '/documentary' },
     { name: '动画', link: '/c/douga' },
+    { name: '游戏', link: '/c/game' },
     { name: '鬼畜', link: '/c/kichiku' },
+    { name: '音乐', link: '/c/music' },
     { name: '舞蹈', link: '/c/dance' },
+    { name: '影视', link: '/c/cinephile' },
     { name: '娱乐', link: '/c/ent' },
+    { name: '知识', link: '/c/knowledge' },
     { name: '科技数码', link: '/c/tech' },
+    { name: '资讯', link: '/c/information' },
     { name: '美食', link: '/c/food' },
     { name: '汽车', link: '/c/car' },
     { name: '体育运动', link: '/c/sports' },
     { name: 'vlog', link: '/c/vlog' },
 
-    { name: '电影', link: '/movie' },
-    { name: '电视剧', link: '/tv' },
-    { name: '纪录片', link: '/documentary' },
-    { name: '游戏', link: '/c/game' },
-    { name: '音乐', link: '/c/music' },
-    { name: '影视', link: '/c/cinephile' },
-    { name: '知识', link: '/c/knowledge' },
-    { name: '资讯', link: '/c/information' },
     { name: '小剧场', link: '/c/shortplay' },
     { name: '时尚美妆', link: '/c/fashion' },
     { name: '动物', link: '/c/animal' }
@@ -113,7 +113,7 @@ const rightChannelItems: ChannelItem[] = [
 ]
 
 const more: ChannelItem = {
-    name: '更多', icon: mainIcons.more, desc: [
+    name: '更多', link: '', icon: mainIcons.more, desc: [
         { name: '绘画', link: '/c/painting' },
         { name: '人工智能', link: '/c/ai' },
         { name: '家装房产', link: '/c/home' },
@@ -136,16 +136,15 @@ const more: ChannelItem = {
     ]
 }
 
-const channelMore = ref(null)
-const iconMore = ref(null)
+const channelMore = ref<any>(null)
+const iconMore = ref<any>(null)
 
 let iconMore_rotate = 0
 onMounted(() => {
-
     channelMore.value.addEventListener('mouseenter', () => {
         iconMore_rotate += 180
         iconMore.value.style.transform = `rotate(${iconMore_rotate}deg)`
-        
+
     })
     channelMore.value.addEventListener('mouseleave', () => {
         iconMore_rotate -= 180
@@ -181,6 +180,8 @@ div[data-v-headerChannel] {
 }
 
 .channel-more {
+    cursor: default;
+
     span {
         margin-left: 5px;
         transition: all .2s ease-out;
