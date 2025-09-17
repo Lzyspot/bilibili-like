@@ -65,13 +65,13 @@ const leftChannelItems: ChannelItem[] = [
     { name: '科技数码', link: '/c/tech' },
     { name: '资讯', link: '/c/information' },
     { name: '美食', link: '/c/food' },
+    { name: '小剧场', link: '/c/shortplay' },
     { name: '汽车', link: '/c/car' },
+    { name: '时尚美妆', link: '/c/fashion' },
     { name: '体育运动', link: '/c/sports' },
+    { name: '动物', link: '/c/animal' },
     { name: 'vlog', link: '/c/vlog' },
 
-    { name: '小剧场', link: '/c/shortplay' },
-    { name: '时尚美妆', link: '/c/fashion' },
-    { name: '动物', link: '/c/animal' }
 ]
 
 const rightChannelItems: ChannelItem[] = [
@@ -193,12 +193,11 @@ div[data-v-headerChannel] {
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: repeat(2, 1fr);
     width: 100%;
-    // grid-auto-flow: column;
+    grid-auto-flow: column;
     grid-gap: 10px;
 
     padding-right: 30px;
     border-right: 1px solid #E3E5E7;
-
 
     .channel-link {
         box-sizing: content-box;

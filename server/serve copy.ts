@@ -14,33 +14,7 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-// 自定义中间件：获取真实 IP
-function getRealIP(req: any) {
-  // 优先使用 X-Forwarded-For 的第一个 IP（最原始的用户IP）
-  const forwarded = req.headers["x-forwarded-for"];
-  const realIp = req.headers["x-real-ip"];
-  const remoteAddr = req.connection.remoteAddress;
-
-  if (forwarded) {
-    // X-Forwarded-For: client, proxy1, proxy2
-    return forwarded.split(",")[0].trim();
-  }
-
-  if (realIp) {
-    return realIp.trim();
-  }
-
-  return remoteAddr;
-}
-
 // GET
-// 获取用户真实ip
-app.get("/ip", (req: Request, res: Response) => {
-  const ip = getRealIP(req)
-  console.log(ip)
-  res.send(ip)
-})
-
 app.get("/api/rcmd", (req: Request, res: Response) => {
   // 生成随机uniq_id (11位数字)
   const randomUniqId = Math.floor(Math.random() * 100000000000)
@@ -120,11 +94,13 @@ app.get("/api/search/suggest", (req: Request, res: Response) => {
 });
 
 app.get("/api/search/default", (req: Request, res: Response) => {
-  fetch("https://api.bilibili.com/x/web-interface/wbi/search/default")
+  fetch(
+    "https://api.bilibili.com/x/web-interface/wbi/search/default"
+  )
     .then(data => data.json())
     .then(data => {
       res.send(data);
-    });
+    })
 });
 
 // post
