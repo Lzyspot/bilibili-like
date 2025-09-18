@@ -1,4 +1,4 @@
-import { base64ToBlobUrl }from '@/components/utils'
+import { base64ToBlobUrl }from '@/components/utils/utils'
 
 // 定义眨眼资源为图片数组
 const blinkEyeResources = [

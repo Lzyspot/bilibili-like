@@ -18,11 +18,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import HeaderChannel from '@/components/MainPage/HeaderChannel.vue'
-import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout.vue'
+// import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout.vue'
+import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout_old.vue'
 
 import Banner from '@/components/MainPage/Banner.vue'
 
-import { base64ToBlobUrl, getScaleCompensation } from '@/components/utils'
+import { base64ToBlobUrl, getScaleCompensation } from '@/components/utils/utils'
 
 const biliContainer = ref<HTMLElement | null>(null)
 

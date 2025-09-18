@@ -32,10 +32,6 @@ a {
   text-decoration: none;
 }
 
-a:visited {
-  color: #000;
-}
-
 img,
 svg {
   vertical-align: middle;

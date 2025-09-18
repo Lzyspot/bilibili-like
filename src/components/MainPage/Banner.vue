@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { base64ToBlobUrl, getScaleCompensation } from '@/components/utils'
+import { base64ToBlobUrl, getScaleCompensation } from '@/components/utils/utils'
 
 //#region 
 // 视差滚动
