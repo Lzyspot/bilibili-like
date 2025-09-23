@@ -11,7 +11,7 @@
 Banner类型
 
 ```
-?bannerAutoSwitch=interactive | animation | image | promotion
+?bannerType=interactive | animation | image | promotion
 ```
 
 自动切换Banner
