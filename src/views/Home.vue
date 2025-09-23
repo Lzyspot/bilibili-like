@@ -11,12 +11,13 @@
     <div id="bili-container">
       <HeaderChannel class="bili-header__channel"></HeaderChannel>
       <MainRecommendLayout></MainRecommendLayout>
+      <ModuleWrap v-for="value in ChannelList" :rid="value.rid" :season_type="value.season_type"></ModuleWrap>
     </div>
   </div>
   <!-- <Login></Login> -->
-   <div id="footer">
-     <Footer></Footer>
-   </div>
+  <div id="footer">
+    <Footer></Footer>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -31,9 +32,43 @@ import Footer from '@/components/MainPage/Footer.vue'
 
 import Banner from '@/components/MainPage/Banner.vue'
 
-import { base64ToBlobUrl, getScaleCompensation } from '@/components/utils/utils'
+import ModuleWrap from '@/components/MainPage/ModuleWrap.vue'
+
+interface ChannelItem {
+  name: string,
+  rid: number,
+  season_type: number
+}
 
 const biliContainer = ref<HTMLElement | null>(null)
+
+const ChannelList = ref<ChannelItem[]>([
+  {
+    "name": "番剧",
+    "rid": 33,
+    "season_type": 1
+  },
+  {
+    "name": "国创",
+    "rid": 167,
+    "season_type": 4
+  },
+  {
+    "name": "电影",
+    "rid": 23,
+    "season_type": 2
+  },
+  {
+    "name": "TV剧",
+    "rid": 11,
+    "season_type": 5
+  },
+  {
+    "name": "纪录片",
+    "rid": 177,
+    "season_type": 3
+  }
+])
 
 onMounted(() => {
 })

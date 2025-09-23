@@ -34,6 +34,9 @@ app.get("/ip", (req: Request, res: Response) => {
   res.send(ip);
 });
 
+/**
+ * 首页推荐
+ */
 app.get("/api/rcmd", (req: Request, res: Response) => {
   // 生成随机uniq_id (11位数字)
   const randomUniqId = Math.floor(Math.random() * 100000000000)
@@ -108,6 +111,9 @@ app.get("/api/search/suggest", (req: Request, res: Response) => {
   });
 });
 
+/**
+ * 默认搜索
+ */
 app.get("/api/search/default", (req: Request, res: Response) => {
   limiterFetch(
     "https://api.bilibili.com/x/web-interface/wbi/search/default"
@@ -116,6 +122,9 @@ app.get("/api/search/default", (req: Request, res: Response) => {
   });
 });
 
+/**
+ * 图片中转
+ */
 app.get("/api/img", (req: Request, res: Response) => {
   limiter.wrap(async () => {
       if (!req.query?.url) {
@@ -131,6 +140,35 @@ app.get("/api/img", (req: Request, res: Response) => {
       res.set("Cache-Control", "public, max-age=31536000"); // 缓存一年
       res.send(buffer);
   })();
+});
+
+/**
+ * 获取指定频道推荐
+ * rid: 频道ID
+ * ps: 每页数量
+ */
+app.get("/api/channel", (req: Request, res: Response) => {
+  limiterFetch('https://api.bilibili.com/x/web-interface/dynamic/region' + jsonToQueryString({
+        ps: req.query.ps || '12',
+        rid: req.query.rid || '1'
+      }
+    ))
+    .then(data => {
+      res.send(data);
+    });
+});
+
+/**
+ * 获取指定分区排行榜
+ */
+app.get("/api/rank/channel", (req: Request, res: Response) => {
+  limiterFetch('https://api.bilibili.com/pgc/web/rank/list' + jsonToQueryString({
+      season_type: req.query.season_type || '1',
+      day: req.query.day || '3'
+  }))
+    .then(data => {
+      res.send(data);
+    });
 });
 
 // post
@@ -191,6 +229,7 @@ function getRealIP(req: any) {
 
   return remoteAddr;
 }
+
 async function getImgBuffer(
   url: string,
   targetWidth = 206,
