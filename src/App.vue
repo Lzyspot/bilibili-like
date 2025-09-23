@@ -11,7 +11,7 @@
 @font-face {
   font-family: bilifont;
   // src: url('./src/fonts/Iconochive-Regular.woff');
-  src: url('./src/fonts/font1.woff2');
+  src: url('/src/fonts/font1.woff2');
   // src: url('./src/fonts/font2.woff2');
 }
 
@@ -63,6 +63,27 @@ body {
     // content: '首页\E738 动态\E732 排行\E739 频道\E760 吃豆人\E73A 刷新\E73C';
     // font-size: 36px;
     // -webkit-text-stroke: 1px white
+  }
+}
+
+.left-wrapper {
+  width: 1286px;
+}
+
+@media (max-width: 1286px) {
+  .left-wrapper {
+    width: 1070px;
+  }
+}
+
+@media (max-width: 1654px) {
+  .left-wrapper {
+    width: 854px;
+  }
+}
+@media (max-width: 1438px) {
+  .left-wrapper {
+    width: 710px;
   }
 }
 </style>

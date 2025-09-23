@@ -1,14 +1,14 @@
 <template>
     <div data-v-headerChannel>
         <div class="channel-icons">
-            <router-link to="/404" class="bili-header__channel-link" target="_blank">
+            <a href="https://t.bilibili.com/" class="bili-header__channel-link" target="_blank">
                 <div class="icon-bg icon-bg__dynamic" v-html="headerIcons.dynamic"></div>
                 <span class="icon-title">动态</span>
-            </router-link>
-            <router-link to="/404" class="bili-header__channel-link" target="_blank">
+            </a>
+            <a href="https://www.bilibili.com/v/popular/all" class="bili-header__channel-link" target="_blank">
                 <div class="icon-bg icon-bg__popular" v-html="headerIcons.popular"></div>
                 <span class="icon-title">热门</span>
-            </router-link>
+            </a>
             <!-- <router-link to="/404" class="bili-header__channel-link" target="_blank">
                 <div class="icon-bg icon-bg__channer" v-html="headerIcons.channel"></div>
                 <span class="icon-title">频道</span>
@@ -157,7 +157,7 @@ onMounted(() => {
 <style scope lang="less">
 div[data-v-headerChannel] {
     width: 100%;
-    height: 80px;
+    height: 120px;
 
     background: #fff;
     border-radius: 8px;
@@ -251,6 +251,7 @@ div[data-v-headerChannel] {
     .bili-header__channel-link {
         display: flex;
         flex-direction: column;
+        margin-right: 16px;
     }
 
     .icon-bg {
@@ -322,6 +323,7 @@ div[data-v-headerChannel] {
         .bili-header__channel-link {
             margin-right: 10px;
         }
+
     }
 
     .channel-items__left {
@@ -332,5 +334,26 @@ div[data-v-headerChannel] {
             display: none !important;
         }
     }
+
+    .channel-items__right {
+        .channel-link {
+            font-size: 13px;
+            height: 28px;
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+
+    .channel-items__right {
+        width: 200px;
+
+        .channel-link {
+            svg {
+                display: none !important;
+            }
+        }
+    }
+    
 }
 </style>

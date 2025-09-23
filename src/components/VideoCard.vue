@@ -103,7 +103,7 @@ export default {
 
         .info {
             position: absolute;
-            z-index: 2;
+            z-index: 1;
             width: 100%;
             top: 78px;
             left: 0px;

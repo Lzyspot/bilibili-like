@@ -72,4 +72,17 @@ const imgUrl = 'http://i0.hdslb.com/bfs/archive/1230a01459df9c6edec82cadeb370ef4
 
 // 调用函数
 // getImageBase64(imgUrl);
-getImgBuffer(imgUrl);
+// getImgBuffer(imgUrl);
+
+// fetch('https://api.bilibili.com/x/web-show/res/loc?id=336&pf=0')
+//     .then(res => res.json())
+//     .then(data => {
+//         console.log(data);
+//     })
+
+// channel
+fetch("https://api.bilibili.com/x/kv-frontend/namespace/data?appKey=333.1339&nscode=10")
+    .then(res => res.json()).then(data => console.log(data));
+
+
+    

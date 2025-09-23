@@ -4,7 +4,6 @@ import cors from "cors";
 import Bottleneck from "bottleneck";
 const { createCanvas, loadImage } = require("canvas");
 import http from "http";
-import { get } from "jquery";
 
 const port = 6600;
 
@@ -18,7 +17,7 @@ const wss = new Server({ server, path: "/ws" });
 app.use(cors()).use(express.urlencoded({ extended: true })).use(express.json());
 
 const limiter = new Bottleneck({
-  minTime: 240,
+  minTime: 120,
   maxConcurrent: 1
 });
 

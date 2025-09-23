@@ -13,6 +13,10 @@
       <MainRecommendLayout></MainRecommendLayout>
     </div>
   </div>
+  <!-- <Login></Login> -->
+   <div id="footer">
+     <Footer></Footer>
+   </div>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +24,10 @@ import { ref, onMounted } from 'vue'
 import HeaderChannel from '@/components/MainPage/HeaderChannel.vue'
 // import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout.vue'
 import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout_old.vue'
+
+import Login from '@/components/Login.vue'
+
+import Footer from '@/components/MainPage/Footer.vue'
 
 import Banner from '@/components/MainPage/Banner.vue'
 
@@ -34,14 +42,16 @@ onMounted(() => {
 
 <style scoped lang="less">
 #bili-container-wrapper,
-#bili-header-wrapper {
+#bili-header-wrapper,
+#footer {
   max-width: 2560px;
-  min-width: 720px;
+  min-width: 1200px;
   margin: 0 auto;
   background: @bg1;
 }
 
 #bili-container {
+  min-width: 1200px;
   max-width: 1630px;
   margin: 0 auto;
 }
@@ -49,13 +59,13 @@ onMounted(() => {
 
 @media (min-width: 1540px) and (max-width: 1800px) {
   #bili-container {
-     max-width: 1400px;
+    max-width: 1400px;
   }
 }
 
 @media (max-width: 1540px) {
   #bili-container {
-     max-width: 1200px;
+    max-width: 1200px;
   }
 }
 </style>

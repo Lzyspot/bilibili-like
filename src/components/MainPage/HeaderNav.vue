@@ -14,9 +14,13 @@
         </div>
         <div class="search-box">
             <form action="/search" target="_blank">
-                <input type="text" name="keyword">
+                <input ref="searchInput" type="text" name="keyword">
                 <div class="search-btn">
-                    <button type="submit" v-html="mainIcons.search"></button>
+                    <button type="submit" v-html="mainIcons.search" @click="() => {
+                        if (!searchInput?.value) {
+                            (searchInput as HTMLInputElement).value = (searchInput as HTMLInputElement).placeholder;
+                        }
+                    }"></button>
                 </div>
             </form>
         </div>
@@ -60,6 +64,19 @@ const rightNav = ref<string[]>(['大会员', '消息', '动态', '收藏', '历�
 
 const userSpace = ref<string>('')
 const userAvatar = ref<string>('./src/default_avatar.webp')
+
+const searchInput = ref<HTMLInputElement | null>(null)
+
+onMounted(() => {
+    fetch('http://localhost:6600/api/search/default')
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.data.show_name);
+
+            (searchInput.value as HTMLInputElement).placeholder = data.data.show_name
+
+        })
+})
 
 </script>
 
