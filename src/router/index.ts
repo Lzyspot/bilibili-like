@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 import type { RouteRecordRaw } from 'vue-router'
 import Home from '@/views/Home.vue'
 
+import config from '@/config/config'
+
 // 定义路由配置
 // 每个路由映射一个组件
 const routes: Array<RouteRecordRaw> = [
@@ -21,8 +23,8 @@ const routes: Array<RouteRecordRaw> = [
 
 // 创建路由器实例并配置路由
 const router = createRouter({
-  // 使用HTML5 History模式
-  history: createWebHistory(),
+  // 使用HTML5 History模式，并设置基础路径
+  history: createWebHistory(config.dir),
   // Hash模式
   // history: createWebHashHistory(),
   routes

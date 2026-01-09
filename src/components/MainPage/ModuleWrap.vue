@@ -7,6 +7,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import config from '@/config/config'
 
 interface ModuleWrapProps {
     rid: number,
@@ -39,7 +40,7 @@ const content = ref<ModuleWrapData[]>([])
 const ranking = ref<RankingData[]>([])
 
 onMounted(() => {
-    fetch(`http://${location.hostname}:6600/api/channel?rid=${props.rid}`)
+    fetch(config.ws + `/api/channel?rid=${props.rid}`)
         .then(res => res.json())
         .then(data => {
             if (data.code) {
@@ -66,7 +67,7 @@ onMounted(() => {
         })
 
     // 无法直接获取普通视频排行榜，需要登录
-    fetch(`http://${location.hostname}:6600/api/rank/channel?season_type=${props.season_type}`)
+    fetch(config.ws + `/api/rank/channel?season_type=${props.season_type}`)
         .then(res => res.json())
         .then(data => {
             if (data.code) {

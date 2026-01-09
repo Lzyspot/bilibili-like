@@ -57,7 +57,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import mainIcons from '@/assets/icons/main';
+import mainIcons from '@/assets/icons/main'
+import config from '@/config/config'
+
 
 const leftNav = ref<string[]>(['番剧', '游戏中心', '直播', '会员购', '漫画', '赛事'])
 const rightNav = ref<string[]>(['大会员', '消息', '动态', '收藏', '历史', '创作中心'])
@@ -68,7 +70,7 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
 const searchInput = ref<HTMLInputElement | null>(null)
 
 onMounted(() => {
-    fetch('http://localhost:6600/api/search/default')
+    fetch(`${config.ws}/api/search/default`)
         .then(res => res.json())
         .then(data => {
             console.log(data.data.show_name);

@@ -38,6 +38,7 @@ const mediaImportSet: any = {
     banner_20250501: () => import('../../assets/bannerMediaResources/mediaResources_20250501'), // 城外草原
     banner_20250801: () => import('../../assets/bannerMediaResources/mediaResources_20250801'), // 洪涝购物
     banner_20250909: () => import('../../assets/bannerMediaResources/mediaResources_20250909'), // 流星海滩
+    banner_20260109: () => import('../../assets/bannerMediaResources/mediaResources_20260109'), // 下雪车站
 
     // 特殊
     banner_20220723: () => import('../../assets/bannerMediaResources/mediaResources_20220723'), // 【未完成】唯一强交互
@@ -113,6 +114,7 @@ const mediaSet: any = {
         mediaImportSet.banner_20250501,
         mediaImportSet.banner_20250801,
         mediaImportSet.banner_20250909,
+        mediaImportSet.banner_20260109,
         /* mediaImportSet.banner_20220723 */
     ],
     animation: [
@@ -172,6 +174,20 @@ const mediaSet: any = {
 import { defineComponent } from 'vue';
 import HeaderNav from '../../components/MainPage/HeaderNav.vue'
 
+
+interface GlobalConfig {
+    style: {
+        bannerHeight: number
+    }
+}
+
+export const globalConfig: GlobalConfig = {
+    style: {
+        bannerHeight: 180
+    }
+}
+
+
 export default defineComponent({
     components: {
         HeaderNav
@@ -188,30 +204,47 @@ export default defineComponent({
         };
     },
     async mounted() {
-        // banner类型
-        // ?bannerAutoSwitch=interactive | animation | image | promotion
+
         const params = new URLSearchParams(location.search)
-        let bannerType: any = params.get('bannerType')
-        bannerType = mediaSet[bannerType] ? bannerType : 'interactive'
-        let { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
-
-        // 渲染所有元素
         const banner = this.$refs.bannerRef as HTMLElement
-        this.layers = this.initBanner(mediaResources, banner)
 
-        // 自动切换Banner
-        // ?bannerAutoSwitch=true
-        // ?bannerAutoSwitchInterval=5000
-        let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval'))
-        if (params.get('bannerAutoSwitch') || bannerSwitchInterval) {
-            // 至少5s切换一次
-            bannerSwitchInterval = bannerSwitchInterval >= 5000 ? bannerSwitchInterval : 5000
+        let bannerDate = params.get('bannerDate')
+        if (bannerDate) {
+            let { mediaResources } = await mediaImportSet['banner_' + bannerDate]()
+            console.log('banner_' + bannerDate);
 
-            setInterval(async () => {
-                const { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
-                this.layers = this.initBanner(mediaResources, banner)
-            }, bannerSwitchInterval)
+            this.layers = this.initBanner(mediaResources, banner)
+        } else {
+            // banner类型
+            // ?bannerType=interactive | animation | image | promotion
+            let bannerType: any = params.get('bannerType')
+            bannerType = mediaSet[bannerType] ? bannerType : 'interactive'
+            let { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
+
+            // 渲染所有元素
+            this.layers = this.initBanner(mediaResources, banner)
+
+            // 自动切换Banner
+            // ?bannerAutoSwitch=true
+            // ?bannerAutoSwitchInterval=5000
+            let bannerAutoSwitch = params.get('bannerAutoSwitch')
+            let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval'))
+
+            if (bannerAutoSwitch && !bannerSwitchInterval) {
+                bannerSwitchInterval = 3000
+            }
+
+            if (bannerSwitchInterval) {
+                // 至少5s切换一次
+                bannerSwitchInterval = bannerSwitchInterval >= 5000 ? bannerSwitchInterval : 5000
+
+                setInterval(async () => {
+                    const { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
+                    this.layers = this.initBanner(mediaResources, banner)
+                }, bannerSwitchInterval)
+            }
         }
+
 
         // 视差移动
         const wrapper = this.$refs.wrapperRef as HTMLElement;
@@ -242,11 +275,22 @@ export default defineComponent({
             banner.innerHTML = ''
             this.mediaResources = mediaResources
 
+            if (mediaResources.content) {
+                this.mediaResources = mediaResources.content
+
+                const version = mediaResources.version
+                const config = mediaResources.config
+
+                if (version == '1.0') {
+                    config && config(globalConfig)
+                }
+            }
+
             // 判断是否有logo
             let includeLogo = false
             const layers: HTMLElement[] = []
             try {
-                for (const [index, item] of mediaResources.entries()) {
+                for (const [index, item] of this.mediaResources.entries()) {
                     if (item.type == 'LOGO') {
                         includeLogo = true
                         throw new Error('')
@@ -255,10 +299,10 @@ export default defineComponent({
             } catch (err) {
                 if (err == '') console.error(err)
             } finally {
-                if (!includeLogo) mediaResources[mediaResources.length] = defaultLogo
+                if (!includeLogo) this.mediaResources[this.mediaResources.length] = defaultLogo
             }
 
-            mediaResources.forEach((item: any) => {
+            this.mediaResources.forEach((item: any) => {
                 const layer = document.createElement('div');
                 layer.className = 'layer';
                 banner.appendChild(layer);
@@ -338,6 +382,7 @@ export default defineComponent({
                         break
 
                     default:
+                        console.log(item);
                         break;
                 }
 
@@ -432,8 +477,8 @@ export default defineComponent({
                     el.style.scale = scale
                 })
 
-                wrapper.style.height = 180 * scale + 'px'
-                banner.style.height = 180 * scale + 'px'
+                wrapper.style.height = globalConfig.style.bannerHeight * scale + 'px'
+                banner.style.height = globalConfig.style.bannerHeight * scale + 'px'
             })
         }
     },

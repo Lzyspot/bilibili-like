@@ -20,10 +20,10 @@ const verySorry = ref<string>('')
 const errManga = ref<string>('')
 const mangaList = ref<string[]>([])
 
-const mangaPath = '/src/error-manga/'
+const mangaPath = './src/error-manga/'
 
 onMounted(async () => {
-  verySorry.value = mangaPath + 'verySorry.png'
+  verySorry.value = mangaPath + 'very_sorry.png'
   fetch(mangaPath + 'error-manga.json')
     .then(res => res.json())
     .then(data => {

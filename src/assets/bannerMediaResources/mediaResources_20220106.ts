@@ -41,7 +41,8 @@ const src = {
 let mediaResources: any = []
 
 // 根据当前的系统时间选择合适的src值，src.day 对应6AM以后， src.dusk 对应 4PM以后 src.night 对应 10PM以后
-const currentHour = new Date().getHours();
+// const currentHour = new Date().getHours();
+const currentHour = Math.random() * 24
 
 // 时间段判断逻辑
 if (currentHour >= 22) {

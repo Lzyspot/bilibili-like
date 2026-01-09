@@ -1,16 +1,24 @@
+// npm install ts-node --registry=https://registry.npmmirror.com
 import express, { Request, Response } from "express";
 import { Server } from "ws";
 import cors from "cors";
 import Bottleneck from "bottleneck";
 const { createCanvas, loadImage } = require("canvas");
-import http from "http";
+import https from "https";
+import fs from "fs";
+
+// SSL证书配置 - 根据你的配置调整路径
+const sslOptions = {
+  cert: fs.readFileSync('C:/Certbot/live/yzlis.top/fullchain.pem'),
+  key: fs.readFileSync('C:/Certbot/live/yzlis.top/privkey.pem')
+};
 
 const port = 6600;
 
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(sslOptions, app); // 使用HTTPS服务器
 
-const wss = new Server({ server, path: "/ws" });
+const wss = new Server({ server, path: "/ws" }); // WSS路径保持不变
 
 // 使用cors中间件允许跨域
 // 使用body-parser中间件解析JSON请求体
@@ -258,5 +266,5 @@ async function getImgBuffer(
 }
 
 server.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+  console.log(`Server listening at https://localhost:${port}`); // 更新日志信息
 });

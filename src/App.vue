@@ -5,6 +5,13 @@
 </template>
 
 <script setup lang="ts">
+import config from '@/config/config'
+
+console.log(config);
+
+fetch(config.ws + '/ip').then(res => res.text()).then(data => {
+  console.log('当前用户IP地址: ', data);
+})
 </script>
 
 <style lang="less">
@@ -81,6 +88,7 @@ body {
     width: 854px;
   }
 }
+
 @media (max-width: 1438px) {
   .left-wrapper {
     width: 710px;

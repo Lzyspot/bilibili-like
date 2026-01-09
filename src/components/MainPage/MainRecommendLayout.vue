@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import config from '@/config/config'
 
 interface Carousel {
     href: string,
@@ -24,7 +25,7 @@ onMounted(() => {
 
 
 function getRcmd() {
-    fetch("http://localhost:6600/api/rcmd").then(res => res.json()).then(data => {
+    fetch(config.ws + "/api/rcmd").then(res => res.json()).then(data => {
         console.log(data.data.item);
     })
 }

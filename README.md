@@ -8,13 +8,13 @@
 
 ## URL参数
 
-Banner类型
+##### Banner类型
 
 ```
 ?bannerType=interactive | animation | image | promotion
 ```
 
-自动切换Banner
+##### 自动切换Banner
 
 ```
 ?bannerAutoSwitch=true
@@ -23,9 +23,55 @@ Banner类型
 
 
 
+##### 权重最高，如果有该参数，则其它参数全部失效
+
+```
+?bannerDate=20260109
+```
 
 
 
+```ts
+const params = new URLSearchParams(location.search)
+const banner = this.$refs.bannerRef as HTMLElement
+
+let bannerDate = params.get('bannerDate')
+if (bannerDate) {
+    let { mediaResources } = await mediaImportSet['banner_' + bannerDate]()
+    console.log('banner_' + bannerDate);
+
+    this.layers = this.initBanner(mediaResources, banner)
+} else {
+    // banner类型
+    // ?bannerType=interactive | animation | image | promotion
+    let bannerType: any = params.get('bannerType')
+    bannerType = mediaSet[bannerType] ? bannerType : 'interactive'
+    let { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
+
+    // 渲染所有元素
+    this.layers = this.initBanner(mediaResources, banner)
+
+    // 自动切换Banner
+    // ?bannerAutoSwitch=true
+    // ?bannerAutoSwitchInterval=5000
+    let bannerAutoSwitch = params.get('bannerAutoSwitch')
+    let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval'))
+
+    if (bannerAutoSwitch && !bannerSwitchInterval) {
+        bannerSwitchInterval = 3000
+    }
+
+    if (bannerSwitchInterval) {
+        // 至少5s切换一次
+        bannerSwitchInterval = bannerSwitchInterval >= 5000 ? bannerSwitchInterval : 5000
+
+        setInterval(async () => {
+            const { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
+            this.layers = this.initBanner(mediaResources, banner)
+        }, bannerSwitchInterval)
+    }
+}
+```
 
 
 
@@ -74,7 +120,6 @@ Banner类型
     - 
 
 ![image-20250918214348114](README.assets/image-20250918214348114.png)
-
 
 
 

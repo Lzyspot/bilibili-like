@@ -3,7 +3,7 @@
         <div class="carousel-wrapper"></div>
         <div class="recommend-list">
             <videoCard v-for="item in recommendList" :key="item.bvid"
-                :pic="`http://${hostname}:6600/api/img?url=${item.pic}`" :title="item.title" :bvid="item.bvid"
+                :pic="config.ws + `/api/img?url=${item.pic}`" :title="item.title" :bvid="item.bvid"
                 :owner="item.owner" :view="item.view"></videoCard>
 
             <div ref="btnPrev" class="btn-prev bilifont"></div>
@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import config from '@/config/config'
 
 import videoCard from '@/components/VideoCard.vue'
 import ws from '@/components/utils/websocket';
@@ -63,7 +64,7 @@ onMounted(async () => {
 })
 
 function flashCarousel(num = 1) {
-    fetch(`http://${hostname.value}:6600/api/rcmd`).then(res => res.json()).then(data => {
+    fetch(config.ws +'/api/rcmd').then(res => res.json()).then(data => {
         recommendList.value = data.data.item.map((item: any) => {
             return {
                 bvid: item.bvid,
