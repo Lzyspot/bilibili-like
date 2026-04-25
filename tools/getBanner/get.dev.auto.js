@@ -25,10 +25,24 @@
     let currentAnimation = null; // 用于跟踪当前动画
 
     let lastMousePosition = { x: 0, y: 0 }
-    let lastMousePositon_beforeMove = {x: 0, y: 0}
+    let lastMousePositon_beforeMove = { x: 0, y: 0 }
 
     // 用于判断该脚本是否已被废弃
     let isDeprecated = false;
+
+
+
+    createNotification('开始执行', 3000);
+    isExecuting = true
+
+    getMediaSrcList()
+    simulateSmoothSlide({
+        callback: () => {
+            isExecuting = false
+            getMediaSrcList(true)
+            createNotification('执行成功', 3000);
+        }
+    })
 
     // 监听鼠标移动，实时记录位置
     document.addEventListener('mousemove', e => {
@@ -45,16 +59,25 @@
             event.preventDefault(); // 阻止默认行为
             console.log('空格被按下时的鼠标位置:', lastMousePosition);
 
-            getMediaSrcList()
+            // getMediaSrcList()
             if (isExecuting) {
-                // 如果正在执行，显示执行成功
-                createNotification('执行成功', 3000);
+                // createNotification('执行成功', 3000);
             } else {
                 // 开始执行
                 createNotification('开始执行', 3000);
+
+                getMediaSrcList()
+                simulateSmoothSlide({
+                    callback: () => {
+                        isExecuting = false
+                        getMediaSrcList(true)
+                        createNotification('执行成功', 3000);
+                    }
+                })
+                isExecuting = true
             }
 
-            isExecuting = !isExecuting;
+            // isExecuting = !isExecuting;
         }
         // 如果按下Ctrl + X，则isDeprecated = true
         if (event.ctrlKey && event.key === 'x') {
@@ -62,14 +85,14 @@
             isDeprecated = true;
 
             createNotification('已禁用', 3000);
-            
+
         }
     })
 
-    function getMediaSrcList() {
+    function getMediaSrcList(isExecuting) {
         document.querySelectorAll('.animated-banner>.layer ').forEach((elem, index) => {
-        // document.querySelectorAll('.layer').forEach((elem, index) => {
-            const label = elem.querySelector('img,video')            
+            // document.querySelectorAll('.layer').forEach((elem, index) => {
+            const label = elem.querySelector('img,video')
 
             let { src, style, height, width } = label
 
@@ -169,7 +192,7 @@
             if (_logo) srcList.push({ src: _logo, type: 'LOGO', base64: '' })
 
             const title = document.querySelector('.head-title')?.innerText
-            if (title) srcList.push({ title, type: 'TITLE'})
+            if (title) srcList.push({ title, type: 'TITLE' })
         } catch (error) {
             console.error(error)
         }
@@ -196,7 +219,7 @@
             try {
                 if (isDeprecated) {
                     throw new Error("脚本废弃");
-                       
+
                 }
                 if (item.type === 'VIDEO' || item.src.startsWith('blob:')) {
                     // 处理Blob视频（根据文件扩展名确定格式）
@@ -475,18 +498,149 @@
         const result = {};
         for (const key in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            const value = obj[key];
+                const value = obj[key];
 
-            if (typeof value === 'object' && value !== null) {
-                // 递归处理嵌套对象
-                result[key] = ensureNumericValues(value);
-            } else {
-                // 将值转换为数字
-                result[key] = Number(value);
-            }
+                if (typeof value === 'object' && value !== null) {
+                    // 递归处理嵌套对象
+                    result[key] = ensureNumericValues(value);
+                } else {
+                    // 将值转换为数字
+                    result[key] = Number(value);
+                }
             }
         }
 
         return result;
+    }
+
+    // 模拟鼠标从 (0, 100) 滑动到 (1000, 100) 的函数
+    // function simulateMouseSlide(sevent = {
+    //     startX: 0,
+    //     startY: 100,
+    //     endX: 1000,
+    //     endY: 100,
+    //     steps: 50,
+    //     delay: 10,
+    //     callback: () => {
+    //         console.log(`滑动完成`);
+    //     }
+    // }) {
+    //     const startX = sevent.startX || 0;
+    //     const startY = sevent.startY || 100;
+    //     const endX = sevent.endX || 1000;
+    //     const endY = sevent.endY || 100;
+    //     const steps = sevent.steps || 50; // 分50步完成滑动，让轨迹更平滑
+    //     const delay = sevent.delay || 10; // 每一步之间的延迟（毫秒）
+
+    //     let currentStep = 0;
+
+    //     // 1. 先瞬间将鼠标“瞬移”到起始位置，并触发一次 mousemove
+    //     dispatchMouseEvent('mousemove', startX, startY);
+    //     console.log(`鼠标已就位到起始点: (${startX}, ${startY})`);
+
+    //     // 2. 使用定时器逐步向终点移动
+    //     const interval = setInterval(() => {
+    //         currentStep++;
+
+    //         // 计算当前应该移动到的位置 (线性插值)
+    //         const currentX = startX + (endX - startX) * (currentStep / steps);
+    //         const currentY = startY + (endY - startY) * (currentStep / steps);
+
+    //         // 派发鼠标移动事件
+    //         dispatchMouseEvent('mousemove', currentX, currentY);
+
+    //         // 如果到达终点，清除定时器
+    //         if (currentStep >= steps) {
+    //             clearInterval(interval);
+    //             sevent.callback?.();
+    //         }
+    //     }, delay);
+    // }
+
+    // 辅助函数：创建并派发鼠标事件
+    // function dispatchMouseEvent(type, x, y) {
+    //     const event = new MouseEvent(type, {
+    //         view: window,
+    //         bubbles: true,      // 允许事件冒泡
+    //         cancelable: true,   // 允许事件被取消
+    //         clientX: x,         // 鼠标在页面中的 X 坐标
+    //         clientY: y,         // 鼠标在页面中的 Y 坐标
+    //         screenX: x,         // 鼠标在屏幕中的 X 坐标
+    //         screenY: y          // 鼠标在屏幕中的 Y 坐标
+    //     });
+    //     document.elementFromPoint(x, y)?.dispatchEvent(event) || document.dispatchEvent(event);
+    // }
+
+    // 核心滑动函数
+    function simulateSmoothSlide(sevent = {
+        startX: 0,
+        startY: 100,
+        endX: 1000,
+        endY: 100,
+        speed: 10, // 【新增速度参数】每帧移动的像素量。数值越大速度越快，默认 10 倍速
+        callback: () => { console.log(`滑动完成！`); }
+    }) {
+        const startX = Math.round(sevent.startX ?? 0);
+        const startY = Math.round(sevent.startY ?? 100);
+        const endX = Math.round(sevent.endX ?? 1000);
+        const endY = Math.round(sevent.endY ?? 100);
+        const speed = sevent.speed ?? 10; // 获取速度参数
+
+        let currentX = startX;
+        let currentY = startY;
+
+        // 1. 先瞬间将鼠标“瞬移”到起始位置
+        dispatchMouseEvent('mousemove', currentX, currentY);
+        console.log(`鼠标已就位到起始点: (${startX}, ${startY})`);
+
+        // 2. 核心：按倍率平滑移动逻辑
+        function step() {
+            let hasMoved = false;
+
+            // X 轴按倍率靠近目标
+            const diffX = endX - currentX;
+            if (Math.abs(diffX) > 0) {
+                // 如果剩余距离小于速度，直接走到终点；否则按速度步进
+                const moveX = Math.abs(diffX) < speed ? diffX : Math.sign(diffX) * speed;
+                currentX += moveX;
+                hasMoved = true;
+            }
+
+            // Y 轴按倍率靠近目标
+            const diffY = endY - currentY;
+            if (Math.abs(diffY) > 0) {
+                const moveY = Math.abs(diffY) < speed ? diffY : Math.sign(diffY) * speed;
+                currentY += moveY;
+                hasMoved = true;
+            }
+
+            // 只要有移动，就派发事件并请求下一帧
+            if (hasMoved) {
+                dispatchMouseEvent('mousemove', currentX, currentY);
+                requestAnimationFrame(step);
+            } else {
+                // 强制修正最终落点，确保绝对精准
+                dispatchMouseEvent('mousemove', endX, endY);
+                console.log(`滑动精准完成！最终落点: (${endX}, ${endY})`);
+                sevent.callback?.();
+            }
+        }
+
+        requestAnimationFrame(step);
+    }
+
+    // 补充：创建并派发鼠标事件的辅助函数
+    function dispatchMouseEvent(type, x, y) {
+        const event = new MouseEvent(type, {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+            clientX: x,
+            clientY: y,
+            screenX: x,
+            screenY: y
+        });
+        const target = document.elementFromPoint(x, y) || document;
+        target.dispatchEvent(event);
     }
 })()

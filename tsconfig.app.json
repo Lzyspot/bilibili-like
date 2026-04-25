@@ -4,7 +4,6 @@
   "exclude": ["src/**/*.vue.js", "src/**/*.<dev.*"],
   "compilerOptions": {
     "composite": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
