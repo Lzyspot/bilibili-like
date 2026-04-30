@@ -5,18 +5,27 @@ import cors from "cors";
 import Bottleneck from "bottleneck";
 const { createCanvas, loadImage } = require("canvas");
 import https from "https";
+import http from "http";
 import fs from "fs";
-
-// SSL证书配置 - 根据你的配置调整路径
-const sslOptions = {
-  cert: fs.readFileSync('C:/Certbot/live/yzlis.top/fullchain.pem'),
-  key: fs.readFileSync('C:/Certbot/live/yzlis.top/privkey.pem')
-};
 
 const port = 6600;
 
 const app = express();
-const server = https.createServer(sslOptions, app); // 使用HTTPS服务器
+
+let server: https.Server | http.Server;
+
+const SSLCertPath = 'C:/Certbot/live/yzlis.top/fullchain.pem';
+const SSLKeyPath = 'C:/Certbot/live/yzlis.top/privkey.pem';
+
+if (fs.existsSync(SSLCertPath) && fs.existsSync(SSLKeyPath)) {
+  server = https.createServer({
+    cert: fs.readFileSync(SSLCertPath),
+    key: fs.readFileSync(SSLKeyPath)
+  }, app);
+} else {
+  console.log("SSL证书未配置");
+  server = http.createServer(app);
+}
 
 const wss = new Server({ server, path: "/ws" }); // WSS路径保持不变
 
@@ -53,26 +62,26 @@ app.get("/api/rcmd", (req: Request, res: Response) => {
 
   limiterFetch(
     "https://api.bilibili.com/x/web-interface/wbi/index/top/feed/rcmd" +
-      jsonToQueryString({
-        feed_version: req.query.feed_version || "V8", // 推荐feed版本，当前使用V8版本算法
-        fresh_idx: req.query.fresh_idx || Date.now(), // 刷新索引，表示当前页面刷新次数
-        web_location: "1430650", // 网页位置标识，用于追踪用户当前所在页面位置
-        y_num: req.query.y_num || "5", // Y轴数量，可能表示纵向推荐内容数量
-        fresh_type: req.query.fresh_type || "3", // 刷新类型，3可能表示特定的刷新模式
-        fresh_idx_1h: req.query.fresh_idx_1h || "3", // 1小时内刷新索引，用于追踪1小时内刷新次数
-        fetch_row: req.query.fetch_row || "1", // 获取行数，表示本次请求获取的数据行数
-        brush: req.query.brush || "2", // 刷视频次数，用户刷新/切换内容的次数
-        device: req.query.device || "win", // 设备类型，win表示Windows设备
-        homepage_ver: req.query.homepage_ver || "1", // 首页版本号
-        ps: req.query.ps || "10", // 每页项数(Page Size)，表示一次请求返回10条数据
-        last_y_num: req.query.last_y_num || "5", // 上次Y轴数量，用于对比和计算
-        screen: req.query.screen || "1920-975", // 屏幕分辨率，宽1920px高975px
-        seo_info: req.query.seo_info || "", // SEO信息，搜索引擎优化相关信息
-        last_showlist: req.query.last_showlist || "...", // 上次显示列表，记录之前已展示的内容ID列表，用于去重
-        uniq_id: req.query.uniq_id || randomUniqId, // 唯一标识符，用户会话的唯一ID
-        // w_rid: "5ca3b8d7526d8c758f903ae5a4109633", // 请求标识，用于验证请求合法性
-        wts: Date.now() // 时间戳，Unix时间戳格式，用于防止请求重放攻击
-      })
+    jsonToQueryString({
+      feed_version: req.query.feed_version || "V8", // 推荐feed版本，当前使用V8版本算法
+      fresh_idx: req.query.fresh_idx || Date.now(), // 刷新索引，表示当前页面刷新次数
+      web_location: "1430650", // 网页位置标识，用于追踪用户当前所在页面位置
+      y_num: req.query.y_num || "5", // Y轴数量，可能表示纵向推荐内容数量
+      fresh_type: req.query.fresh_type || "3", // 刷新类型，3可能表示特定的刷新模式
+      fresh_idx_1h: req.query.fresh_idx_1h || "3", // 1小时内刷新索引，用于追踪1小时内刷新次数
+      fetch_row: req.query.fetch_row || "1", // 获取行数，表示本次请求获取的数据行数
+      brush: req.query.brush || "2", // 刷视频次数，用户刷新/切换内容的次数
+      device: req.query.device || "win", // 设备类型，win表示Windows设备
+      homepage_ver: req.query.homepage_ver || "1", // 首页版本号
+      ps: req.query.ps || "10", // 每页项数(Page Size)，表示一次请求返回10条数据
+      last_y_num: req.query.last_y_num || "5", // 上次Y轴数量，用于对比和计算
+      screen: req.query.screen || "1920-975", // 屏幕分辨率，宽1920px高975px
+      seo_info: req.query.seo_info || "", // SEO信息，搜索引擎优化相关信息
+      last_showlist: req.query.last_showlist || "...", // 上次显示列表，记录之前已展示的内容ID列表，用于去重
+      uniq_id: req.query.uniq_id || randomUniqId, // 唯一标识符，用户会话的唯一ID
+      // w_rid: "5ca3b8d7526d8c758f903ae5a4109633", // 请求标识，用于验证请求合法性
+      wts: Date.now() // 时间戳，Unix时间戳格式，用于防止请求重放攻击
+    })
   ).then(data => {
     res.send(data);
   });
@@ -93,27 +102,27 @@ app.get("/api/search/suggest", (req: Request, res: Response) => {
 
   limiterFetch(
     "https://s.search.bilibili.com/main/suggest" +
-      jsonToQueryString({
-        term: req.query.term || " ", // 搜索词：用户输入的搜索关键词
-        rnd: req.query.rnd || "0.4939648475000452", // 随机数：用于防止缓存的随机值
-        func: req.query.func || "suggest", // 功能类型：搜索建议功能
-        tag_num: req.query.tag_num || "10", // 标签数量：最多返回10个标签建议
-        suggest_type: req.query.suggest_type || "accurate", // 建议类型：精确匹配
-        sub_type: req.query.sub_type || "tag", // 子类型：标签类型搜索
-        main_ver: req.query.main_ver || "v1", // 主版本号：v1版本
-        highlight: req.query.highlight || "", // 高亮：搜索关键词高亮设置（空表示默认）
-        bangumi_acc_num: req.query.bangumi_acc_num || "1", // 番剧精确匹配数量：最多返回1个番剧精确匹配结果
-        special_acc_num: req.query.special_acc_num || "1", // 专题精确匹配数量：最多返回1个专题精确匹配结果
-        topic_acc_num: req.query.topic_acc_num || "1", // 话题精确匹配数量：最多返回1个话题精确匹配结果
-        upuser_acc_num: req.query.upuser_acc_num || "3", // UP主精确匹配数量：最多返回3个UP主精确匹配结果
-        special_num: req.query.special_num || "10", // 专题数量：最多返回10个专题建议
-        bangumi_num: req.query.bangumi_num || "10", // 番剧数量：最多返回10个番剧建议
-        upuser_num: req.query.upuser_num || "3", // UP主数量：最多返回3个UP主建议
-        buvid: req.query.buvid || randomBuvid, // 浏览器唯一标识符
-        spmid: req.query.spmid || "0", // 位置标识：来源页面标识
-        web_location: req.query.web_location || "0.0", // 网页位置：具体页面位置信息
-        userid: req.query.userid || "1" // 用户ID：当前用户的唯一标识
-      })
+    jsonToQueryString({
+      term: req.query.term || " ", // 搜索词：用户输入的搜索关键词
+      rnd: req.query.rnd || "0.4939648475000452", // 随机数：用于防止缓存的随机值
+      func: req.query.func || "suggest", // 功能类型：搜索建议功能
+      tag_num: req.query.tag_num || "10", // 标签数量：最多返回10个标签建议
+      suggest_type: req.query.suggest_type || "accurate", // 建议类型：精确匹配
+      sub_type: req.query.sub_type || "tag", // 子类型：标签类型搜索
+      main_ver: req.query.main_ver || "v1", // 主版本号：v1版本
+      highlight: req.query.highlight || "", // 高亮：搜索关键词高亮设置（空表示默认）
+      bangumi_acc_num: req.query.bangumi_acc_num || "1", // 番剧精确匹配数量：最多返回1个番剧精确匹配结果
+      special_acc_num: req.query.special_acc_num || "1", // 专题精确匹配数量：最多返回1个专题精确匹配结果
+      topic_acc_num: req.query.topic_acc_num || "1", // 话题精确匹配数量：最多返回1个话题精确匹配结果
+      upuser_acc_num: req.query.upuser_acc_num || "3", // UP主精确匹配数量：最多返回3个UP主精确匹配结果
+      special_num: req.query.special_num || "10", // 专题数量：最多返回10个专题建议
+      bangumi_num: req.query.bangumi_num || "10", // 番剧数量：最多返回10个番剧建议
+      upuser_num: req.query.upuser_num || "3", // UP主数量：最多返回3个UP主建议
+      buvid: req.query.buvid || randomBuvid, // 浏览器唯一标识符
+      spmid: req.query.spmid || "0", // 位置标识：来源页面标识
+      web_location: req.query.web_location || "0.0", // 网页位置：具体页面位置信息
+      userid: req.query.userid || "1" // 用户ID：当前用户的唯一标识
+    })
   ).then(data => {
     res.send(data);
   });
@@ -135,18 +144,18 @@ app.get("/api/search/default", (req: Request, res: Response) => {
  */
 app.get("/api/img", (req: Request, res: Response) => {
   limiter.wrap(async () => {
-      if (!req.query?.url) {
-        res.send({
-          code: 400,
-          req: req.query
-        });
-        return;
-      }
-      const buffer = await getImgBuffer(req.query.url as string);
+    if (!req.query?.url) {
+      res.send({
+        code: 400,
+        req: req.query
+      });
+      return;
+    }
+    const buffer = await getImgBuffer(req.query.url as string);
 
-      res.set("Content-Type", "image/jpeg");
-      res.set("Cache-Control", "public, max-age=31536000"); // 缓存一年
-      res.send(buffer);
+    res.set("Content-Type", "image/jpeg");
+    res.set("Cache-Control", "public, max-age=31536000"); // 缓存一年
+    res.send(buffer);
   })();
 });
 
@@ -157,10 +166,10 @@ app.get("/api/img", (req: Request, res: Response) => {
  */
 app.get("/api/channel", (req: Request, res: Response) => {
   limiterFetch('https://api.bilibili.com/x/web-interface/dynamic/region' + jsonToQueryString({
-        ps: req.query.ps || '12',
-        rid: req.query.rid || '1'
-      }
-    ))
+    ps: req.query.ps || '12',
+    rid: req.query.rid || '1'
+  }
+  ))
     .then(data => {
       res.send(data);
     });
@@ -171,8 +180,8 @@ app.get("/api/channel", (req: Request, res: Response) => {
  */
 app.get("/api/rank/channel", (req: Request, res: Response) => {
   limiterFetch('https://api.bilibili.com/pgc/web/rank/list' + jsonToQueryString({
-      season_type: req.query.season_type || '1',
-      day: req.query.day || '3'
+    season_type: req.query.season_type || '1',
+    day: req.query.day || '3'
   }))
     .then(data => {
       res.send(data);
