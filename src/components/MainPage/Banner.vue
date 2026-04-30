@@ -39,7 +39,7 @@ const mediaImportSet: any = {
     banner_20250801: () => import('../../assets/bannerMediaResources/mediaResources_20250801'), // 洪涝购物
     banner_20250909: () => import('../../assets/bannerMediaResources/mediaResources_20250909'), // 流星海滩
     banner_20260109: () => import('../../assets/bannerMediaResources/mediaResources_20260109'), // 下雪车站
-    banner_20260426: () => import('../../assets/bannerMediaResources/mediaResources_20260426'), // 下雪车站
+    banner_20260426: () => import('../../assets/bannerMediaResources/mediaResources_20260426'), // 御燕飞行
 
     // 特殊
     banner_20220723: () => import('../../assets/bannerMediaResources/mediaResources_20220723'), // 【未完成】唯一强交互
