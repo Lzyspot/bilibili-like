@@ -17,9 +17,12 @@ npm run dev
 ```
 
 > 如果需要后端
+>
+> ! 在本地运行后端服务需要将 `src\config\config.ts`中的 `https` 改成 `http`
 
 ```bash
-ts-node server\serve.ts
+npm i ts-node -g
+npm run serve
 ```
 
 
