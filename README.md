@@ -2,7 +2,25 @@
 
 [toc]
 
+## 部署
 
+```bash
+git clone git@gitee.com:Lzyspot/bilibili-like.git
+cd bilibili-like
+npm i
+```
+
+> 启动
+
+```bah
+npm run dev
+```
+
+> 如果需要后端
+
+```bash
+ts-node server\serve.ts
+```
 
 
 
@@ -75,13 +93,47 @@ if (bannerDate) {
 
 
 
+## 获取Banner数据，及实现视差滚动
+
+**复制**并在浏览器**执行**以下文件的代码内容
+
+```
+tools\getBanner\get.dev.auto.js
+```
+
+执行完成会在**控制台**返回
 
 
 
+秉持着 `all in one` 的原则，返回的是包含元素`加速度数据`并将其转为`base64`后的数据包，目前全部存放于以下路径
 
+```
+src\assets\bannerMediaResources
+```
 
+命名随意，通常是`mediaResources`+该banner最早的日期
 
+> 标准可交互视差banner数据格式
 
+```json
+const mediaResources = {
+    content: [
+    	"从浏览器获取到的数据"
+	],
+    config: (globalConfig: any) => {
+        globalConfig.style.bannerHeight = 180
+    },
+    version: '1.0'
+}
+
+export { mediaResources };
+```
+
+更新后还需在 `mediaImportSet` 中添加该脚本路径，并在 `mediaSet` 对应的对象中注册后即可使用
+
+```
+src\components\MainPage\Banner.vue
+```
 
 
 
