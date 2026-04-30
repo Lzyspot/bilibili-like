@@ -509,9 +509,13 @@ div[data-v-mainPageBanner] {
         /* 根据需要调整高度 */
         overflow: hidden;
         background: #000;
-        -webkit-user-drag: none;
-        user-select: none;
         z-index: 0;
+
+        &,
+        * {
+            -webkit-user-drag: none;
+            user-select: none;
+        }
 
         .layer {
             display: flex;
