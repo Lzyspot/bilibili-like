@@ -25,7 +25,7 @@ onMounted(() => {
 
 
 function getRcmd() {
-    fetch(config.ws + "/api/rcmd").then(res => res.json()).then(data => {
+    fetch(config.api + "/api/rcmd").then(res => res.json()).then(data => {
         console.log(data.data.item);
     })
 }

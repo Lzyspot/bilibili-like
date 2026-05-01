@@ -3,7 +3,7 @@
         <div class="carousel-wrapper"></div>
         <div class="recommend-list">
             <videoCard v-for="item in recommendList" :key="item.bvid"
-                :pic="config.ws + `/api/img?url=${item.pic}`" :title="item.title" :bvid="item.bvid"
+                :pic="config.api + `/api/img?url=${item.pic}`" :title="item.title" :bvid="item.bvid"
                 :owner="item.owner" :view="item.view"></videoCard>
 
             <div ref="btnPrev" class="btn-prev bilifont"></div>
@@ -64,7 +64,7 @@ onMounted(async () => {
 })
 
 function flashCarousel(num = 1) {
-    fetch(config.ws +'/api/rcmd').then(res => res.json()).then(data => {
+    fetch(config.api +'/api/rcmd').then(res => res.json()).then(data => {
         recommendList.value = data.data.item.map((item: any) => {
             return {
                 bvid: item.bvid,

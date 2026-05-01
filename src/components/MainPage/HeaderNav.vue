@@ -70,7 +70,7 @@ const userAvatar = ref<string>('./src/default_avatar.webp')
 const searchInput = ref<HTMLInputElement | null>(null)
 
 onMounted(() => {
-    fetch(`${config.ws}/api/search/default`)
+    fetch(`${config.api}/api/search/default`)
         .then(res => res.json())
         .then(data => {
             console.log(data.data.show_name);

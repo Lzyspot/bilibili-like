@@ -9,7 +9,7 @@ import config from '@/config/config'
 
 console.log(config);
 
-fetch(config.ws + '/ip').then(res => res.text()).then(data => {
+fetch(config.api + '/ip').then(res => res.text()).then(data => {
   console.log('当前用户IP地址: ', data);
 })
 </script>

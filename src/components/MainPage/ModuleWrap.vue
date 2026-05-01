@@ -40,7 +40,7 @@ const content = ref<ModuleWrapData[]>([])
 const ranking = ref<RankingData[]>([])
 
 onMounted(() => {
-    fetch(config.ws + `/api/channel?rid=${props.rid}`)
+    fetch(config.api + `/api/channel?rid=${props.rid}`)
         .then(res => res.json())
         .then(data => {
             if (data.code) {
@@ -67,7 +67,7 @@ onMounted(() => {
         })
 
     // 无法直接获取普通视频排行榜，需要登录
-    fetch(config.ws + `/api/rank/channel?season_type=${props.season_type}`)
+    fetch(config.api + `/api/rank/channel?season_type=${props.season_type}`)
         .then(res => res.json())
         .then(data => {
             if (data.code) {
