@@ -10,8 +10,9 @@ const blinkEyeResources = [
 blinkEyeResources.forEach((item, index) => {
     blinkEyeResources[index] = base64ToBlobUrl(item)
 })
+import type { MediaResource } from "@/struct/struct";
 
-const mediaResources = [
+const mediaResources: MediaResource[] = [
     {
         "src": "https://i0.hdslb.com/bfs/vc/8e084d67aa18ed9c42dce043e06e16b79cbb50ef.png",
         "index": 0,
@@ -75,7 +76,7 @@ const mediaResources = [
             "filter": "blur(0px)",
             "zIndex": 1
         },
-        fn: (el: any) => {
+        callback: (el: any) => {
             // 眨眼动画
             setInterval(() => {
                 el.src = blinkEyeResources[1]

@@ -35,11 +35,17 @@ npm run serve
 ?bannerType=interactive | animation | image | promotion
 ```
 
-##### 自动切换Banner
+##### 自动切换Banner，切换间隔为12秒
 
 ```
 ?bannerAutoSwitch=true
-?bannerAutoSwitchInterval=5000
+?bannerAutoSwitchInterval=12000
+```
+
+##### 关闭缓入效果
+
+```
+?easIn=false
 ```
 
 
@@ -47,51 +53,124 @@ npm run serve
 ##### 权重最高，如果有该参数，则其它参数全部失效
 
 ```
-?bannerDate=20260109
+?banner=20260426
+```
+
+
+
+```
+// 视差滚动
+20201130
+20210301
+20210401
+20230405
+20230601
+20230703
+20230801
+20230912
+20231002
+20231107
+20231201
+20231212
+20240204
+20240606
+20240610
+20241210
+20250101
+20250501
+20250801
+20250909
+20260109
+20260426
+20220723
+// 视频
+20210806
+20210906
+20220106
+20220501
+20220816
+黄绿合战
+// 图片
+2014
+2015
+2016
+legacy
+20190601
+20190520
+20191029
+20190620
+20200124
+20200201
+20200401
+20200607
+20200817
+20220927
+20230101
+20230620
+20190621
+20200421
+20200605
+20200710
+20210212
+20210722
+20221221
+20211113
+20220201
+20220401
+20220602
+20220614
+20220720
+20230315
+20230622
+20190924
+20191213
+20201005
+20210304
+20210623
+20220303
+20221030
 ```
 
 
 
 ```ts
-const params = new URLSearchParams(location.search)
-const banner = this.$refs.bannerRef as HTMLElement
+onMounted(() => {
+  const params = new URLSearchParams(location.search)
 
-let bannerDate = params.get('bannerDate')
-if (bannerDate) {
-    let { mediaResources } = await mediaImportSet['banner_' + bannerDate]()
-    console.log('banner_' + bannerDate);
+  let bannerDate = params.get('banner') || params.get('bannerDate')
 
-    this.layers = this.initBanner(mediaResources, banner)
-} else {
+  if (bannerDate) {
+    getBannerData('banner_' + bannerDate).then((mediaResources: BannerPackage) => {
+      bannerData.value = mediaResources
+    })
+  } else {
     // banner类型
     // ?bannerType=interactive | animation | image | promotion
     let bannerType: any = params.get('bannerType')
-    bannerType = mediaSet[bannerType] ? bannerType : 'interactive'
-    let { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
-
-    // 渲染所有元素
-    this.layers = this.initBanner(mediaResources, banner)
+    getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+      bannerData.value = mediaResources
+    })
 
     // 自动切换Banner
     // ?bannerAutoSwitch=true
-    // ?bannerAutoSwitchInterval=5000
-    let bannerAutoSwitch = params.get('bannerAutoSwitch')
-    let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval'))
+    // ?bannerAutoSwitchInterval=10000
+    const minInterval = 10000
+    let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval') || minInterval)
 
-    if (bannerAutoSwitch && !bannerSwitchInterval) {
-        bannerSwitchInterval = 3000
+    if (params.get('bannerAutoSwitch') || bannerSwitchInterval) {
+      // 至少10s切换一次
+      bannerSwitchInterval = bannerSwitchInterval <= minInterval ? minInterval : bannerSwitchInterval
+
+      setInterval(async () => {
+        if (!document.hidden) {
+          getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+            bannerData.value = mediaResources
+          })
+        }
+      }, bannerSwitchInterval)
     }
-
-    if (bannerSwitchInterval) {
-        // 至少5s切换一次
-        bannerSwitchInterval = bannerSwitchInterval >= 5000 ? bannerSwitchInterval : 5000
-
-        setInterval(async () => {
-            const { mediaResources } = await mediaSet[bannerType][Math.floor(Math.random() * mediaSet[bannerType].length)]()
-            this.layers = this.initBanner(mediaResources, banner)
-        }, bannerSwitchInterval)
-    }
-}
+  }
+})
 ```
 
 

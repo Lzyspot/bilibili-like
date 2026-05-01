@@ -1,4 +1,6 @@
-const mediaResources = [
+import type { MediaResource } from "@/struct/struct";
+
+const mediaResources: MediaResource[] = [
     {
         "src": "http://localhost:8088/static_12/081110f6c4c54ab35e31cf0eb7bd0b129ee4135c.png",
         "index": 0,

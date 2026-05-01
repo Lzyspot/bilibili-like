@@ -1,6 +1,8 @@
+import type { MediaResource } from "@/struct/struct";
+
 const speed = 0.0006
 // 0.0005164475421052631
-const mediaResources = [
+export const mediaResources: MediaResource[] = [
     {
         "src": "http://localhost:8088/static_02/4e7edb416c34eccc40f34d2b297524652685a9bb.png",
         "index": 0,
@@ -544,5 +546,3 @@ const mediaResources = [
         }
     }
 ]
-
-export { mediaResources }

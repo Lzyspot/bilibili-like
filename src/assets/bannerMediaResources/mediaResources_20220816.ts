@@ -1,6 +1,7 @@
 import video from "@/assets/bannerMediaResources/2233十周年.mp4";
+import type { MediaResource } from "@/struct/struct";
 
-const mediaResources = [
+export const mediaResources: MediaResource[] = [
   {
     src:
       "https://i0.hdslb.com/bfs/archive/a3e2abf2e1d527cb739d3e1620e48f32f6fdbf3e.png",
@@ -24,5 +25,3 @@ const mediaResources = [
     }
   }
 ];
-
-export { mediaResources };

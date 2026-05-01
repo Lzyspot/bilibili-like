@@ -1,5 +1,12 @@
+import type { MediaResource } from "@/struct/struct";
 
-const src = {
+interface SRC {
+    day: MediaResource[];
+    dusk: MediaResource[];
+    night: MediaResource[];
+}
+
+const src: SRC = {
     day: [
         {
             "src": "blob:https://web.archive.org/0e6e6995-f859-4648-847d-830f45bf2b87",
@@ -38,7 +45,7 @@ const src = {
     ]
 }
 
-let mediaResources: any = []
+let mediaResources: MediaResource[] = []
 
 // 根据当前的系统时间选择合适的src值，src.day 对应6AM以后， src.dusk 对应 4PM以后 src.night 对应 10PM以后
 // const currentHour = new Date().getHours();

@@ -1,4 +1,6 @@
-const mediaResources = [
+import type { MediaResource } from "@/struct/struct";
+
+export const mediaResources: MediaResource[] = [
     {
         "src": "//web.archive.org/web/20220614142705im_/https://i0.hdslb.com/bfs/archive/4d5db0e98d84eb0e53ee88e48e680eddecc160ce.jpg",
         "type": "IMG",
@@ -14,5 +16,3 @@ const mediaResources = [
         "type": "TITLE"
     }
 ]
-
-export { mediaResources };

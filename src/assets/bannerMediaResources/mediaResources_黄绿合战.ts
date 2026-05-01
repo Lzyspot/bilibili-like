@@ -1,3 +1,5 @@
+import type { MediaResource } from "@/struct/struct";
+
 const meidaSet = {
         banner2020: [
             {
@@ -14,7 +16,7 @@ const meidaSet = {
                 "title": "看神仙打架，吃瓜投票赢周边(｡ゝ∀・)b",
                 "type": "TITLE"
             }
-        ],
+        ] as MediaResource[],
         banner2021: [
             {
                 "src": "blob:https://web.archive.org/380199f3-4fea-4ad9-8fbd-dbeef47b99ef",
@@ -30,7 +32,7 @@ const meidaSet = {
                 "title": "看鬼畜区神仙打架，吃瓜投票赢周边(｡ゝ∀・)b",
                 "type": "TITLE"
             }
-        ],
+        ] as MediaResource[],
         banner2023: [
         {
             "src": "https://i0.hdslb.com/bfs/archive/c6bd5c910480065033f9429c89a41a5ff7a61109.png@3840w_360h_1c.avif",
@@ -46,14 +48,14 @@ const meidaSet = {
             "title": "战斗开启，来为你喜欢的作品投票吧~(｡ゝ∀・)b",
             "type": "TITLE"
         }
-    ]
+    ] as MediaResource[]
 }
 
 // 从媒体集合中随机抽取一个
 const keys = Object.keys(meidaSet)
 const index = Math.floor(Math.random() * keys.length)
 // @ts-ignore
-const mediaResources = meidaSet[keys[index]]
+const mediaResources: MediaResource[] = meidaSet[keys[index]]
 
 // 遍历mdedia集合，让其所有第一个IMG的style = {height: "100%"}
 for (let i = 0; i < mediaResources.length; i++) {
@@ -64,6 +66,5 @@ for (let i = 0; i < mediaResources.length; i++) {
         }
     }
 }
-
 
 export { mediaResources }

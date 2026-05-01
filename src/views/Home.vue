@@ -1,7 +1,8 @@
 <template>
   <div id="bili-header-wrapper">
     <!-- <component :is="currentBanner" class="bili-header__banner"></component> -->
-    <Banner></Banner>
+    <Banner :displayNav="displayNav" :bannerData="bannerData" :bannerEaseIn="bannerEaseIn"></Banner>
+    <!-- <Banner :displayNav="displayNav" :bannerData="bannerData"></Banner> -->
 
     <!-- <div @click="$router.push('404')">1111111111111111</div>
     <router-link to="/404">go to 404</router-link>
@@ -25,6 +26,9 @@ import { ref, onMounted } from 'vue'
 import HeaderChannel from '@/components/MainPage/HeaderChannel.vue'
 // import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout.vue'
 import MainRecommendLayout from '@/components/MainPage/MainRecommendLayout_old.vue'
+
+import { getBannerData } from '@/config/banner'
+import type { BannerPackage } from '@/struct/struct'
 
 import Login from '@/components/Login.vue'
 
@@ -70,7 +74,56 @@ const ChannelList = ref<ChannelItem[]>([
   }
 ])
 
+const bannerEaseIn = ref<boolean>(true)
+const displayNav = ref(true)
+const bannerData = ref<BannerPackage>({
+  content: [],
+  version: '1.1',
+  id: ''
+})
 onMounted(() => {
+  const params = new URLSearchParams(location.search)
+
+  const bannerDate = params.get('banner') || params.get('bannerDate')
+  const easeIn = params.get('easeIn')
+
+  if (easeIn?.toLowerCase() == 'false') {
+    bannerEaseIn.value = false
+  } else {
+    bannerEaseIn.value = true
+  }
+
+  if (bannerDate) {
+    getBannerData('banner_' + bannerDate).then((mediaResources: BannerPackage) => {
+      bannerData.value = mediaResources
+    })
+  } else {
+    // banner类型
+    // ?bannerType=interactive | animation | image | promotion
+    let bannerType: any = params.get('bannerType')
+    getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+      bannerData.value = mediaResources
+    })
+
+    // 自动切换Banner
+    // ?bannerAutoSwitch=true
+    // ?bannerAutoSwitchInterval=10000
+    const minInterval = 10000
+    let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval') || minInterval)
+
+    if (params.get('bannerAutoSwitch') || bannerSwitchInterval) {
+      // 至少10s切换一次
+      bannerSwitchInterval = bannerSwitchInterval <= minInterval ? minInterval : bannerSwitchInterval
+
+      setInterval(async () => {
+        if (!document.hidden) {
+          getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+            bannerData.value = mediaResources
+          })
+        }
+      }, bannerSwitchInterval)
+    }
+  }
 })
 
 </script>

@@ -14,10 +14,19 @@
 
     const srcSet = {}
 
+    const mediaPackage = {
+        content: [],
+        id: 'banner_' + Date.now(),
+        config: {
+            style: {
+                bannerHeight: document.querySelector(".animated-banner").getBoundingClientRect().height
+            }
+        },
+        version: '1.1'
+    }
+
     // getMediaSrcList()
     // getMediaBase64()
-
-
 
     let isExecuting = false;
     // 添加Ctrl+Q快捷键监听功能
@@ -32,6 +41,7 @@
 
 
 
+    document.querySelector('.bili-header__bar').remove()
     createNotification('开始执行', 3000);
     isExecuting = true
 
@@ -199,12 +209,12 @@
 
         console.log('开始转换媒体资源...')
         convertMediaToBase64(srcList).then(result => {
-            console.log('转换成功:', result)
+            mediaPackage.content = result
+            console.log('转换成功:', mediaPackage)
         }).catch(error => {
             console.error('转换失败:', error)
         })
     }
-
 
     /**
      * 将媒体资源数组转换为Base64编码
@@ -512,64 +522,6 @@
 
         return result;
     }
-
-    // 模拟鼠标从 (0, 100) 滑动到 (1000, 100) 的函数
-    // function simulateMouseSlide(sevent = {
-    //     startX: 0,
-    //     startY: 100,
-    //     endX: 1000,
-    //     endY: 100,
-    //     steps: 50,
-    //     delay: 10,
-    //     callback: () => {
-    //         console.log(`滑动完成`);
-    //     }
-    // }) {
-    //     const startX = sevent.startX || 0;
-    //     const startY = sevent.startY || 100;
-    //     const endX = sevent.endX || 1000;
-    //     const endY = sevent.endY || 100;
-    //     const steps = sevent.steps || 50; // 分50步完成滑动，让轨迹更平滑
-    //     const delay = sevent.delay || 10; // 每一步之间的延迟（毫秒）
-
-    //     let currentStep = 0;
-
-    //     // 1. 先瞬间将鼠标“瞬移”到起始位置，并触发一次 mousemove
-    //     dispatchMouseEvent('mousemove', startX, startY);
-    //     console.log(`鼠标已就位到起始点: (${startX}, ${startY})`);
-
-    //     // 2. 使用定时器逐步向终点移动
-    //     const interval = setInterval(() => {
-    //         currentStep++;
-
-    //         // 计算当前应该移动到的位置 (线性插值)
-    //         const currentX = startX + (endX - startX) * (currentStep / steps);
-    //         const currentY = startY + (endY - startY) * (currentStep / steps);
-
-    //         // 派发鼠标移动事件
-    //         dispatchMouseEvent('mousemove', currentX, currentY);
-
-    //         // 如果到达终点，清除定时器
-    //         if (currentStep >= steps) {
-    //             clearInterval(interval);
-    //             sevent.callback?.();
-    //         }
-    //     }, delay);
-    // }
-
-    // 辅助函数：创建并派发鼠标事件
-    // function dispatchMouseEvent(type, x, y) {
-    //     const event = new MouseEvent(type, {
-    //         view: window,
-    //         bubbles: true,      // 允许事件冒泡
-    //         cancelable: true,   // 允许事件被取消
-    //         clientX: x,         // 鼠标在页面中的 X 坐标
-    //         clientY: y,         // 鼠标在页面中的 Y 坐标
-    //         screenX: x,         // 鼠标在屏幕中的 X 坐标
-    //         screenY: y          // 鼠标在屏幕中的 Y 坐标
-    //     });
-    //     document.elementFromPoint(x, y)?.dispatchEvent(event) || document.dispatchEvent(event);
-    // }
 
     // 核心滑动函数
     function simulateSmoothSlide(sevent = {

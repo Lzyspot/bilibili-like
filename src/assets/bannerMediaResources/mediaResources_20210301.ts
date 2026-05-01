@@ -1,4 +1,6 @@
-const mediaResources = [
+import type { MediaResource } from "@/struct/struct";
+
+const mediaResources: MediaResource[] = [
   {
     src:
       "https://i0.hdslb.com/bfs/vc/da55fab2e559b4458ece1f92b9060d6e1bccaac7.jpg",
@@ -431,7 +433,7 @@ const mediaResources = [
   }
 ];
 
-mediaResources.forEach((element: any, index: number) => {
+mediaResources.forEach((elem: any, index: number) => {
   if (mediaResources[index]?.offsetRate?.opacity) {
     // @ts-ignore
     mediaResources[index].offsetRate.opacity *= -1;

@@ -1,4 +1,6 @@
-const mediaResources = {
+import type { MediaPackage } from "@/struct/struct";
+
+const mediaResources: MediaPackage = {
     content: [
         {
             "src": "https://i2.hdslb.com/bfs/vc/48bee957f95b7bc5f0e1b7fc14b25a4cca26901a.png@1c.webp",

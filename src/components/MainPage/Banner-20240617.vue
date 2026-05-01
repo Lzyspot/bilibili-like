@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
 
-import { mediaResources } from '@/assets/bannerMediaResources/mediaResources_20240617'
+import { mediaResources } from '@/assets/bannerMediaResources/banner_20240617'
 
 import HeaderNav from './HeaderNav.vue'
 

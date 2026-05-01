@@ -1,7 +1,8 @@
 // @ts-ignore
 import petals from '@/assets/bannerMediaResources/canvas/20210401/index'
+import type { MediaResource } from "@/struct/struct";
 
-const mediaResources = [
+export const mediaResources: MediaResource[] = [
     {
         "src": "https://i0.hdslb.com/bfs/vc/c12c6ceaa5f78de17cd94bb0ad325339b2386ee8.png",
         "index": 0,
@@ -50,7 +51,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -101,7 +102,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -152,7 +153,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -203,7 +204,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -254,7 +255,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -305,7 +306,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "0"
+            "opacity": 0
         }
     },
     {
@@ -356,7 +357,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -407,7 +408,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -458,7 +459,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "0.00419948"
+            "opacity": 0.00419948
         }
     },
     {
@@ -509,7 +510,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "0.00419948"
+            "opacity": 0.00419948
         }
     },
     {
@@ -560,7 +561,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -611,7 +612,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -662,7 +663,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 0,
-            "opacity": "0.993362"
+            "opacity": 0.993362
         }
     },
     {
@@ -713,7 +714,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 2,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -764,7 +765,7 @@ const mediaResources = [
             },
             "rotate": 0,
             "blur": 1,
-            "opacity": "1"
+            "opacity": 1
         }
     },
     {
@@ -782,5 +783,3 @@ const mediaResources = [
 
     }
 ]
-
-export { mediaResources }
