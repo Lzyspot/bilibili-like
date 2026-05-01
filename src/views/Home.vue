@@ -106,12 +106,12 @@ onMounted(() => {
     })
 
     // 自动切换Banner
-    // ?bannerAutoSwitch=true
+    // ?bannerAutoSwitch!=false
     // ?bannerAutoSwitchInterval=10000
     const minInterval = 10000
     let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval') || minInterval)
 
-    if (params.get('bannerAutoSwitch') || bannerSwitchInterval) {
+    if (params.get('bannerAutoSwitch')?.toLowerCase() != 'false' && bannerSwitchInterval) {
       // 至少10s切换一次
       bannerSwitchInterval = bannerSwitchInterval <= minInterval ? minInterval : bannerSwitchInterval
 

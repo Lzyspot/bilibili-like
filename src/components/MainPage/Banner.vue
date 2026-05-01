@@ -78,14 +78,14 @@ export default defineComponent({
                 this.applyScaleCompensation()
                 this.layers = layers
 
-                if (this.layers.length) {
-                    // for (let i = 0; i < (Math.max(this.layers.length, layers.length)); i++) {
-                    //     if (this.layers[i]) {
-                    //         this.layers[i].remove()
-                    //     }
-                    // }
-                } else {
-                }
+                // if (this.layers.length) {
+                //     // for (let i = 0; i < (Math.max(this.layers.length, layers.length)); i++) {
+                //     //     if (this.layers[i]) {
+                //     //         this.layers[i].remove()
+                //     //     }
+                //     // }
+                // } else {
+                // }
             }
         })
 

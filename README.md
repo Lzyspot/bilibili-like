@@ -38,8 +38,13 @@ npm run serve
 ##### 自动切换Banner，切换间隔为12秒
 
 ```
-?bannerAutoSwitch=true
 ?bannerAutoSwitchInterval=12000
+```
+
+##### 关闭自动切换banner
+
+```
+?bannerAutoSwitch=false
 ```
 
 ##### 关闭缓入效果
@@ -47,8 +52,6 @@ npm run serve
 ```
 ?easIn=false
 ```
-
-
 
 ##### 权重最高，如果有该参数，则其它参数全部失效
 
@@ -137,7 +140,14 @@ legacy
 onMounted(() => {
   const params = new URLSearchParams(location.search)
 
-  let bannerDate = params.get('banner') || params.get('bannerDate')
+  const bannerDate = params.get('banner') || params.get('bannerDate')
+  const easeIn = params.get('easeIn')
+
+  if (easeIn?.toLowerCase() == 'false') {
+    bannerEaseIn.value = false
+  } else {
+    bannerEaseIn.value = true
+  }
 
   if (bannerDate) {
     getBannerData('banner_' + bannerDate).then((mediaResources: BannerPackage) => {
@@ -152,12 +162,12 @@ onMounted(() => {
     })
 
     // 自动切换Banner
-    // ?bannerAutoSwitch=true
+    // ?bannerAutoSwitch!=false
     // ?bannerAutoSwitchInterval=10000
     const minInterval = 10000
     let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval') || minInterval)
 
-    if (params.get('bannerAutoSwitch') || bannerSwitchInterval) {
+    if (params.get('bannerAutoSwitch')?.toLowerCase() != 'false' && bannerSwitchInterval) {
       // 至少10s切换一次
       bannerSwitchInterval = bannerSwitchInterval <= minInterval ? minInterval : bannerSwitchInterval
 
@@ -214,10 +224,8 @@ export { mediaResources };
 更新后还需在 `mediaImportSet` 中添加该脚本路径，并在 `mediaSet` 对应的对象中注册后即可使用
 
 ```
-src\components\MainPage\Banner.vue
+src\config\banner.ts
 ```
-
-
 
 
 
