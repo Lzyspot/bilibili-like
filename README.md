@@ -207,18 +207,58 @@ src\assets\bannerMediaResources
 
 > 标准可交互视差banner数据格式
 
-```json
-const mediaResources = {
-    content: [
-    	"从浏览器获取到的数据"
-	],
-    config: (globalConfig: any) => {
-        globalConfig.style.bannerHeight = 180
+```typescript
+interface MediaResource {
+    type: 'IMG' | 'VIDEO' | "LOGO" | "TITLE" | "CANVAS";
+    src?: string;
+    index?: number;
+    base64?: string;
+    style?: any;
+    mousePos?: any;
+    nStyle?: any;
+    nMousePos?: any;
+    offsetRate?: {
+        x: number;
+        y: number;
+        scaleX: number;
+        scaleY: number;
+        rotate: number;
+        blur?: number;
+        opacity?: number;
     },
-    version: '1.0'
+    init?: {
+        translate: {
+            x: number;
+            y: number;
+            z?: number;
+        },
+        scale: {
+            x: number;
+            y: number;
+            z?: number;
+        },
+        rotate: number;
+        blur?: number;
+        opacity?: number;
+    },
+    callback?: Function;
+    abs?: any;
+    title?: string;
+    matrix?: string;
 }
 
-export { mediaResources };
+interface BannerPackage {
+    content: MediaResource[];
+    config?: {
+        style: {
+            bannerHeight: number;
+        }
+    } | Function;
+    mount?: Function;
+    unmount?: Function;
+    version: '1.1';
+    id: string;
+}
 ```
 
 更新后还需在 `mediaImportSet` 中添加该脚本路径，并在 `mediaSet` 对应的对象中注册后即可使用
