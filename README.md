@@ -5,7 +5,7 @@
 ## 部署
 
 ```bash
-git clone git@gitee.com:Lzyspot/bilibili-like.git
+git clone https://github.com/Lzyspot/bilibili-like.git
 cd bilibili-like
 npm i
 ```
