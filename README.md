@@ -53,13 +53,22 @@ npm run serve
 ?easIn=false
 ```
 
-##### 权重最高，如果有该参数，则其它参数全部失效
+##### 指定显示的banner
+
+> ##### 权重最高，如果有该参数，则其它参数全部失效
 
 ```
 ?banner=20260426
 ```
 
+随机显示的banner范围，使用半角逗号分隔
 
+```
+?bannerList=banner,banner,banner
+```
+
+> banner列表
+>
 
 ```
 // 视差滚动
@@ -101,7 +110,7 @@ legacy
 20190601
 20190520
 20191029
-20190620
+20260507
 20200124
 20200201
 20200401
@@ -134,53 +143,71 @@ legacy
 20221030
 ```
 
-
+> url参数部分代码
+>
 
 ```ts
-onMounted(() => {
-  const params = new URLSearchParams(location.search)
+const params = new URLSearchParams(location.search)
 
-  const bannerDate = params.get('banner') || params.get('bannerDate')
-  const easeIn = params.get('easeIn')
+const bannerDate = params.get('banner') || params.get('bannerDate')
+const bannerList = params.get('bannerList')
+const easeIn = params.get('easeIn')
 
-  if (easeIn?.toLowerCase() == 'false') {
-    bannerEaseIn.value = false
-  } else {
-    bannerEaseIn.value = true
-  }
+if (easeIn?.toLowerCase() == 'false') {
+  bannerEaseIn.value = false
+} else {
+  bannerEaseIn.value = true
+}
 
-  if (bannerDate) {
-    getBannerData('banner_' + bannerDate).then((mediaResources: BannerPackage) => {
-      bannerData.value = mediaResources
-    })
-  } else {
-    // banner类型
-    // ?bannerType=interactive | animation | image | promotion
-    let bannerType: any = params.get('bannerType')
-    getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
-      bannerData.value = mediaResources
-    })
-
-    // 自动切换Banner
-    // ?bannerAutoSwitch!=false
-    // ?bannerAutoSwitchInterval=10000
-    const minInterval = 10000
-    let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval') || minInterval)
-
-    if (params.get('bannerAutoSwitch')?.toLowerCase() != 'false' && bannerSwitchInterval) {
-      // 至少10s切换一次
-      bannerSwitchInterval = bannerSwitchInterval <= minInterval ? minInterval : bannerSwitchInterval
-
-      setInterval(async () => {
-        if (!document.hidden) {
-          getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
-            bannerData.value = mediaResources
-          })
+if (bannerDate && !bannerList) {
+  getBannerData('banner_' + bannerDate).then((mediaResources: BannerPackage) => {
+    bannerData.value = mediaResources
+  })
+} else {
+  // banner类型
+  // ?bannerType=interactive | animation | image | promotion
+  let bannerType: any = params.get('bannerType')
+  const getRangeBannerData = () => {
+    return new Promise<BannerPackage>((resolve) => {
+      if (bannerList) {
+        const bannerListArr = bannerList.split(',')
+        if (bannerListArr.length == 1) {
+          resolve(getBannerData('banner_' + bannerList))
         }
-      }, bannerSwitchInterval)
-    }
+
+        const randomIndex = Math.floor(Math.random() * bannerListArr.length)
+        resolve(getBannerData('banner_' + bannerListArr[randomIndex]))
+      }
+
+      getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+        resolve(mediaResources)
+      })
+    })
   }
-})
+
+  getRangeBannerData().then((mediaResources: BannerPackage) => {
+    bannerData.value = mediaResources
+  })
+
+  // 自动切换Banner
+  // ?bannerAutoSwitch!=false
+  // ?bannerAutoSwitchInterval=10000
+  const minInterval = 10000
+  let bannerSwitchInterval = Number(params.get('bannerAutoSwitchInterval') || minInterval)
+
+  if (params.get('bannerAutoSwitch')?.toLowerCase() != 'false' && bannerSwitchInterval) {
+    // 至少10s切换一次
+    bannerSwitchInterval = bannerSwitchInterval <= minInterval ? minInterval : bannerSwitchInterval
+
+    setInterval(async () => {
+      if (!document.hidden) {
+        getRangeBannerData().then((mediaResources: BannerPackage) => {
+          bannerData.value = mediaResources
+        })
+      }
+    }, bannerSwitchInterval)
+  }
+}
 ```
 
 
@@ -189,18 +216,26 @@ onMounted(() => {
 
 **复制**并在浏览器**执行**以下文件的代码内容
 
+> 适用于视察滚动banner
+
 ```
 tools\getBanner\get.dev.auto.js
+```
+
+> 适用于静态 图片/视频 banner
+
+```
+tools\getBanner\get.img.dev.js
 ```
 
 执行完成会在**控制台**返回
 
 
 
-秉持着 `all in one` 的原则，返回的是包含元素`加速度数据`并将其转为`base64`后的数据包，目前全部存放于以下路径
+返回的是包含元素`加速度数据`并将其转为`base64`后的数据包，目前全部存放于以下路径
 
 ```
-src\assets\bannerMediaResources
+src\assets\bannerMediaResources\
 ```
 
 命名随意，通常是`mediaResources`+该banner最早的日期
@@ -241,7 +276,8 @@ interface MediaResource {
         blur?: number;
         opacity?: number;
     },
-    callback?: Function;
+    mount?:  (layer: HTMLElement, banner: HTMLElement) => any | void;
+    unmount?: (banner: HTMLElement, temp: any) => void;
     abs?: any;
     title?: string;
     matrix?: string;
@@ -254,8 +290,8 @@ interface BannerPackage {
             bannerHeight: number;
         }
     } | Function;
-    mount?: Function;
-    unmount?: Function;
+    mount?: (banner: HTMLElement) => any | void;
+    unmount?: (banner: HTMLElement, temp: any) => void;
     version: '1.1';
     id: string;
 }

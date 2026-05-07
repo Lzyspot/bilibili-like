@@ -115,7 +115,6 @@ onMounted(() => {
         }
 
         getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
-          // bannerData.value = mediaResources
           resolve(mediaResources)
         })
       })
@@ -124,7 +123,6 @@ onMounted(() => {
     getRangeBannerData().then((mediaResources: BannerPackage) => {
       bannerData.value = mediaResources
     })
-
 
     // 自动切换Banner
     // ?bannerAutoSwitch!=false
