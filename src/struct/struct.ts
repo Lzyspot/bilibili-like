@@ -31,7 +31,8 @@ export interface MediaResource {
         blur?: number;
         opacity?: number;
     },
-    callback?: Function;
+    mount?:  (layer: HTMLElement, banner: HTMLElement) => any | void;
+    unmount?: (banner: HTMLElement, temp: any) => void;
     abs?: any;
     title?: string;
     matrix?: string;
@@ -51,8 +52,8 @@ export interface BannerPackage {
             bannerHeight: number;
         }
     } | Function;
-    mount?: Function;
-    unmount?: Function;
+    mount?: (banner: HTMLElement) => any | void;
+    unmount?: (banner: HTMLElement, temp: any) => void;
     version: '1.1';
     id: string;
 }

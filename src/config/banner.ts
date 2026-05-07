@@ -54,7 +54,8 @@ const mediaImportSet: { [key: string]: () => Promise<any> } = {
     banner_20200817: () => import('@/assets/bannerMediaResources/mediaResources_20200817'), // 2233生日
     banner_20220927: () => import('@/assets/bannerMediaResources/mediaResources_20220927'), // 枫叶林收音
     banner_20230101: () => import('@/assets/bannerMediaResources/mediaResources_20230101'), // 趴桌睡觉
-    banner_20230620: () => import('@/assets/bannerMediaResources/mediaResources_20230620'), // 篝火静态版本
+    // banner_20230620: () => import('@/assets/bannerMediaResources/mediaResources_20230620'), // 篝火静态版本
+    banner_20260507: () => import('@/assets/bannerMediaResources/mediaResources_20260507'), // 御燕飞行
 
     banner_20190621: () => import('@/assets/bannerMediaResources/mediaResources_20190621'), // 十周年活动
     banner_20200421: () => import('@/assets/bannerMediaResources/mediaResources_20200421'), // 读书日
@@ -130,7 +131,8 @@ const mediaSet: { [key: string]: Array<() => Promise<any>> } = {
         mediaImportSet.banner_20200817,
         mediaImportSet.banner_20220927,
         mediaImportSet.banner_20230101,
-        mediaImportSet.banner_20230620,
+        // mediaImportSet.banner_20230620,
+        mediaImportSet.banner_20260507,
     ],
     promotion: [
         mediaImportSet.banner_20190621,

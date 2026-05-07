@@ -1,5 +1,6 @@
 function base64ToBlobUrl(base64Data: string): string {
   try {
+    if (base64Data.startsWith("blob")) return base64Data
     // 去掉base64数据URL前缀
     const parts = base64Data.split(";base64,");
     const contentType = parts[0].split(":")[1];

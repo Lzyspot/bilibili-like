@@ -14,6 +14,16 @@
     //         getMediaBase64()
     //     }
     // }, interval)
+    const mediaPackage = {
+        content: [],
+        id: 'banner_' + Date.now(),
+        config: {
+            style: {
+                bannerHeight: document.querySelector(".bili-header__banner").getBoundingClientRect().height
+            }
+        },
+        version: '1.1'
+    }
 
     function getMediaSrcList() {
         let banner_old = document.querySelector('.banner-img source')?.srcset
@@ -58,13 +68,17 @@
 
             let fileExist = false
             srcList.forEach(e => {
-                if (e.src === label.src) {
+                if (e.src === label?.src) {
                     fileExist = true
                 }
             })
 
             if (!fileExist) {
-                srcList.push({ src: label.src, type: label.tagName, base64: '' })
+                if (!label) {
+                    console.warn('未找到图片或视频标签:', elem)
+                } else {
+                    srcList.push({ src: label.src, type: label.tagName, base64: '' })
+                }
 
                 console.log(srcList);
             }
@@ -78,7 +92,7 @@
             if (logo) srcList.push({ src: logo, type: 'LOGO', base64: '' })
 
             const title = document.querySelector('.head-title')?.innerText
-            if (title) srcList.push({ title, type: 'TITLE'})
+            if (title) srcList.push({ title, type: 'TITLE' })
         } catch (error) {
             console.error(error)
         }
@@ -86,7 +100,9 @@
         // 转换媒体资源
         console.log('开始转换媒体资源...')
         convertMediaToBase64(srcList).then(result => {
-            console.log(result)
+            mediaPackage.content = mediaPackage.content.concat(result)
+            console.log(mediaPackage)
+
         }).catch(error => {
             console.error('转换失败:', error)
         })
@@ -230,7 +246,7 @@
     }
     if (url.banner.length) srcList.push({ src: url.banner, type: 'IMG', base64: '' })
     if (url.logo.length) srcList.push({ src: url.logo, type: 'LOGO', base64: '' })
-        
+
     getMediaSrcList()
     getMediaBase64()
 })()

@@ -65,7 +65,8 @@ const leftNav = ref<string[]>(['番剧', '游戏中心', '直播', '会员购', 
 const rightNav = ref<string[]>(['大会员', '消息', '动态', '收藏', '历史', '创作中心'])
 
 const userSpace = ref<string>('')
-const userAvatar = ref<string>('./src/default_avatar.webp')
+// const userAvatar = ref<string>(location.origin + location.pathname + '/src/default_avatar.webp')
+const userAvatar = ref<string>('/src/default_avatar.webp')
 
 const searchInput = ref<HTMLInputElement | null>(null)
 

@@ -1,4 +1,4 @@
-import { base64ToBlobUrl }from '@/components/utils/utils'
+import { base64ToBlobUrl } from '@/components/utils/utils'
 
 // 定义眨眼资源为图片数组
 const blinkEyeResources = [
@@ -76,9 +76,9 @@ const mediaResources: MediaResource[] = [
             "filter": "blur(0px)",
             "zIndex": 1
         },
-        callback: (el: any) => {
+        mount: (el: any) => {
             // 眨眼动画
-            setInterval(() => {
+            let timer = setInterval(() => {
                 el.src = blinkEyeResources[1]
                 setTimeout(() => {
                     el.src = blinkEyeResources[2]
@@ -87,6 +87,11 @@ const mediaResources: MediaResource[] = [
                     }, 100)
                 }, 10)
             }, 5000)
+
+            return { timer: timer }
+        },
+        unmount: (banner: any, timer: any) => {            
+            clearInterval(timer.timer)
         },
         abs: ['b'],
         "mousePos": {
@@ -329,10 +334,10 @@ const mediaResources: MediaResource[] = [
 ]
 
 mediaResources.forEach((element: any, index: number) => {
-  if (mediaResources[index]?.offsetRate?.blur) {
+    if (mediaResources[index]?.offsetRate?.blur) {
         // @ts-ignore
         mediaResources[index].offsetRate.blur *= -1;
-  }
+    }
 })
 
 // https://web.archive.org/web/20201130131020/https://www.bilibili.com/

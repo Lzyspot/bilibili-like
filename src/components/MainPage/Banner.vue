@@ -41,7 +41,8 @@ export default defineComponent({
             layers: [] as HTMLElement[], // 存储所有layer元素
             bannerTitle: null as HTMLElement | null,
             bannerPackage: {} as BannerPackage,
-            compensationScale: 1 // 缩放补偿
+            compensationScale: 1, // 缩放补偿
+            temp: {} as any,
         };
     },
 
@@ -114,7 +115,12 @@ export default defineComponent({
     methods: {
         initBanner(mediaResources: BannerPackage, banner: HTMLElement): HTMLElement[] {
             banner.innerHTML = ''
-            this.bannerPackage.unmount && this.bannerPackage.unmount(banner)
+            this.bannerPackage.unmount && this.bannerPackage.unmount(banner, this.temp)
+            if (this.bannerPackage?.content) {
+                this.bannerPackage.content.forEach((item: MediaResource) => {
+                    item.unmount && item.unmount(banner, this.temp)
+                })
+            }
             this.bannerPackage = mediaResources
 
             const version = mediaResources.version
@@ -258,10 +264,21 @@ export default defineComponent({
                     layers.push(el)
                 }
 
-                item.callback && item.callback(el, banner)
+                if (item.mount) {
+                    const result = item.mount(el, banner)
+                    if (result) {
+                        this.temp = { ...this.temp, ...result }
+                    }
+                }
             })
 
-            this.bannerPackage.mount && this.bannerPackage.mount(banner)
+            // this.bannerPackage.mount && this.bannerPackage.mount(banner)
+            if (this.bannerPackage.mount) {
+                const result = this.bannerPackage.mount(banner)
+                if (result) {
+                    this.temp = { ...this.temp, ...result }
+                }
+            }
 
             return layers
         },

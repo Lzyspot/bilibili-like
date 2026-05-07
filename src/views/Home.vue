@@ -85,6 +85,7 @@ onMounted(() => {
   const params = new URLSearchParams(location.search)
 
   const bannerDate = params.get('banner') || params.get('bannerDate')
+  const bannerList = params.get('bannerList')
   const easeIn = params.get('easeIn')
 
   if (easeIn?.toLowerCase() == 'false') {
@@ -93,7 +94,7 @@ onMounted(() => {
     bannerEaseIn.value = true
   }
 
-  if (bannerDate) {
+  if (bannerDate && !bannerList) {
     getBannerData('banner_' + bannerDate).then((mediaResources: BannerPackage) => {
       bannerData.value = mediaResources
     })
@@ -101,9 +102,29 @@ onMounted(() => {
     // banner类型
     // ?bannerType=interactive | animation | image | promotion
     let bannerType: any = params.get('bannerType')
-    getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+    const getRangeBannerData = () => {
+      return new Promise<BannerPackage>((resolve) => {
+        if (bannerList) {
+          const bannerListArr = bannerList.split(',')
+          if (bannerListArr.length == 1) {
+            resolve(getBannerData('banner_' + bannerList))
+          }
+
+          const randomIndex = Math.floor(Math.random() * bannerListArr.length)
+          resolve(getBannerData('banner_' + bannerListArr[randomIndex]))
+        }
+
+        getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+          // bannerData.value = mediaResources
+          resolve(mediaResources)
+        })
+      })
+    }
+
+    getRangeBannerData().then((mediaResources: BannerPackage) => {
       bannerData.value = mediaResources
     })
+
 
     // 自动切换Banner
     // ?bannerAutoSwitch!=false
@@ -117,7 +138,7 @@ onMounted(() => {
 
       setInterval(async () => {
         if (!document.hidden) {
-          getBannerData(null, bannerType).then((mediaResources: BannerPackage) => {
+          getRangeBannerData().then((mediaResources: BannerPackage) => {
             bannerData.value = mediaResources
           })
         }
