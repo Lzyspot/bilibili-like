@@ -72,21 +72,12 @@ export default defineComponent({
         const banner = this.$refs.bannerRef as HTMLElement
 
         watch(() => this.bannerData, (newVal, oldVal) => {
-            console.log(oldVal.id);
+            // console.log(oldVal.id);
 
             if (newVal.id != oldVal.id) {
                 const layers = this.initBanner(this.bannerData, banner)
                 this.applyScaleCompensation()
                 this.layers = layers
-
-                // if (this.layers.length) {
-                //     // for (let i = 0; i < (Math.max(this.layers.length, layers.length)); i++) {
-                //     //     if (this.layers[i]) {
-                //     //         this.layers[i].remove()
-                //     //     }
-                //     // }
-                // } else {
-                // }
             }
         })
 
@@ -249,8 +240,17 @@ export default defineComponent({
 
                     default:
                         console.log(item);
+                        layer.remove()
                         break;
                 }
+
+                // try {
+                //     el.width = parseFloat(item.style.width)
+                //     el.height = parseFloat(item.style.height)
+                // } catch (err) {
+                //     console.error(err)
+                // }
+                
 
                 if (el) {
                     // 应用默认样式

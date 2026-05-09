@@ -14,12 +14,14 @@
 
     const srcSet = {}
 
+    const bannerHeight = document.querySelector(".animated-banner") ? document.querySelector(".animated-banner").getBoundingClientRect().height : 180
+
     const mediaPackage = {
         content: [],
         id: 'banner_' + Date.now(),
         config: {
             style: {
-                bannerHeight: document.querySelector(".animated-banner").getBoundingClientRect().height
+                bannerHeight: bannerHeight
             }
         },
         version: '1.1'
@@ -41,7 +43,7 @@
 
 
 
-    document.querySelector('.bili-header__bar').remove()
+    document.querySelector('.bili-header__bar')?.remove()
     createNotification('开始执行', 3000);
     isExecuting = true
 
@@ -100,9 +102,14 @@
     })
 
     function getMediaSrcList(isExecuting) {
-        document.querySelectorAll('.animated-banner>.layer ').forEach((elem, index) => {
+        document.querySelectorAll('.animated-banner .layer ').forEach((elem, index) => {
             // document.querySelectorAll('.layer').forEach((elem, index) => {
             const label = elem.querySelector('img,video')
+
+            if (!label) {
+                console.log(label);
+                return
+            }
 
             let { src, style, height, width } = label
 
@@ -297,7 +304,7 @@
             const img = new Image();
             img.setAttribute('crossOrigin', 'anonymous');
 
-            img.onload = function () {
+            img.onload = () => {
                 const canvas = document.createElement('canvas');
                 canvas.width = img.naturalWidth;
                 canvas.height = img.naturalHeight;
@@ -314,9 +321,9 @@
                 }
             };
 
-            img.onerror = function () {
-                reject(new Error('图片加载失败'));
-            };
+            img.onerror = () => {
+                reject(new Error('图片加载失败'));                
+            }
 
             img.src = url;
         });

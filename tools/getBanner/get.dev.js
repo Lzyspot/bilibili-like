@@ -67,7 +67,7 @@
     })
 
     function getMediaSrcList() {
-        document.querySelectorAll('.animated-banner>.layer ').forEach((elem, index) => {
+        document.querySelectorAll('.animated-banner .layer ').forEach((elem, index) => {
         // document.querySelectorAll('.layer').forEach((elem, index) => {
             const label = elem.querySelector('img,video')            
 
