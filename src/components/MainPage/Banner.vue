@@ -244,14 +244,6 @@ export default defineComponent({
                         break;
                 }
 
-                // try {
-                //     el.width = parseFloat(item.style.width)
-                //     el.height = parseFloat(item.style.height)
-                // } catch (err) {
-                //     console.error(err)
-                // }
-                
-
                 if (el) {
                     // 应用默认样式
                     if (item.style) {

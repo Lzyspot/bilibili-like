@@ -85,13 +85,14 @@ function flashCarousel(num = 1) {
 <style scoped lang="less">
 .recommend-layout {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     padding-bottom: 40px;
 
     .carousel-wrapper {
         width: 550px;
         height: 242px;
-        background: #ccc;
+        background: #eee;
         flex-shrink: 0;
     }
 
@@ -102,7 +103,6 @@ function flashCarousel(num = 1) {
         grid-template-rows: repeat(2, 1fr);
         grid-auto-flow: column;
         grid-gap: 10px;
-        margin-left: 20px;
 
         &:hover {
 

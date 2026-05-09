@@ -58,7 +58,7 @@ input {
 }
 
 body {
-  background: @bg2;
+  background: #fff;
 }
 
 .bilifont {
