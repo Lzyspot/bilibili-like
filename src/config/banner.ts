@@ -38,6 +38,7 @@ const mediaImportSet: { [key: string]: () => Promise<any> } = {
     banner_20220106: () => import('@/assets/bannerMediaResources/mediaResources_20220106'), // 极地钓鱼 区分时间 *3
     banner_20220501: () => import('@/assets/bannerMediaResources/mediaResources_20220501'), // 【有彩蛋】四叶草上的2233
     banner_20220816: () => import('@/assets/bannerMediaResources/mediaResources_20220816'), // 2233十周年
+    banner_20260602: () => import('@/assets/bannerMediaResources/mediaResources_20260602'), // 2233十周年
 
     banner_2014: () => import('@/assets/bannerMediaResources/mediaResources_2014'), // 2014合集
     banner_2015: () => import('@/assets/bannerMediaResources/mediaResources_2015'), // 2015合集
@@ -113,7 +114,8 @@ const mediaSet: { [key: string]: Array<() => Promise<any>> } = {
         mediaImportSet.banner_20210906,
         mediaImportSet.banner_20220106,
         mediaImportSet.banner_20220501,
-        mediaImportSet.banner_20220816
+        mediaImportSet.banner_20220816,
+        mediaImportSet.banner_20260602
     ],
     image: [
         mediaImportSet.banner_2014,

@@ -32,6 +32,8 @@
         let banner_sp = getBackgroundImageUrl(document.querySelector('.bili-header__banner')?.style?.backgroundImage)
         let logo_old = document.querySelector('.inner-logo img')?.src
 
+        let link = document.querySelector('.banner-link').href
+
         let banner_legacy = getBackgroundImageUrl(document.querySelector('#banner_link')?.style?.backgroundImage)
         let logo_legacy = getBackgroundImageUrl(document.querySelector('.head-logo')?.style?.backgroundImage)
 
